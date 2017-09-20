@@ -2,15 +2,17 @@ package Classes.Repository;
 
 import java.util.List;
 
+import Classes.Repository.Interfaces.IAppointmentContext;
+
 /**
  * Created by pieni on 20/09/2017.
  */
 
-public class AppointmentRepo implements IAppointmentRepo {
+public class AppointmentRepo implements IAppointmentContext {
 
-    private IAppointmentRepo appointment;
+    private IAppointmentContext appointment;
 
-    public AppointmentRepo(IAppointmentRepo appointment){
+    public AppointmentRepo(IAppointmentContext appointment){
         this.appointment = appointment;
     }
 

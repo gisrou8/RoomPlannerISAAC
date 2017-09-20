@@ -2,11 +2,13 @@ package Classes.Repository;
 
 import java.util.List;
 
+import Classes.Repository.Interfaces.IAppointmentContext;
+
 /**
  * Created by pieni on 20/09/2017.
  */
 
-public class AppointmentEXContext implements IAppointmentRepo {
+public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public void add(Object item) {
