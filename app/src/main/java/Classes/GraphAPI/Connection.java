@@ -1,5 +1,6 @@
 package Classes.GraphAPI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -40,6 +42,87 @@ public class Connection {
     public Connection(Context context)
     {
         mCtx = context;
+        sampleApp = null;
+        if(sampleApp == null)
+        {
+            sampleApp = new PublicClientApplication(mCtx.getApplicationContext(), CLIENT_ID);
+        }
+
+        List<User> users = null;
+        if(users != null && users.size() == 1)
+        {
+            sampleApp.acquireTokenSilentAsync(SCOPES, users.get(0), getAuthSilentCallback());
+        }
+        else{
+            sampleApp.acquireToken((Activity)mCtx,SCOPES, getAuthInteractiveCallBack());
+        }
+    }
+
+    private AuthenticationCallback getAuthSilentCallback() {
+        return new AuthenticationCallback() {
+            @Override
+            public void onSuccess(AuthenticationResult authenticationResult) {
+                /* Successfully got a token, call Graph now */
+                Log.d(TAG, "Successfully authenticated");
+
+                /* Store the authResult */
+                authResult = authenticationResult;
+            }
+
+            @Override
+            public void onError(MsalException exception) {
+                /* Failed to acquireToken */
+                Log.d(TAG, "Authentication failed: " + exception.toString());
+
+                if (exception instanceof MsalClientException) {
+                /* Exception inside MSAL, more info inside MsalError.java */
+                } else if (exception instanceof MsalServiceException) {
+                /* Exception when communicating with the STS, likely config issue */
+                } else if (exception instanceof MsalUiRequiredException) {
+                /* Tokens expired or no session, retry with interactive */
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                 /* User canceled the authentication */
+                Log.d(TAG, "User cancelled login.");
+            }
+        };
+    }
+
+    private AuthenticationCallback getAuthInteractiveCallBack() {
+        return new AuthenticationCallback() {
+            @Override
+            public void onSuccess(AuthenticationResult authenticationResult) {
+                /* Successfully got a token, call graph now */
+                Log.d(TAG, "Successfully authenticated");
+                Log.d(TAG, "ID Token: " + authenticationResult.getIdToken());
+
+            /* Store the auth result */
+                authResult = authenticationResult;
+
+            }
+
+            @Override
+            public void onError(MsalException exception) {
+                /* Failed to acquireToken */
+                Log.d(TAG, "Authentication failed: " + exception.toString());
+
+                if (exception instanceof MsalClientException) {
+                /* Exception inside MSAL, more info inside MsalError.java */
+                } else if (exception instanceof MsalServiceException) {
+                /* Exception when communicating with the STS, likely config issue */
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                /* User canceled the authentication */
+                Log.d(TAG, "User cancelled login.");
+            }
+
+        };
     }
 
     private void callGraphAPI() {
@@ -86,6 +169,10 @@ public class Connection {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(request);
+    }
+
+    public void AuthenticationLogin(){
+        sampleApp.acquireToken((Activity)mCtx, SCOPES, getAuthInteractiveCallBack());
     }
 
 }
