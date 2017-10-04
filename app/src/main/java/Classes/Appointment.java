@@ -1,5 +1,6 @@
 package Classes;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -38,5 +39,10 @@ public class Appointment {
         this.state = State.Closed;
     }
 
+    @Override
+    public String toString(){
+        SimpleDateFormat ft = new SimpleDateFormat("E yyyy.MM.dd '|' hh:mm");
 
+        return Name + " , " + ft.format(reserveringsTijd) + " , " + state;
+    }
 }
