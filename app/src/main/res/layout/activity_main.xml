@@ -26,6 +26,7 @@
         android:layout_height="100dp"
         android:layout_marginBottom="13dp"
         android:layout_marginRight="137dp"
+        android:onClick="btnVergaderingOnClick"
         android:text="Open vergadering"
         app:layout_constraintBottom_toTopOf="@+id/button2"
         app:layout_constraintRight_toRightOf="parent" />
