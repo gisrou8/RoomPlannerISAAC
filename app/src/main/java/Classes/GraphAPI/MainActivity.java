@@ -1,21 +1,15 @@
-package com.example.gisro.roomplannerisaac;
+package Classes.GraphAPI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ListView;
 
 import Classes.GraphAPI.R;
 
-public class Reservering extends AppCompatActivity {
-
-    private ListView gebruikers;
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reservering);
-
-
-
+        setContentView(R.layout.activity_main);
     }
 }
