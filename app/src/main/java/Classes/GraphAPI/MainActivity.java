@@ -1,7 +1,9 @@
-package com.example.gisro.roomplannerisaac;
+package Classes.GraphAPI;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import Classes.GraphAPI.R;
 
 public class MainActivity extends AppCompatActivity {
 
