@@ -48,4 +48,5 @@ dependencies {
 
     compile 'com.google.guava:guava:19.0'
 
+    compile 'javax.inject:javax.inject:1'
 }
