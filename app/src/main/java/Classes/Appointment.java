@@ -30,6 +30,7 @@ public class Appointment {
     public boolean open(){
       if(reserveringsTijd.after(new Date()) && reserveringsTijd.before(new Date(System.currentTimeMillis()+5*60*1000))){
           this.state = State.Open;
+          this.room.updateState();
           return true;
       }
       return false;
@@ -37,6 +38,7 @@ public class Appointment {
 
     public void close(){
         this.state = State.Closed;
+        this.room.updateState();
     }
 
     @Override
