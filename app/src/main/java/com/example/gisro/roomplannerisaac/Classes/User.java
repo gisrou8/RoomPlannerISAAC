@@ -1,4 +1,4 @@
-package Classes;
+package com.example.gisro.roomplannerisaac.Classes;
 
 /**
  * Created by gisro on 20-9-2017.

@@ -1,6 +1,5 @@
-package Classes;
+package com.example.gisro.roomplannerisaac.Classes;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -9,11 +8,14 @@ import java.util.ArrayList;
 
 public class Room {
     private String Name;
+    private String id;
     private State state;
-
-    public Room(String name)
+    private ArrayList<Appointment> appointments;
+    public Room(String name, String id)
     {
         this.Name = name;
+        this.appointments = new ArrayList<>();
+        this.id = id;
     }
 
     public State getState(){
@@ -33,4 +35,21 @@ public class Room {
     public String toString(){
         return Name + "\t" + state;
     }
+
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(ArrayList<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName(){
+        return Name;
+    }
+
 }

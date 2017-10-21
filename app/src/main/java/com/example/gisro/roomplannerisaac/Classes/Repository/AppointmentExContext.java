@@ -1,14 +1,15 @@
-package Classes.Repository;
+package com.example.gisro.roomplannerisaac.Classes.Repository;
 
 import java.util.List;
 
-import Classes.Repository.Interfaces.IRoomContext;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IAppointmentContext;
 
 /**
- * Created by Martien on 20-Sep-17.
+ * Created by pieni on 20/09/2017.
  */
 
-public class RoomExContext implements IRoomContext {
+public class AppointmentExContext implements IAppointmentContext {
+
     @Override
     public void add(Object item) {
 
@@ -29,4 +30,3 @@ public class RoomExContext implements IRoomContext {
         return null;
     }
 }
-//
