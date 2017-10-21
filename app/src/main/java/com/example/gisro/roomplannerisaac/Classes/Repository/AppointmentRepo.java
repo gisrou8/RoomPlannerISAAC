@@ -1,8 +1,8 @@
-package Classes.Repository;
+package com.example.gisro.roomplannerisaac.Classes.Repository;
 
 import java.util.List;
 
-import Classes.Repository.Interfaces.IAppointmentContext;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IAppointmentContext;
 
 /**
  * Created by pieni on 20/09/2017.

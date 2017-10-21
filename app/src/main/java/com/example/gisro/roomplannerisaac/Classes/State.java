@@ -1,4 +1,4 @@
-package Classes;
+package com.example.gisro.roomplannerisaac.Classes;
 
 /**
  * Created by pieni on 27/09/2017.

@@ -1,4 +1,4 @@
-package Classes;
+package com.example.gisro.roomplannerisaac.Classes;
 
 import org.junit.After;
 import org.junit.Before;

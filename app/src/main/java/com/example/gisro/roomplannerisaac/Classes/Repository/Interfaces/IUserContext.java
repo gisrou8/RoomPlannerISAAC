@@ -1,8 +1,8 @@
-package Classes.Repository.Interfaces;
+package com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces;
 
 import java.util.List;
 
-import Classes.User;
+import com.example.gisro.roomplannerisaac.Classes.User;
 
 /**
  * Created by Martien on 20-Sep-17.
