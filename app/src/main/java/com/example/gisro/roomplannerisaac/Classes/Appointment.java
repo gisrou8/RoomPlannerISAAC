@@ -37,6 +37,16 @@ public class Appointment implements Comparable<Appointment>{
         this.state = State.Closed;
     }
 
+    public Appointment(String Name, DateTime reserveringsTijd)
+    {
+        this.Name = Name;
+        this.reserveringsTijd = reserveringsTijd;
+        DateTimeTimeZone dt = new DateTimeTimeZone();
+        dt.dateTime = reserveringsTijd.toString();
+        this.reserveringsTijdTZ = dt;
+        this.state = State.Closed;
+    }
+
     public State getState(){
         return state;
     }

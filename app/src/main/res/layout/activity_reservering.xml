@@ -27,7 +27,7 @@
         android:id="@+id/button2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="425dp" />
+        tools:layout_editor_absoluteY="512dp" />
 
     <TextView
         android:id="@+id/textViewRoom"
@@ -36,18 +36,7 @@
         android:text="Duur vergadering:"
         android:textSize="15dp"
         android:layout_marginTop="52dp"
-        app:layout_constraintTop_toBottomOf="@+id/button3"
-        tools:layout_editor_absoluteX="719dp" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="354dp"
-        android:layout_height="82dp"
-        android:layout_marginTop="37dp"
-        android:onClick="btnReserveer"
-        android:text="Reserveer"
-        android:textSize="45dp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btBack"
         tools:layout_editor_absoluteX="719dp" />
 
     <EditText
@@ -59,21 +48,16 @@
         app:layout_constraintLeft_toRightOf="@+id/textViewRoom"
         android:layout_marginLeft="21dp"
         android:layout_marginTop="52dp"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toBottomOf="@+id/btBack" />
 
-    <ListView
-        android:id="@+id/listView2"
-        android:layout_width="379dp"
-        android:layout_height="334dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText"
-        app:layout_constraintVertical_bias="1.0"
-        app:layout_constraintLeft_toRightOf="@+id/button2"
-        android:layout_marginLeft="51dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0" />
+    <DatePicker
+        android:id="@+id/datePicker2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="-11dp"
+        app:layout_constraintLeft_toRightOf="@+id/timePicker"
+        android:layout_marginLeft="0dp" />
 
     <ListView
         android:id="@+id/listView"
@@ -92,11 +76,32 @@
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="RtlHardcoded" />
 
-    <DatePicker
-        android:id="@+id/datePicker2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="405dp"
-        tools:layout_editor_absoluteY="0dp" />
+    <Button
+        android:id="@+id/btBack"
+        android:layout_width="311dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="395dp"
+        android:onClick="btnReserveer"
+        android:text="Reserveer"
+        android:textSize="45dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        tools:layout_editor_absoluteX="363dp" />
+
+    <ListView
+        android:id="@+id/listView2"
+        android:layout_width="379dp"
+        android:layout_height="334dp"
+        android:layout_marginLeft="51dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.585"
+        app:layout_constraintLeft_toRightOf="@+id/button2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

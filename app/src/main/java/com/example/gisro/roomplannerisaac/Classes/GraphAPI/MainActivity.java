@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity{
                     textViewRoom.setText(mGraphServiceController.getRoom().getName());
                 }
             }
-        }, 2000);
+        }, 1500);
 
 
 
@@ -111,7 +111,8 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void btnAltRoomOnClick(View v){
-
+        Intent i = new Intent(this, RuimteOverview.class);
+        startActivity(i);
     }
 
     public void getSelectAppointment(View v){

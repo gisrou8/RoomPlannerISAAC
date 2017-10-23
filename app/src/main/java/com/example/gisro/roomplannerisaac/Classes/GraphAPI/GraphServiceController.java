@@ -42,21 +42,32 @@ class GraphServiceController {
     private final IGraphServiceClient mGraphServiceClient;
     private List<User> userList;
     private Room room;
-    private final CountDownLatch Latch = new CountDownLatch(1);
+    private ArrayList<Room> roomList;
 
     public Room getRoom() {
         return room;
     }
 
-    public enum StorageState {
-        NOT_AVAILABLE, WRITEABLE, READ_ONLY
+    public ArrayList<Room> getRooms(){
+        return roomList;
     }
 
+    public List<User> getUsers(){
+        return userList;
+    }
+
+    /** Voordat er een methode wordt aangeroepen altijd eerst de constructor aan hebben gemaakt.
+    Deze zorgt ervoor dat de authenticatie wordt meegestuurd met de API request. Zorg er ook voor dat er gebruikt wordt gemaakt van een handler, dit zodat de
+     api genoeg tijd heeft om data terug te sturen*/
     public GraphServiceController() {
         mGraphServiceClient = GraphServiceClientManager.getInstance().getGraphServiceClient();
+        roomList = new ArrayList<>();
     }
 
 
+    /**
+     * Deze methode haalt alle gebruikers op die zich in de organisatie bevinden en slaat ze op in de userlist.
+     */
     public void apiUsers(){
         Log.d(this.getClass().toString(), "Starting user get");
 
@@ -75,6 +86,10 @@ class GraphServiceController {
         });
     }
 
+
+    /**
+     * This method gets the current room that the tablet is in. This is based on the logged in User since we use the login to identify the room.
+     */
     public void apiThisRoom(){
         Log.d(this.getClass().toString(), "Starting user get");
 
@@ -91,24 +106,32 @@ class GraphServiceController {
         });
     }
 
-//    public void apiRooms(){
-//        Log.d(this.getClass().toString(), "Starting room get");
-//
-//        mGraphServiceClient.getUsers().buildRequest().get(new ICallback<IUserCollectionPage>() {
-//            @Override
-//            public void success(final IUserCollectionPage result) {
-//                List <User> users = result.getCurrentPage();
-//                setRooms(users);
-//            }
-//
-//
-//            @Override
-//            public void failure(ClientException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//    }
 
+    /**
+     * This method gets all the rooms in the organisation from the api. Puts them in the roomlist.
+     */
+    public void apiRooms(){
+        Log.d(this.getClass().toString(), "Starting room get");
+
+        mGraphServiceClient.getUsers().buildRequest().get(new ICallback<IUserCollectionPage>() {
+            @Override
+            public void success(final IUserCollectionPage result) {
+                List <User> users = result.getCurrentPage();
+                setRooms(users);
+            }
+
+
+            @Override
+            public void failure(ClientException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    /**
+     * Gets all the appointments for the current room. Only puts them in the list if they are happening today.
+     */
     public void apiAppointmentsforRoom() {
         Log.d(this.getClass().toString(), "Starting appointments get");
         mGraphServiceClient.getMe().getEvents().buildRequest().get(new ICallback<IEventCollectionPage>() {
@@ -125,17 +148,28 @@ class GraphServiceController {
     }
 
 
-
+    /**
+     * @param appointment the appointment and its information, will get converted to an event before posting to API
+     * @param callback
+     */
     public void apiScheduleMeeting(Appointment appointment, ICallback<Event> callback)
     {
         try {
             mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ()), callback);
+
         }
         catch (Exception ex){
             Log.d("GraphServiceController", ex.getMessage());
         }
     }
 
+
+    /**
+     * @param name
+     * @param reserveringsTijd
+     * @param reserveringsTijd1
+     * @return converts our own appointments object to an usable object for posting to the API.
+     */
     private Event createEvent(String name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringsTijd1) {
         Event event = new Event();
         event.subject = name;
@@ -144,27 +178,30 @@ class GraphServiceController {
         return event;
     }
 
-
     private void setUsers(List<User> users){
         Log.d("GraphServiceController", "Adding users to userlist");
         userList = users;
     }
 
-//    private void setRooms(List<User> users){
-//        Log.d("GraphServiceController", "Adding rooms to roomlist");
-//        for(User user : users)
-//        {
-//            if(user.displayName.contains("Ruimte")){
-//                roomList.add(new Room(user.displayName, user.id));
-//            }
-//        }
-//    }
+    private void setRooms(List<User> users){
+        Log.d("GraphServiceController", "Adding rooms to roomlist");
+        for(User user : users)
+        {
+            // Only add the user if it is a room
+            if(user.displayName.contains("Ruimte")){
+                roomList.add(new Room(user.displayName, user.id));
+            }
+        }
+    }
 
     private void setAppointmentsforRoom(List<Event> events) {
         room.setAppointments(eventsToAppointments(events));
     }
 
-    // Convert the events to our own appointments methods
+    /**
+     * @param events
+     * @return Convert the events to our own appointments methods
+     */
     private ArrayList<Appointment> eventsToAppointments(List<Event> events) {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
@@ -172,12 +209,6 @@ class GraphServiceController {
             appointments.add(new Appointment(event.subject, event.start));
         }
         return appointments;
-    }
-
-
-
-    public List<User> getUsers(){
-        return userList;
     }
 
     public void setThisRoom(User user)
