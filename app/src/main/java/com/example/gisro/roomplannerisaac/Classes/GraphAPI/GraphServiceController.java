@@ -24,6 +24,8 @@ import com.microsoft.graph.extensions.IUserCollectionPage;
 import com.microsoft.graph.extensions.IUserCollectionRequest;
 import com.microsoft.graph.extensions.User;
 
+import org.joda.time.DateTime;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -124,16 +126,23 @@ class GraphServiceController {
 
 
 
-//    public void apiScheduleMeeting(Appointment appointment, ICallback<Event> callback)
-//    {
-//        try {
-//            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijd(), appointment.getReserveringsTijd(), null), callback);
-//        }
-//        catch (Exception ex){
-//            Log.d("GraphServiceController", ex.getMessage());
-//        }
-//    }
+    public void apiScheduleMeeting(Appointment appointment, ICallback<Event> callback)
+    {
+        try {
+            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ()), callback);
+        }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
+    }
 
+    private Event createEvent(String name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringsTijd1) {
+        Event event = new Event();
+        event.subject = name;
+        event.start = reserveringsTijd;
+        event.end = reserveringsTijd1;
+        return event;
+    }
 
 
     private void setUsers(List<User> users){

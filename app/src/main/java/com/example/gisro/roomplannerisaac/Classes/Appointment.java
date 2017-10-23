@@ -21,6 +21,7 @@ import java.util.Date;
 public class Appointment implements Comparable<Appointment>{
     private String Name;
     private DateTime reserveringsTijd;
+    private DateTimeTimeZone reserveringsTijdTZ;
     private State state;
     private ArrayList<Attendee> attendees;
 
@@ -32,6 +33,7 @@ public class Appointment implements Comparable<Appointment>{
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dt = formatter.parseDateTime(date);
         this.reserveringsTijd = dt;
+        this.reserveringsTijdTZ = reserveringsTijd;
         this.state = State.Closed;
     }
 
@@ -60,6 +62,8 @@ public class Appointment implements Comparable<Appointment>{
     {
         return reserveringsTijd;
     }
+
+    public DateTimeTimeZone getReserveringsTijdTZ(){return reserveringsTijdTZ;}
 
     @Override
     public String toString(){
