@@ -14,6 +14,7 @@ import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.R;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.extensions.DateTimeTimeZone;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.Message;
 
@@ -36,24 +37,26 @@ public class Reservering extends AppCompatActivity {
     }
 
     public void btnReserveer(View v){
-//        scheduleMeeting(new Appointment("Test", new Date(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute())));
+        DateTimeTimeZone date = new DateTimeTimeZone();
+        date.dateTime = "23-10-2017";
+        scheduleMeeting(new Appointment("Test meeting", date));
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
     private void scheduleMeeting(final Appointment appointment)
     {
-//        mGraphServiceController.apiScheduleMeeting(appointment, new ICallback<Event>() {
-//            @Override
-//            public void success(Event event) {
-//                Log.d("ReserveringView", "Succes");
-//            }
-//
-//            @Override
-//            public void failure(ClientException ex) {
-//                Log.d("ReserveringView", "Failure");
-//            }
-//        });
+        mGraphServiceController.apiScheduleMeeting(appointment, new ICallback<Event>() {
+            @Override
+            public void success(Event event) {
+                Log.d("ReserveringView", "Succes");
+            }
+
+            @Override
+            public void failure(ClientException ex) {
+                Log.d("ReserveringView", "Failure");
+            }
+        });
     }
 
 
