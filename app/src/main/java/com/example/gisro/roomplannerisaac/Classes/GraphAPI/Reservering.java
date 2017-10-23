@@ -1,6 +1,8 @@
 package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +19,8 @@ import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.Message;
+
+import org.joda.time.DateTime;
 
 import java.util.Date;
 
@@ -36,10 +40,9 @@ public class Reservering extends AppCompatActivity {
 
     }
 
-    public void btnReserveer(View v){
-        DateTimeTimeZone date = new DateTimeTimeZone();
-        date.dateTime = "23-10-2017";
-        scheduleMeeting(new Appointment("Test meeting", date));
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void btnReserveer(View v){        
+        scheduleMeeting(new Appointment("Test meeting", new DateTime(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute())));
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

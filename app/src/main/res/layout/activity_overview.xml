@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.gisro.roomplannerisaac.Classes.GraphAPI.MainActivity">
+
+    <TextView
+        android:id="@+id/textViewRoom"
+        android:layout_width="149dp"
+        android:layout_height="31dp"
+        android:text="Ruimte 2.20"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="527dp"
+        app:layout_constraintLeft_toRightOf="@+id/listView"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        tools:layout_editor_absoluteX="604dp" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="990dp"
+        android:layout_height="532dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/btBack"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="53dp" />
+
+</android.support.constraint.ConstraintLayout>

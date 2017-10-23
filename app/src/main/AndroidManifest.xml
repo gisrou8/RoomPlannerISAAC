@@ -17,6 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Classes.GraphAPI.RuimteOverview"></activity>
         <activity android:name=".Classes.GraphAPI.Reservering"></activity>
         <activity android:name=".Classes.GraphAPI.MainActivity"></activity>
         <activity
