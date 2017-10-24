@@ -7,6 +7,5 @@ package com.example.gisro.roomplannerisaac.Classes;
 public enum State {
     Bezet,
     Vrij,
-    Open,
-    Occupied, Closed
+    Gesloten
 }
