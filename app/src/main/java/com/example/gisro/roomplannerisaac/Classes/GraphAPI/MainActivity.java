@@ -29,7 +29,7 @@ import org.joda.time.LocalDate;
 public class MainActivity extends AppCompatActivity{
 
     public static final String ARG_GIVEN_NAME = "givenName";
-    private static final int WAIT_TIME = 1500;
+    private static final int WAIT_TIME = 2000;
     final private GraphServiceController mGraphServiceController = new GraphServiceController();
     private ListView lv;
     private ListView lvAttendees;
@@ -111,6 +111,12 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         }, WAIT_TIME);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        AuthenticationManager.getInstance().disconnect();
     }
 
     public void btnLogout(View v){
