@@ -188,8 +188,8 @@ class GraphServiceController {
         for(User user : users)
         {
             // Only add the user if it is a room
-            if(user.displayName.contains("Ruimte")){
-                roomList.add(new Room(user.displayName, user.id));
+            if(user.givenName != null && user.givenName.contains("ruimte")){
+                roomList.add(new Room(user.givenName, user.id));
             }
         }
     }

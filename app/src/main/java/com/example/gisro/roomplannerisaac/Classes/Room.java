@@ -11,11 +11,23 @@ public class Room {
     private String id;
     private State state;
     private ArrayList<Appointment> appointments;
-    public Room(String name, String id)
+    public Room(String name, String id, int state)
     {
         this.Name = name;
         this.appointments = new ArrayList<>();
         this.id = id;
+        switch (state)
+        {
+            case 0:
+                this.state = State.Open;
+                break;
+            case 1:
+                this.state = State.Closed;
+                break;
+            case 2:
+                this.state = State.Occupied;
+                break;
+        }
     }
 
     public State getState(){
