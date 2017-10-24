@@ -19,13 +19,13 @@ public class Room {
         switch (state)
         {
             case 0:
-                this.state = State.Open;
+                this.state = State.Vrij;
                 break;
             case 1:
-                this.state = State.Closed;
+                this.state = State.Gesloten;
                 break;
             case 2:
-                this.state = State.Occupied;
+                this.state = State.Bezet;
                 break;
         }
     }
@@ -36,7 +36,7 @@ public class Room {
 
     public void updateState() {
         for (Appointment a : new ArrayList<Appointment>() /*vervang door opgehaalde lijst Appointments voor deze kamer*/) {
-            if (a.getState() == State.Open){
+            if (a.getState() == State.Vrij){
                 this.state = State.Bezet;
             }
         }

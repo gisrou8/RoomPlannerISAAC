@@ -35,7 +35,7 @@ public class Appointment implements Comparable<Appointment>{
         DateTime dt = formatter.parseDateTime(date);
         this.reserveringsTijd = dt;
         this.reserveringsTijdTZ = reserveringsTijd;
-        this.state = State.Closed;
+        this.state = State.Gesloten;
     }
 
     public Appointment(String Name, DateTime reserveringsTijd)
@@ -45,7 +45,7 @@ public class Appointment implements Comparable<Appointment>{
         DateTimeTimeZone dt = new DateTimeTimeZone();
         dt.dateTime = reserveringsTijd.toString();
         this.reserveringsTijdTZ = dt;
-        this.state = State.Closed;
+        this.state = State.Gesloten;
     }
 
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd, List<Attendee> attendees) {
@@ -56,7 +56,7 @@ public class Appointment implements Comparable<Appointment>{
         DateTime dt = formatter.parseDateTime(date);
         this.reserveringsTijd = dt;
         this.reserveringsTijdTZ = reserveringsTijd;
-        this.state = State.Closed;
+        this.state = State.Gesloten;
         this.attendees = attendees;
     }
 
@@ -73,7 +73,7 @@ public class Appointment implements Comparable<Appointment>{
 //    }
 
     public void close(){
-        this.state = State.Closed;
+        this.state = State.Gesloten;
     }
 
     public String getName()
