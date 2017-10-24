@@ -32,14 +32,15 @@ public class MainActivity extends AppCompatActivity{
     final private GraphServiceController mGraphServiceController = new GraphServiceController();
     private ListView lv;
     private Button btnOpenClose;
-    private ProgressDialog mProgressDialog;
     private Appointment a;
-
+    private ProgressBar mProgressbar;
+    private int checkCount = 1500;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button)findViewById(R.id.btnVergadering);
+        mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
         //Demo data
         lv = (ListView) findViewById(R.id.listView);
         final List<String> appointments = new ArrayList<String>();
@@ -52,14 +53,6 @@ public class MainActivity extends AppCompatActivity{
                 String splitArray[] = s.split(" , ");
             }
         });
-        //Setting the progressdialog
-        mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("loading info...");
-        mProgressDialog.setCancelable(false);
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.setIndeterminate(true);
-        mProgressDialog.setProgressStyle(android.R.attr.progressBarStyleSmall);
-        mProgressDialog.show();
 
         // Init userlist from API
         mGraphServiceController.apiThisRoom();
@@ -72,34 +65,35 @@ public class MainActivity extends AppCompatActivity{
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(mGraphServiceController.getRoom().getAppointments() != null) {
-                    for (Appointment appointment : mGraphServiceController.getRoom().getAppointments()) {
-                        //Check if appointment is today
-                        if(LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
-                            appointments.add(appointment.toString());
+                mProgressbar.setVisibility(View.VISIBLE);
+                checkCount -= 1000;
+                if(checkCount > 0){
+                    handler.postDelayed(this, 1000);
+                }
+                else {
+                    mProgressbar.setVisibility(View.INVISIBLE);
+                    if (mGraphServiceController.getRoom().getAppointments() != null) {
+                        for (Appointment appointment : mGraphServiceController.getRoom().getAppointments()) {
+                            //Check if appointment is today
+                            if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
+                                appointments.add(appointment.toString());
+                            }
                         }
+                        // Order the appointments on time
+                        Collections.sort(appointments);
+                        Log.d("MainActivity", "Adding " + appointments.size() + " items to appointment list");
+                        arrayAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("MainActivity", "userlist is null");
                     }
-                    // Order the appointments on time
-                    Collections.sort(appointments);
-                    Log.d("MainActivity", "Adding " + appointments.size() + " items to appointment list");
-                    arrayAdapter.notifyDataSetChanged();
-                }
-                else{
-                    Log.d("MainActivity", "userlist is null");
-                }
-                if(mGraphServiceController.getRoom() != null)
-                {
-                    TextView textViewRoom = (TextView)findViewById(R.id.textViewRoom);
-                    // Set current room, currently defaulted to NewtonRuimte
-                    textViewRoom.setText(mGraphServiceController.getRoom().getName());
+                    if (mGraphServiceController.getRoom() != null) {
+                        TextView textViewRoom = (TextView) findViewById(R.id.textViewRoom);
+                        // Set current room, currently defaulted to NewtonRuimte
+                        textViewRoom.setText(mGraphServiceController.getRoom().getName());
+                    }
                 }
             }
         }, WAIT_TIME);
-
-
-
-
-
     }
 
     public void btnReserveer(View v){
