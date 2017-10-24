@@ -3,8 +3,8 @@ package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
 import com.microsoft.identity.client.AuthenticationResult;
 import com.microsoft.identity.client.MsalException;
 
-/**
- * Created by johnaustin on 7/5/17.
+/**j
+ * Created by me on 7/5/17.
  */
 
 interface MSALAuthenticationCallback {
