@@ -65,33 +65,30 @@
 
     <Button
         android:id="@+id/btnVergadering"
-        android:layout_width="252dp"
-        android:layout_height="103dp"
-        android:layout_marginBottom="13dp"
-        android:layout_marginRight="137dp"
+        android:layout_width="207dp"
+        android:layout_height="98dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="169dp"
         android:onClick="btnVergaderingOnClick"
         android:text="Open vergadering"
         app:layout_constraintBottom_toTopOf="@+id/button2"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteX="635dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="252dp"
+        android:layout_width="208dp"
         android:layout_height="99dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginRight="136dp"
+        android:layout_marginRight="168dp"
         android:onClick="btnReserveer"
         android:text="Reserveren"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="516dp"
-        tools:layout_editor_absoluteX="636dp" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btBack"
-        android:layout_width="578dp"
-        android:layout_height="100dp"
+        android:layout_width="558dp"
+        android:layout_height="98dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:onClick="btnAltRoomOnClick"
@@ -101,8 +98,8 @@
 
     <ListView
         android:id="@+id/listView2"
-        android:layout_width="372dp"
-        android:layout_height="323dp"
+        android:layout_width="360dp"
+        android:layout_height="158dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
@@ -114,13 +111,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="636dp"
+        tools:layout_editor_absoluteX="574dp"
         tools:layout_editor_absoluteY="114dp" />
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="578dp"
-        android:layout_height="0dp"
+        android:layout_width="558dp"
+        android:layout_height="258dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
@@ -128,16 +125,17 @@
         app:layout_constraintBottom_toTopOf="@+id/btBack"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteY="73dp" />
 
     <Button
         android:id="@+id/btnLogout"
-        android:onClick="btnLogout"
         android:layout_width="58dp"
         android:layout_height="53dp"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
-        android:background="@mipmap/ic_launcher"
+        android:background="@mipmap/logout_logo"
+        android:onClick="btnLogout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         tools:layout_editor_absoluteX="950dp"
