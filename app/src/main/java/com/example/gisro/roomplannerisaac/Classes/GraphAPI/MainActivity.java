@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity{
     private ListView lv;
     private ListView lvAttendees;
     private Button btnOpenClose;
+    private Button btnLogout;
     private Appointment a;
     private ProgressBar mProgressbar;
     private int checkCount = 1500;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button)findViewById(R.id.btnVergadering);
+        btnLogout = (Button)findViewById(R.id.btnLogout);
         mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
         //Listview for attendees + adapter
         lvAttendees = (ListView) findViewById(R.id.listView2);
@@ -109,6 +111,12 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         }, WAIT_TIME);
+    }
+
+    public void btnLogout(View v){
+        AuthenticationManager.getInstance().disconnect();
+        Intent i = new Intent(this, ConnectActivity.class);
+        startActivity(i);
     }
 
     public void btnReserveer(View v){
