@@ -8,5 +8,5 @@ public enum State {
     Bezet,
     Vrij,
     Open,
-    Closed
+    Occupied, Closed
 }
