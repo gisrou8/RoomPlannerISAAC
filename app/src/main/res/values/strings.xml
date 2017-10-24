@@ -2,7 +2,7 @@
     <!ENTITY clientId "359d88f5-2849-41fb-a42b-e886266ee253">
     ]>
 <resources>
-    <string name="app_name">RoomPlannerISAAC</string>
+    <string name="app_name">ISAAC Room planner</string>
     <string name="connect_button_text">Connect to Microsoft Graph</string>
     <string name="send_mail_button_text">Send e-mail</string>
     <string name="disconnect_menu_item_text">Disconnect</string>
