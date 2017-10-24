@@ -1,5 +1,6 @@
 package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -26,10 +28,11 @@ import org.joda.time.LocalDate;
 public class MainActivity extends AppCompatActivity{
 
     public static final String ARG_GIVEN_NAME = "givenName";
+    private static final int WAIT_TIME = 1500;
     final private GraphServiceController mGraphServiceController = new GraphServiceController();
     private ListView lv;
     private Button btnOpenClose;
-
+    private ProgressDialog mProgressDialog;
     private Appointment a;
 
     @Override
@@ -49,6 +52,15 @@ public class MainActivity extends AppCompatActivity{
                 String splitArray[] = s.split(" , ");
             }
         });
+        //Setting the progressdialog
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("loading info...");
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCanceledOnTouchOutside(false);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgressStyle(android.R.attr.progressBarStyleSmall);
+        mProgressDialog.show();
+
         // Init userlist from API
         mGraphServiceController.apiThisRoom();
         // Init roomlist from API
@@ -82,7 +94,7 @@ public class MainActivity extends AppCompatActivity{
                     textViewRoom.setText(mGraphServiceController.getRoom().getName());
                 }
             }
-        }, 1500);
+        }, WAIT_TIME);
 
 
 
