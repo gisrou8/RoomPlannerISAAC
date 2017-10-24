@@ -18,6 +18,7 @@ import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.Attendee;
 import com.microsoft.graph.extensions.AttendeeType;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
+import com.microsoft.graph.extensions.EmailAddress;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.extensions.IGraphServiceClient;
@@ -176,6 +177,15 @@ class GraphServiceController {
         event.subject = name;
         event.start = reserveringsTijd;
         event.end = reserveringsTijd1;
+//        Attendee att = new Attendee();
+//        EmailAddress email = new EmailAddress();
+//        email.address = "xandersteinmann@ISAACFontys1.onmicrosoft.com";
+//        att.emailAddress = email;
+//        //enzzz je maakt all attendees aan
+//        List<Attendee> attendees;
+//        // gooit ze daarna in een list<attentee>
+//        // en voegt ze toe aan het te pushen event
+//        event.attendees = attendees;
         return event;
     }
 
@@ -207,7 +217,7 @@ class GraphServiceController {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
         {
-            appointments.add(new Appointment(event.subject, event.start));
+            appointments.add(new Appointment(event.subject, event.start, event.attendees));
         }
         return appointments;
     }
@@ -215,10 +225,10 @@ class GraphServiceController {
     public void setThisRoom(User user)
     {
         if(user.jobTitle != null) {
-            room = new Room(user.displayName, user.id, Integer.parseInt(user.surname));
+            room = new Room(user.givenName, user.id, Integer.parseInt(user.surname));
         }
         else{
-            room = new Room(user.displayName, user.id, 0);
+            room = new Room(user.givenName, user.id, 0);
         }
     }
 

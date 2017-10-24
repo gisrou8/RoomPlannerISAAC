@@ -22,6 +22,7 @@ import java.util.List;
 
 import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.R;
+import com.microsoft.graph.extensions.Attendee;
 
 import org.joda.time.LocalDate;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity{
     private static final int WAIT_TIME = 1500;
     final private GraphServiceController mGraphServiceController = new GraphServiceController();
     private ListView lv;
+    private ListView lvAttendees;
     private Button btnOpenClose;
     private Appointment a;
     private ProgressBar mProgressbar;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button)findViewById(R.id.btnVergadering);
         mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
-        //Demo data
+        //Listview for appointments + adapter
         lv = (ListView) findViewById(R.id.listView);
         final List<String> appointments = new ArrayList<String>();
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, appointments);
@@ -53,7 +55,18 @@ public class MainActivity extends AppCompatActivity{
                 String splitArray[] = s.split(" , ");
             }
         });
-
+        //Listview for attendees + adapter
+        lvAttendees = (ListView) findViewById(R.id.listView);
+        final List<String> attendees = new ArrayList<String>();
+        final ArrayAdapter<String> arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, attendees);
+        lvAttendees.setAdapter(arrayAdapter);
+        lvAttendees.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = (String) lv.getItemAtPosition(i);
+                String splitArray[] = s.split(" , ");
+            }
+        });
         // Init userlist from API
         mGraphServiceController.apiThisRoom();
         // Init roomlist from API
@@ -79,10 +92,15 @@ public class MainActivity extends AppCompatActivity{
                                 appointments.add(appointment.toString());
                             }
                         }
+                        for(Attendee att : mGraphServiceController.getRoom().getAppointments().get(0).getAttendees())
+                        {
+                            attendees.add(att.emailAddress.name);
+                        }
                         // Order the appointments on time
                         Collections.sort(appointments);
                         Log.d("MainActivity", "Adding " + appointments.size() + " items to appointment list");
                         arrayAdapter.notifyDataSetChanged();
+                        arrayAdapterAttendees.notifyDataSetChanged();
                     } else {
                         Log.d("MainActivity", "userlist is null");
                     }
