@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.gisro.roomplannerisaac.Classes.Appointment;
@@ -26,6 +27,8 @@ public class RuimteOverview extends AppCompatActivity{
     public static final String ARG_GIVEN_NAME = "givenName";
     final private GraphServiceController mGraphServiceController = new GraphServiceController();
     private ListView lv;
+    private ProgressBar mProgressbar;
+    private int checkCount = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class RuimteOverview extends AppCompatActivity{
         setContentView(R.layout.activity_overview);
         //Demo data
         lv = (ListView) findViewById(R.id.listView);
+        mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
         final List<String> rooms = new ArrayList<String>();
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
         lv.setAdapter(arrayAdapter);
@@ -51,17 +55,24 @@ public class RuimteOverview extends AppCompatActivity{
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(mGraphServiceController.getRooms() != null) {
-                    for (Room r : mGraphServiceController.getRooms()){
-                        //Check if appointment is today
-                        rooms.add(r.toString());
-                    }
-                    // Order the appointments on time
-
-                    arrayAdapter.notifyDataSetChanged();
+                mProgressbar.setVisibility(View.VISIBLE);
+                checkCount -= 1000;
+                if(checkCount > 0){
+                    handler.postDelayed(this, 1000);
                 }
-                else{
-                    Log.d("MainActivity", "userlist is null");
+                else {
+                    mProgressbar.setVisibility(View.INVISIBLE);
+                    if (mGraphServiceController.getRooms() != null) {
+                        for (Room r : mGraphServiceController.getRooms()) {
+                            //Check if appointment is today
+                            rooms.add(r.toString());
+                        }
+                        // Order the appointments on time
+
+                        arrayAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("MainActivity", "userlist is null");
+                    }
                 }
             }
         }, 2000);

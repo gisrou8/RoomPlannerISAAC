@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context="com.example.gisro.roomplannerisaac.Classes.GraphAPI.MainActivity">
 
+    <TextView
+        android:id="@+id/attendeeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Genodigden:"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="47dp"
+        android:layout_marginRight="309dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/appointmentTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Geplande vergaderingen:"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="47dp"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <ProgressBar
         android:id="@+id/appointmentProgressbar"
         style="?android:attr/progressBarStyle"
@@ -18,17 +38,18 @@
 
     <TextView
         android:id="@+id/textViewRoom"
-        android:layout_width="149dp"
-        android:layout_height="31dp"
-        android:text=""
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="527dp"
-        app:layout_constraintLeft_toRightOf="@+id/listView"
+        android:layout_width="472dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="16dp"
-        app:layout_constraintHorizontal_bias="0.0"
-        tools:layout_editor_absoluteX="604dp" />
+        android:layout_marginRight="527dp"
+        android:layout_marginTop="7dp"
+        android:gravity="center_horizontal"
+        android:text=""
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintHorizontal_bias="0.57"
+        app:layout_constraintLeft_toRightOf="@+id/listView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnVergadering"
@@ -56,8 +77,8 @@
         android:id="@+id/btBack"
         android:layout_width="578dp"
         android:layout_height="100dp"
-        android:layout_marginBottom="-66dp"
-        android:layout_marginLeft="-525dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
         android:onClick="btnAltRoomOnClick"
         android:text="Alternatieve ruimtes"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -70,7 +91,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintBottom_toTopOf="@+id/btnVergadering"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/textViewRoom"
@@ -85,9 +106,9 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="70dp"
         app:layout_constraintBottom_toTopOf="@+id/btBack"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>
