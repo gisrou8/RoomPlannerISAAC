@@ -230,7 +230,7 @@ public class ConnectActivity extends AppCompatActivity implements MSALAuthentica
         // Prepare the SendMailActivity intent
         Intent main =
                 new Intent(ConnectActivity.this, MainActivity.class);
-
+        main.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         // take the user's info along
         main.putExtra(MainActivity.ARG_GIVEN_NAME, name);
 
