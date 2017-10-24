@@ -6,6 +6,7 @@ package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -189,7 +190,7 @@ class GraphServiceController {
         {
             // Only add the user if it is a room
             if(user.givenName != null && user.givenName.contains("ruimte")){
-                roomList.add(new Room(user.givenName, user.id));
+                roomList.add(new Room(user.givenName, user.id, Integer.parseInt(user.surname)));
             }
         }
     }
@@ -213,7 +214,12 @@ class GraphServiceController {
 
     public void setThisRoom(User user)
     {
-        room = new Room(user.displayName, user.id);
+        if(user.jobTitle != null) {
+            room = new Room(user.displayName, user.id, Integer.parseInt(user.surname));
+        }
+        else{
+            room = new Room(user.displayName, user.id, 0);
+        }
     }
 
 
