@@ -43,30 +43,31 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button)findViewById(R.id.btnVergadering);
         mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
+        //Listview for attendees + adapter
+        lvAttendees = (ListView) findViewById(R.id.listView2);
+        final List<String> attendees = new ArrayList<String>();
+        final ArrayAdapter<String> arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
+        lvAttendees.setAdapter(arrayAdapterAttendees);
+        lvAttendees.setEnabled(false);
+        lvAttendees.setOnItemClickListener(null);
         //Listview for appointments + adapter
         lv = (ListView) findViewById(R.id.listView);
-        final List<String> appointments = new ArrayList<String>();
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, appointments);
+        final ArrayList<Appointment> appointments = new ArrayList<>();
+        final ArrayAdapter<Appointment> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointments);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = (String) lv.getItemAtPosition(i);
-                String splitArray[] = s.split(" , ");
+                arrayAdapterAttendees.clear();
+                arrayAdapterAttendees.notifyDataSetChanged();
+                Appointment app = (Appointment)adapterView.getAdapter().getItem(i);
+                for(Attendee att : app.getAttendees())
+                {
+                    attendees.add(att.emailAddress.name);
+                }
             }
         });
-        //Listview for attendees + adapter
-        lvAttendees = (ListView) findViewById(R.id.listView);
-        final List<String> attendees = new ArrayList<String>();
-        final ArrayAdapter<String> arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, attendees);
-        lvAttendees.setAdapter(arrayAdapter);
-        lvAttendees.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = (String) lv.getItemAtPosition(i);
-                String splitArray[] = s.split(" , ");
-            }
-        });
+
         // Init userlist from API
         mGraphServiceController.apiThisRoom();
         // Init roomlist from API
@@ -89,12 +90,8 @@ public class MainActivity extends AppCompatActivity{
                         for (Appointment appointment : mGraphServiceController.getRoom().getAppointments()) {
                             //Check if appointment is today
                             if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
-                                appointments.add(appointment.toString());
+                                appointments.add(appointment);
                             }
-                        }
-                        for(Attendee att : mGraphServiceController.getRoom().getAppointments().get(0).getAttendees())
-                        {
-                            attendees.add(att.emailAddress.name);
                         }
                         // Order the appointments on time
                         Collections.sort(appointments);
