@@ -42,7 +42,7 @@ public class Reservering extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void btnReserveer(View v){        
-        scheduleMeeting(new Appointment("Test meeting", new DateTime(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute())));
+        scheduleMeeting(new Appointment("Test meeting", new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute())));
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

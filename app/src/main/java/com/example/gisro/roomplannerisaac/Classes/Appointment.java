@@ -90,7 +90,7 @@ public class Appointment implements Comparable<Appointment>{
 
     @Override
     public String toString(){
-        return Name + " , " + reserveringsTijd.toString("MM-dd-yyyy HH:mm");
+        return Name + " , " + reserveringsTijd.toString("HH:mm");
     }
 
     @Override
