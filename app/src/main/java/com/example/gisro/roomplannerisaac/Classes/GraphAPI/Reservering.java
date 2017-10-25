@@ -7,22 +7,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TimePicker;
 
 import com.example.gisro.roomplannerisaac.Classes.Appointment;
+import com.example.gisro.roomplannerisaac.Classes.Room;
 import com.example.gisro.roomplannerisaac.R;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.Message;
+import com.microsoft.graph.extensions.User;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Reservering extends AppCompatActivity {
 
@@ -30,13 +37,48 @@ public class Reservering extends AppCompatActivity {
     private TimePicker timePicker;
     private DatePicker datePicker;
     final private GraphServiceController mGraphServiceController = new GraphServiceController();
+    private ProgressBar mProgressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservering);
         timePicker = (TimePicker) findViewById(R.id.timePicker);
         datePicker = (DatePicker) findViewById(R.id.datePicker2);
+        gebruikers = (ListView) findViewById(R.id.listView);
+        mProgressbar = (ProgressBar)findViewById(R.id.progressBar);
+        final List<com.example.gisro.roomplannerisaac.Classes.User> users = new ArrayList<>();
+        final ArrayAdapter<com.example.gisro.roomplannerisaac.Classes.User> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+        gebruikers.setAdapter(arrayAdapter);
+        gebruikers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+            }
+        });
+
+        // Init userlist from API
+        mGraphServiceController.apiUsers();
+        // Wait for the graph api to get the data, when data has arrived do something with this data
+        final android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mProgressbar.setVisibility(View.VISIBLE);
+
+                    mProgressbar.setVisibility(View.INVISIBLE);
+                    if (mGraphServiceController.getUsers() != null) {
+                        for (User user : mGraphServiceController.getUsers()) {
+                            users.add(new com.example.gisro.roomplannerisaac.Classes.User(user.displayName, user.mail));
+                        }
+
+
+                        arrayAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("MainActivity", "userlist is null");
+                    }
+
+            }
+        }, 2000);
 
     }
 

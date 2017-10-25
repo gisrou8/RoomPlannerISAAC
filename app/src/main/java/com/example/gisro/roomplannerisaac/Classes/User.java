@@ -14,4 +14,9 @@ public class User {
         this.Name = Name;
         this.Email = Email;
     }
+
+    @Override
+    public String toString() {
+        return Name;
+    }
 }

@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".Classes.GraphAPI.ConnectActivity" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Classes.GraphAPI.RuimteOverview" android:screenOrientation="landscape"></activity>
-        <activity android:name=".Classes.GraphAPI.Reservering" android:screenOrientation="landscape"></activity>
+        <activity android:name=".Classes.GraphAPI.Reservering" android:screenOrientation="landscape" android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
         <activity android:name=".Classes.GraphAPI.MainActivity" android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.microsoft.identity.client.BrowserTabActivity">
