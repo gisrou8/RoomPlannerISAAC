@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.Classes.Room;
+import com.example.gisro.roomplannerisaac.Classes.State;
 import com.example.gisro.roomplannerisaac.R;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
@@ -20,6 +21,7 @@ import com.microsoft.graph.extensions.AttendeeType;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
 import com.microsoft.graph.extensions.EmailAddress;
 import com.microsoft.graph.extensions.Event;
+import com.microsoft.graph.extensions.GraphServiceClient;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.extensions.IGraphServiceClient;
 import com.microsoft.graph.extensions.IUserCollectionPage;
@@ -44,10 +46,28 @@ class GraphServiceController {
     private final IGraphServiceClient mGraphServiceClient;
     private List<User> userList;
     private Room room;
+    private User user;
     private ArrayList<Room> roomList;
 
     public Room getRoom() {
         return room;
+    }
+
+    public User getUser() { return user;}
+
+    public void setStateUser(State state){
+        switch (state)
+        {
+            case Vrij:
+                user.surname = "0";
+                break;
+            case Gesloten:
+                user.surname = "1";
+                break;
+            case Bezet:
+                user.surname = "2";
+                break;
+        }
     }
 
     public ArrayList<Room> getRooms(){
@@ -224,15 +244,14 @@ class GraphServiceController {
 
     public void setThisRoom(User user)
     {
-        if(user.jobTitle != null) {
+
+        if(user.surname != null) {
             room = new Room(user.givenName, user.id, Integer.parseInt(user.surname));
         }
         else{
             room = new Room(user.givenName, user.id, 0);
         }
     }
-
-
 
     /*
     * Opens a user dialog that shows the failure result of an exception and writes a log entry

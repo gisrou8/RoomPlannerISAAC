@@ -30,15 +30,19 @@ public class Room {
         }
     }
 
+    public void setState(State state){
+        this.state = state;
+    }
+
     public State getState(){
         return state;
     }
 
     public void updateState() {
         for (Appointment a : new ArrayList<Appointment>() /*vervang door opgehaalde lijst Appointments voor deze kamer*/) {
-            if (a.getState() == State.Vrij){
+            /*if (a.getState() == State.Vrij){
                 this.state = State.Bezet;
-            }
+            }*/
         }
         this.state = State.Vrij;
     }

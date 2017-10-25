@@ -2,6 +2,7 @@ package com.example.gisro.roomplannerisaac.Classes;
 
 import android.support.annotation.NonNull;
 
+import com.example.gisro.roomplannerisaac.Classes.GraphAPI.GraphServiceClientManager;
 import com.microsoft.graph.extensions.Attendee;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
 
@@ -20,10 +21,10 @@ import java.util.List;
  */
 
 public class Appointment implements Comparable<Appointment>{
+
     private String Name;
     private DateTime reserveringsTijd;
     private DateTimeTimeZone reserveringsTijdTZ;
-    private State state;
     private List<Attendee> attendees;
 
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd)
@@ -35,7 +36,6 @@ public class Appointment implements Comparable<Appointment>{
         DateTime dt = formatter.parseDateTime(date);
         this.reserveringsTijd = dt;
         this.reserveringsTijdTZ = reserveringsTijd;
-        this.state = State.Gesloten;
     }
 
     public Appointment(String Name, DateTime reserveringsTijd)
@@ -45,7 +45,6 @@ public class Appointment implements Comparable<Appointment>{
         DateTimeTimeZone dt = new DateTimeTimeZone();
         dt.dateTime = reserveringsTijd.toString();
         this.reserveringsTijdTZ = dt;
-        this.state = State.Gesloten;
     }
 
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd, List<Attendee> attendees) {
@@ -56,24 +55,21 @@ public class Appointment implements Comparable<Appointment>{
         DateTime dt = formatter.parseDateTime(date);
         this.reserveringsTijd = dt;
         this.reserveringsTijdTZ = reserveringsTijd;
-        this.state = State.Gesloten;
         this.attendees = attendees;
     }
 
-    public State getState(){
-        return state;
+    public boolean open(){
+        if(reserveringsTijd.isAfterNow() && reserveringsTijd.isBefore(new DateTime(System.currentTimeMillis()+10*60*1000))){
+            GraphServiceClientManager gcm = new GraphServiceClientManager();
+            gcm.updateStateRoom(State.Bezet);
+            return true;
+        }
+        return false;
     }
 
-//    public boolean open(){
-//      if(reserveringsTijd.after(new Date()) && reserveringsTijd.before(new Date(System.currentTimeMillis()+5*60*1000))){
-//          this.state = State.Open;
-//          return true;
-//      }
-//      return false;
-//    }
-
     public void close(){
-        this.state = State.Gesloten;
+        GraphServiceClientManager gcm = new GraphServiceClientManager();
+        gcm.updateStateRoom(State.Vrij);
     }
 
     public String getName()
