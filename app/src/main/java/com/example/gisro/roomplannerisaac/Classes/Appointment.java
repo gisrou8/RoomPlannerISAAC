@@ -22,28 +22,48 @@ public class Appointment implements Comparable<Appointment>{
     private String Name;
     private DateTime reserveringsTijd;
     private DateTimeTimeZone reserveringsTijdTZ;
+    private DateTime eindTijd;
+    private DateTimeTimeZone eindTijdTZ;
     private State state;
     private ArrayList<Attendee> attendees;
-
-    public Appointment(String Name, DateTimeTimeZone reserveringsTijd)
-    {
-        this.Name = Name;
-        String date = reserveringsTijd.dateTime.substring(0, reserveringsTijd.dateTime.length() - 8);
-        date = date.replace("T", " ");
-        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        DateTime dt = formatter.parseDateTime(date);
-        this.reserveringsTijd = dt;
-        this.reserveringsTijdTZ = reserveringsTijd;
-        this.state = State.Closed;
-    }
 
     public Appointment(String Name, DateTime reserveringsTijd)
     {
         this.Name = Name;
         this.reserveringsTijd = reserveringsTijd;
+        DateTimeTimeZone dttz = new DateTimeTimeZone();
+        dttz.dateTime = reserveringsTijd.toString();
+        this.reserveringsTijdTZ = dttz;
+        this.state = State.Closed;
+    }
+
+    public Appointment(String name, DateTime reserveringsTijd, DateTime eindTijd){
+        this.Name = name;
+
+        this.reserveringsTijd = reserveringsTijd;
+        DateTimeTimeZone dtr = new DateTimeTimeZone();
+        dtr.dateTime = reserveringsTijd.toString();
+        this.reserveringsTijdTZ = dtr;
+
+        this.eindTijd = eindTijd;
         DateTimeTimeZone dt = new DateTimeTimeZone();
         dt.dateTime = reserveringsTijd.toString();
-        this.reserveringsTijdTZ = dt;
+
+        this.state = State.Closed;
+    }
+
+    public Appointment(String name, DateTimeTimeZone reserveringsTijdTZ, DateTimeTimeZone eindTijdTZ){
+        this.Name = name;
+
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        String date = reserveringsTijdTZ.dateTime.substring(0, reserveringsTijdTZ.dateTime.length() - 8);
+        date = date.replace("T", " ");
+        this.reserveringsTijd = formatter.parseDateTime(date);
+
+        String date = reserveringsTijdTZ.dateTime.substring(0, reserveringsTijdTZ.dateTime.length() - 8);
+        date = date.replace("T", " ");
+        this.reserveringsTijd = formatter.parseDateTime(date);
+
         this.state = State.Closed;
     }
 

@@ -155,7 +155,9 @@ class GraphServiceController {
     public void apiScheduleMeeting(Appointment appointment, ICallback<Event> callback)
     {
         try {
-            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ()), callback);
+            Event newEvent = createEvent(appointment.getName(), appointment.getReserveringsTijdTZ())
+            newEvent.attendees =
+            mGraphServiceClient.getMe().getEvents().buildRequest().post()createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ()), callback);
 
         }
         catch (Exception ex){
@@ -206,9 +208,29 @@ class GraphServiceController {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
         {
-            appointments.add(new Appointment(event.subject, event.start));
+            appointments.add(new Appointment(event.subject, event.start, event.end));
         }
         return appointments;
+    }
+
+    /**
+     * @param e, Event to be converted
+     * @return Inserted Event converted to our own Appointment
+     */
+    public Appointment eventToAppointment(Event e){
+        Appointment a = new Appointment(e.subject, e.start, e.end);
+    }
+
+    /**
+     * @param a, Appointment to be converted
+     * @return Inserted Appointment converted to a graph Event
+     */
+    public Event appointmentToEvent(Appointment a){
+        Event event = new Event();
+        event.subject = a.getName();
+        event.start = a.getReserveringsTijdTZ();
+        event.end = a.getReserveringsTijdTZ();
+        return event;
     }
 
     public void setThisRoom(User user)
