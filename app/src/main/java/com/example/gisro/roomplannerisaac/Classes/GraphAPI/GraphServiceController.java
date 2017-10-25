@@ -173,10 +173,13 @@ class GraphServiceController {
      * @return converts our own appointments object to an usable object for posting to the API.
      */
     private Event createEvent(String name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringsTijd1) {
+        reserveringsTijd.timeZone = "UTC";
+        reserveringsTijd1.timeZone = "UTC";
         Event event = new Event();
         event.subject = name;
         event.start = reserveringsTijd;
         event.end = reserveringsTijd1;
+
 //        Attendee att = new Attendee();
 //        EmailAddress email = new EmailAddress();
 //        email.address = "xandersteinmann@ISAACFontys1.onmicrosoft.com";

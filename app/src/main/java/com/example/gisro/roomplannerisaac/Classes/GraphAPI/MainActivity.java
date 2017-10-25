@@ -2,6 +2,7 @@ package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +25,9 @@ import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.R;
 import com.microsoft.graph.extensions.Attendee;
 
+import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -37,13 +40,16 @@ public class MainActivity extends AppCompatActivity{
     private Button btnLogout;
     private Appointment a;
     private ProgressBar mProgressbar;
-    private int checkCount = 1500;
+    private TextView tvDate;
+    private int checkCount = 2000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button)findViewById(R.id.btnVergadering);
         btnLogout = (Button)findViewById(R.id.btnLogout);
+        tvDate = (TextView)findViewById(R.id.appointmentTitle);
+        tvDate.setText("Geplande vergaderingen " + DateTime.now().toString("dd-MM-yyyy") + ":");
         mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
         //Listview for attendees + adapter
         lvAttendees = (ListView) findViewById(R.id.listView2);
@@ -70,23 +76,28 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        // Init userlist from API
-        mGraphServiceController.apiThisRoom();
-        // Init roomlist from API
+        final Handler apiHandler = new Handler();
+        apiHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Init userlist from API
+                mGraphServiceController.apiThisRoom();
+                // Init roomlist from API
 //        mGraphServiceController.apiRooms();
 //        // Add appointments to rooms
-        mGraphServiceController.apiAppointmentsforRoom();
+                mGraphServiceController.apiAppointmentsforRoom();
+                apiHandler.postDelayed(this, 10000);
+            }
+        }, 0);
+
         // Wait for the graph api to get the data, when data has arrived do something with this data
-        final android.os.Handler handler = new android.os.Handler();
+        final Handler handler = new android.os.Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mProgressbar.setVisibility(View.VISIBLE);
-                checkCount -= 1000;
-                if(checkCount > 0){
-                    handler.postDelayed(this, 1000);
-                }
-                else {
+                    arrayAdapter.clear();
+                    arrayAdapterAttendees.clear();
+
                     mProgressbar.setVisibility(View.INVISIBLE);
                     if (mGraphServiceController.getRoom().getAppointments() != null) {
                         for (Appointment appointment : mGraphServiceController.getRoom().getAppointments()) {
@@ -108,15 +119,10 @@ public class MainActivity extends AppCompatActivity{
                         // Set current room, currently defaulted to NewtonRuimte
                         textViewRoom.setText(mGraphServiceController.getRoom().getName());
                     }
-                }
+                    handler.postDelayed(this, 5000);
+
             }
         }, WAIT_TIME);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        AuthenticationManager.getInstance().disconnect();
     }
 
     public void btnLogout(View v){
