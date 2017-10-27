@@ -96,7 +96,6 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void run() {
                     arrayAdapter.clear();
-                    arrayAdapterAttendees.clear();
 
                     mProgressbar.setVisibility(View.INVISIBLE);
                     if (mGraphServiceController.getRoom().getAppointments() != null) {

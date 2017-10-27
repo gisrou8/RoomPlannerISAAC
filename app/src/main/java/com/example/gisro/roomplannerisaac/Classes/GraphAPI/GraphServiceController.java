@@ -157,7 +157,7 @@ class GraphServiceController {
     public void apiScheduleMeeting(Appointment appointment, ICallback<Event> callback)
     {
         try {
-            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ()), callback);
+            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()), callback);
 
         }
         catch (Exception ex){
@@ -170,16 +170,17 @@ class GraphServiceController {
      * @param name
      * @param reserveringsTijd
      * @param reserveringsTijd1
+     * @param attendees
      * @return converts our own appointments object to an usable object for posting to the API.
      */
-    private Event createEvent(String name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringsTijd1) {
+    private Event createEvent(String name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringsTijd1, List<Attendee> attendees) {
         reserveringsTijd.timeZone = "UTC";
         reserveringsTijd1.timeZone = "UTC";
         Event event = new Event();
         event.subject = name;
         event.start = reserveringsTijd;
         event.end = reserveringsTijd1;
-
+        event.attendees = attendees;
 //        Attendee att = new Attendee();
 //        EmailAddress email = new EmailAddress();
 //        email.address = "xandersteinmann@ISAACFontys1.onmicrosoft.com";
