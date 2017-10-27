@@ -19,15 +19,14 @@ import java.util.List;
  * Created by gisro on 20-9-2017.
  */
 
-public class Appointment implements Comparable<Appointment>{
+public class Appointment implements Comparable<Appointment> {
     private String Name;
     private DateTime reserveringsTijd;
     private DateTimeTimeZone reserveringsTijdTZ;
     private State state;
     private List<Attendee> attendees;
 
-    public Appointment(String Name, DateTimeTimeZone reserveringsTijd)
-    {
+    public Appointment(String Name, DateTimeTimeZone reserveringsTijd) {
         this.Name = Name;
         String date = reserveringsTijd.dateTime.substring(0, reserveringsTijd.dateTime.length() - 8);
         date = date.replace("T", " ");
@@ -38,14 +37,14 @@ public class Appointment implements Comparable<Appointment>{
         this.state = State.Gesloten;
     }
 
-    public Appointment(String Name, DateTime reserveringsTijd)
-    {
+    public Appointment(String Name, DateTime reserveringsTijd) {
         this.Name = Name;
         this.reserveringsTijd = reserveringsTijd;
         DateTimeTimeZone dt = new DateTimeTimeZone();
         dt.dateTime = reserveringsTijd.toString();
         this.reserveringsTijdTZ = dt;
         this.state = State.Gesloten;
+        this.attendees = new ArrayList<>();
     }
 
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd, List<Attendee> attendees) {
@@ -54,13 +53,13 @@ public class Appointment implements Comparable<Appointment>{
         date = date.replace("T", " ");
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dt = formatter.parseDateTime(date);
-        this.reserveringsTijd = dt;
+        this.reserveringsTijd = dt.plusHours(2);
         this.reserveringsTijdTZ = reserveringsTijd;
         this.state = State.Gesloten;
         this.attendees = attendees;
     }
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 
@@ -72,24 +71,24 @@ public class Appointment implements Comparable<Appointment>{
 //      return false;
 //    }
 
-    public void close(){
+    public void close() {
         this.state = State.Gesloten;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return Name;
     }
 
-    public DateTime getReserveringsTijd()
-    {
+    public DateTime getReserveringsTijd() {
         return reserveringsTijd;
     }
 
-    public DateTimeTimeZone getReserveringsTijdTZ(){return reserveringsTijdTZ;}
+    public DateTimeTimeZone getReserveringsTijdTZ() {
+        return reserveringsTijdTZ;
+    }
 
     @Override
-    public String toString(){
+    public String toString() {
         return Name + " , " + reserveringsTijd.toString("HH:mm");
     }
 
@@ -101,4 +100,10 @@ public class Appointment implements Comparable<Appointment>{
     public List<Attendee> getAttendees() {
         return attendees;
     }
+
+
+    public void addAttendee(Attendee attendee) {
+        attendees.add(attendee);
+    }
 }
+

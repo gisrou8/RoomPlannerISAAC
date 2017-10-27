@@ -19,4 +19,12 @@ public class User {
     public String toString() {
         return Name;
     }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public String getName(){
+        return Name;
+    }
 }
