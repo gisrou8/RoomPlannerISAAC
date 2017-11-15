@@ -12,6 +12,13 @@
     tools:layout_editor_absoluteY="89dp"
     tools:layout_editor_absoluteX="0dp">
 
+    <Button
+        android:id="@+id/btnSockets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:onClick="btnSocket"/>
+
     <ProgressBar
         android:id="@+id/connectProgressBar"
         android:layout_width="wrap_content"
