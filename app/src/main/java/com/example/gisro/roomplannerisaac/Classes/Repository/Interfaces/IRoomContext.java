@@ -1,5 +1,7 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces;
 
+import com.example.gisro.roomplannerisaac.Classes.Room;
+
 import java.util.List;
 
 /**
@@ -7,8 +9,8 @@ import java.util.List;
  */
 
 public interface IRoomContext<R> {
-    void add(R item);
-    void update(R item);
-    void remove(R item);
-    List<R> getAll();
+    void addRoom(Room room);
+    void updateRoom(Room room);
+    void removeRoom(Room room);
+    List<R> getAllRooms();
 }

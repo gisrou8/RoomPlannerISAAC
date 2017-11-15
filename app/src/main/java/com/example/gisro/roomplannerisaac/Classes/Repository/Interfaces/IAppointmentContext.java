@@ -7,8 +7,8 @@ import java.util.List;
  */
 
 public interface IAppointmentContext<A> {
-    void add(A item);
-    void update(A item);
-    void remove(A item);
-    List<A> getAll();
+    void addAppointment(A item);
+    void updateAppointment(A item);
+    void removeAppointment(A item);
+    List<A> getAllAppointments();
 }

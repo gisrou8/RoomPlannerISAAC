@@ -17,22 +17,22 @@ public class AppointmentRepo implements IAppointmentContext {
     }
 
     @Override
-    public void add(Object item) {
-        appointment.add(item);
+    public void addAppointment(Object item) {
+        appointment.addAppointment(item);
     }
 
     @Override
-    public void update(Object item) {
-        appointment.update(item);
+    public void updateAppointment(Object item) {
+        appointment.updateAppointment(item);
     }
 
     @Override
-    public void remove(Object item) {
-        appointment.remove(item);
+    public void removeAppointment(Object item) {
+        appointment.removeAppointment(item);
     }
 
     @Override
-    public List getAll() {
-        return appointment.getAll();
+    public List getAllAppointments() {
+        return appointment.getAllAppointments();
     }
 }

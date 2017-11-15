@@ -9,8 +9,8 @@ import com.example.gisro.roomplannerisaac.Classes.User;
  */
 
 public interface IUserContext {
-    void add(User u);
-    void update(User u);
-    void removeUSer(User u);
+    void addUser(User u);
+    void updateUser(User u);
+    void removeUser(User u);
     List<User> getAllUsers();
 }
