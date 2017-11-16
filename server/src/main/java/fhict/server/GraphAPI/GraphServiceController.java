@@ -24,7 +24,7 @@ import fhict.server.Objects.Appointment;
 import fhict.server.Objects.Room;
 
 
-class GraphServiceController {
+public class GraphServiceController {
 
     private final IGraphServiceClient mGraphServiceClient;
     private List<User> userList;
@@ -51,6 +51,98 @@ class GraphServiceController {
         roomList = new ArrayList<>();
     }
 
+    /**
+     * Create a new Graph Event based on given Appointment
+     */
+    public void addAppointment(Appointment appointment){
+        try {
+            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
+        }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
+    }
+
+    /**
+     * Updates the Event with the same name as given Appointment (by deleting the Event and creating a new one with the same name..)
+     */
+    public void updateAppointment(Appointment appointment){
+        try {
+        }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
+    }
+
+    /**
+     * Removes the event corresponding with the name of the given Appointment
+     */
+    public void removeAppointment(Appointment appointment){
+
+    }
+
+    /**
+     * Retrieves all Appointments
+     */
+    public List<Appointment> getAllAppointment(){
+        return null;
+    }
+
+    /**
+     * Add's a new User
+     */
+    public void addUser(com.example.gisro.roomplannerisaac.Classes.User user){
+
+    }
+
+    /**
+     * Updates User with the same name to User object specified
+     */
+    public void updateUser(com.example.gisro.roomplannerisaac.Classes.User user){
+
+    }
+
+    /**
+     * Removes a User
+     */
+    public void removeUser(com.example.gisro.roomplannerisaac.Classes.User user){
+
+    }
+
+    /**
+     * Retrieves all Users
+     */
+    public List<User> getAllUsers(){
+        return null;
+    }
+
+    /**
+     * Add's a new User
+     */
+    public void addRoom(Room room){
+
+    }
+
+    /**
+     * Updates room
+     */
+    public void updateRoom(Room room){
+
+    }
+
+    /**
+     * Removes a Room
+     */
+    public void removeRoom(Room room){
+
+    }
+
+    /**
+     * Retrieves all Rooms
+     */
+    public List<Room> getAllRooms(){
+        return null;
+    }
 
     /**
      * Deze methode haalt alle gebruikers op die zich in de organisatie bevinden en slaat ze op in de userlist.
