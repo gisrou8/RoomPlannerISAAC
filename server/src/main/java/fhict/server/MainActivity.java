@@ -40,11 +40,6 @@ public class MainActivity extends AppCompatActivity {
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
 
-        try {
-            run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -185,30 +180,4 @@ public class MainActivity extends AppCompatActivity {
         return ip;
     }
 
-    void run() throws IOException{
-        OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://login.microsoftonline.com/common/adminconsent").newBuilder();
-        urlBuilder.addQueryParameter("client_id", )
-
-        Request request = new Request.Builder().url("https://login.microsoftonline.com/common/adminconsent").build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                call.cancel();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                final String myResponse = response.body().string();
-
-                MainActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        info.setText(myResponse);
-                    }
-                });
-            }
-        });
-    }
 }

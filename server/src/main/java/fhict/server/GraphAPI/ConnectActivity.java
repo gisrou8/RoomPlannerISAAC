@@ -2,7 +2,7 @@
  * Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
  * See LICENSE in the project root for license information.
  */
-package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
+package fhict.server.GraphAPI;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,8 +15,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.gisro.roomplannerisaac.R;
 import com.microsoft.identity.client.AuthenticationResult;
 import com.microsoft.identity.client.Logger;
 import com.microsoft.identity.client.MsalClientException;
@@ -31,6 +29,9 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
+
+import fhict.server.MainActivity;
+import fhict.server.R;
 
 /**
  * Starting Activity of the app. Handles the connection to Office 365.
@@ -238,7 +239,6 @@ public class ConnectActivity extends AppCompatActivity implements MSALAuthentica
                 new Intent(ConnectActivity.this, MainActivity.class);
         main.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         // take the user's info along
-        main.putExtra(MainActivity.ARG_GIVEN_NAME, name);
 
 
         // actually start the activity

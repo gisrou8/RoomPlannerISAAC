@@ -1,4 +1,4 @@
-package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
+package fhict.server.GraphAPI;
 
 import com.microsoft.identity.client.AuthenticationResult;
 import com.microsoft.identity.client.MsalException;

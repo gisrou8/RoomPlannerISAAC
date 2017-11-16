@@ -2,41 +2,26 @@
  * Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license.
  * See LICENSE in the project root for license information.
  */
-package com.example.gisro.roomplannerisaac.Classes.GraphAPI;
+package fhict.server.GraphAPI;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
-import com.example.gisro.roomplannerisaac.Classes.Room;
-import com.example.gisro.roomplannerisaac.R;
 import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.Attendee;
-import com.microsoft.graph.extensions.AttendeeType;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
-import com.microsoft.graph.extensions.EmailAddress;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 import com.microsoft.graph.extensions.IGraphServiceClient;
 import com.microsoft.graph.extensions.IUserCollectionPage;
-import com.microsoft.graph.extensions.IUserCollectionRequest;
 import com.microsoft.graph.extensions.User;
 
-import org.joda.time.DateTime;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
+
+import fhict.server.Objects.Appointment;
+import fhict.server.Objects.Room;
 
 
 class GraphServiceController {
