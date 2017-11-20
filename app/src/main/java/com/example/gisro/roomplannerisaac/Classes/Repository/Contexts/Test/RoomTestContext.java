@@ -1,8 +1,12 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test;
 
-import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IRoomContext;
+import com.example.gisro.roomplannerisaac.Classes.Appointment;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IRoomContext;
 import com.example.gisro.roomplannerisaac.Classes.Room;
 import com.example.gisro.roomplannerisaac.Classes.State;
+import com.microsoft.graph.extensions.Attendee;
+
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +17,13 @@ import java.util.List;
 
 public class RoomTestContext implements IRoomContext {
     private ArrayList<Room> rooms;
-
+    private ArrayList<Appointment> appointments;
     public RoomTestContext(){
         this.rooms = new ArrayList<>();
+        this.appointments = new ArrayList<>();
         rooms.add(new Room("Room 1", "1", 0));
+        appointments.add(new Appointment("Standup", DateTime.now()));
+        rooms.get(0).setAppointments(appointments);
         rooms.add(new Room("Room 2", "2", 1));
         rooms.add(new Room("Room 3", "3", 2));
     }
@@ -50,7 +57,12 @@ public class RoomTestContext implements IRoomContext {
     }
 
     @Override
-    public List getAllRooms() {
+    public ArrayList<Room> getAllRooms() {
         return rooms;
+    }
+
+    @Override
+    public Room getCurrentRoom() {
+        return rooms.get(0);
     }
 }

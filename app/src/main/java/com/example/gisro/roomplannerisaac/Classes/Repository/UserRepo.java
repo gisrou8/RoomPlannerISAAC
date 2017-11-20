@@ -1,8 +1,9 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IUserContext;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IUserContext;
 import com.example.gisro.roomplannerisaac.Classes.User;
 
 /**
@@ -16,7 +17,7 @@ public class UserRepo {
         this.context = context;
     }
 
-    public List<User> getUsers() {
+    public ArrayList<User> getUsers() {
         throw new UnsupportedOperationException();
     }
 

@@ -91,21 +91,21 @@ public class GraphServiceController {
     /**
      * Add's a new User
      */
-    public void addUser(com.example.gisro.roomplannerisaac.Classes.User user){
+    public void addUser(fhict.server.Objects.User user){
 
     }
 
     /**
      * Updates User with the same name to User object specified
      */
-    public void updateUser(com.example.gisro.roomplannerisaac.Classes.User user){
+    public void updateUser(fhict.server.Objects.User user){
 
     }
 
     /**
      * Removes a User
      */
-    public void removeUser(com.example.gisro.roomplannerisaac.Classes.User user){
+    public void removeUser(fhict.server.Objects.User user){
 
     }
 

@@ -1,39 +1,40 @@
-package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
-
-import java.util.ArrayList;
-import java.util.List;
+package com.example.gisro.roomplannerisaac.Classes.Repository;
 
 import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointmentContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by pieni on 20/09/2017.
  */
 
-public class AppointmentExContext implements IAppointmentContext {
+public class AppointmentRepo implements IAppointmentContext {
 
+    private IAppointmentContext appointment;
 
-    public AppointmentExContext(){
-        throw new UnsupportedOperationException();
+    public AppointmentRepo(IAppointmentContext appointment)
+    {
+        this.appointment = appointment;
     }
-
     @Override
     public void addAppointment(Appointment item) {
-        throw new UnsupportedOperationException();
+        appointment.addAppointment(item);
     }
 
     @Override
     public void updateAppointment(Appointment item) {
-        throw new UnsupportedOperationException();
+        appointment.updateAppointment(item);
     }
 
     @Override
     public void removeAppointment(Appointment item) {
-        throw new UnsupportedOperationException();
+        appointment.removeAppointment(item);
     }
 
     @Override
     public ArrayList<Appointment> getAllAppointments() {
-        throw new UnsupportedOperationException();
+        return appointment.getAllAppointments();
     }
 }

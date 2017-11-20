@@ -3,7 +3,6 @@
     package="com.example.gisro.roomplannerisaac">
 
     <application
-        android:name="fhict.server.GraphAPI.Connect"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -11,16 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="fhict.server.GraphAPI.ConnectActivity" android:screenOrientation="landscape">
+        <activity android:name=".Classes.Acitivities.MainActivity" android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="fhict.server.GraphAPI.RuimteOverview" android:screenOrientation="landscape"></activity>
-        <activity android:name="fhict.server.GraphAPI.Reservering" android:screenOrientation="landscape" android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
-        <activity android:name="fhict.server.GraphAPI.MainActivity" android:screenOrientation="landscape"></activity>
+        <activity android:name=".Classes.Acitivities.Reservering" android:screenOrientation="landscape" android:windowSoftInputMode="stateHidden|adjustNothing"></activity>
+        <activity android:name=".Classes.Acitivities.RuimteOverview" android:screenOrientation="landscape"></activity>
         <activity
             android:name="com.microsoft.identity.client.BrowserTabActivity">
             <intent-filter>

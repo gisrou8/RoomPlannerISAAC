@@ -1,14 +1,18 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository;
 
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IRoomContext;
+import com.example.gisro.roomplannerisaac.Classes.Room;
+
+import java.util.ArrayList;
 import java.util.List;
 
-import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IRoomContext;
+
 
 /**
  * Created by Martien on 20-Sep-17.
  */
 
-public class RoomRepo implements IRoomContext{
+public class RoomRepo implements IRoomContext {
 
     private IRoomContext room;
 
@@ -17,22 +21,27 @@ public class RoomRepo implements IRoomContext{
     }
 
     @Override
-    public void add(Object item) {
-        room.add(item);
+    public void addRoom(Room item) {
+        room.addRoom(item);
     }
 
     @Override
-    public void update(Object item) {
-        room.update(item);
+    public void updateRoom(Room item) {
+        room.updateRoom(item);
     }
 
     @Override
-    public void remove(Object item) {
-        room.update(item);
+    public void removeRoom(Room item) {
+        room.updateRoom(item);
     }
 
     @Override
-    public List getAll() {
-        return room.getAll();
+    public ArrayList<Room> getAllRooms() {
+        return room.getAllRooms();
+    }
+
+    @Override
+    public Room getCurrentRoom() {
+        return room.getCurrentRoom();
     }
 }
