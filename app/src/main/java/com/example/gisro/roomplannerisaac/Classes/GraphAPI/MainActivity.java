@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity{
         Log.d("btnVergaderingOnClick", (String) btnOpenClose.getText());
         if("Open vergadering".equalsIgnoreCase((String)btnOpenClose.getText())){
             if(a != null) {
+                a.open();
                 Log.d("btnVergaderingOnClick", "open");
             }
         }

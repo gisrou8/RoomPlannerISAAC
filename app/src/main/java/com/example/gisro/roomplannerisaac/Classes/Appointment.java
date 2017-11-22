@@ -2,6 +2,7 @@ package com.example.gisro.roomplannerisaac.Classes;
 
 import android.support.annotation.NonNull;
 
+import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.AppointmentTestContext;
 import com.microsoft.graph.extensions.Attendee;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
 
@@ -25,6 +26,7 @@ public class Appointment implements Comparable<Appointment> {
     private DateTimeTimeZone reserveringsTijdTZ;
     private State state;
     private List<Attendee> attendees;
+    AppointmentTestContext atc;
 
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd) {
         this.Name = Name;
@@ -35,6 +37,7 @@ public class Appointment implements Comparable<Appointment> {
         this.reserveringsTijd = dt;
         this.reserveringsTijdTZ = reserveringsTijd;
         this.state = State.Gesloten;
+        atc = new AppointmentTestContext();
     }
 
     public Appointment(String Name, DateTime reserveringsTijd) {
@@ -71,8 +74,16 @@ public class Appointment implements Comparable<Appointment> {
 //      return false;
 //    }
 
+    public void open(){
+        if(reserveringsTijd.isAfterNow() && reserveringsTijd.isBefore(System.currentTimeMillis()+5*60*1000)){
+            this.state = State.Bezet;
+            atc.updateAppointment(this);
+        }
+    }
+
     public void close() {
         this.state = State.Gesloten;
+        atc.updateAppointment(this);
     }
 
     public String getName() {
