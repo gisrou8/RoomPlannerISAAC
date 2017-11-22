@@ -10,7 +10,10 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
+        javaCompileOptions.annotationProcessorOptions{
+            includeCompileClasspath true
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -60,4 +63,5 @@ dependencies {
     compile('com.microsoft.aad:adal:1.13.+')
 
 
+    compile project(path: ':mylibrary')
 }

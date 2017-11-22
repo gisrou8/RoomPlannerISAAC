@@ -1,9 +1,12 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import com.example.gisro.roomplannerisaac.Classes.Client.Client;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IUserContext;
-import com.example.gisro.roomplannerisaac.Classes.User;
+
+import fhict.mylibrary.User;
+
 
 /**
  * Created by Martien on 20-Sep-17.
@@ -11,6 +14,13 @@ import com.example.gisro.roomplannerisaac.Classes.User;
 
 public class UserExContext implements IUserContext {
 
+    private Client client;
+
+    public UserExContext()
+    {
+        client = new Client("192.168.178.118", 8080, "Users");
+        client.start();
+    }
     @Override
     public void addUser(User u) {
 
@@ -28,6 +38,6 @@ public class UserExContext implements IUserContext {
 
     @Override
     public ArrayList<User> getAllUsers() {
-        return null;
+        return client.getUsers();
     }
 }

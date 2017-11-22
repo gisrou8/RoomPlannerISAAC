@@ -1,15 +1,14 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
+
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IRoomContext;
-import com.example.gisro.roomplannerisaac.Classes.Room;
-import com.example.gisro.roomplannerisaac.Classes.State;
-import com.microsoft.graph.extensions.Attendee;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import fhict.mylibrary.Appointment;
+import fhict.mylibrary.Room;
 
 /**
  * Created by Martien on 08-Nov-17.

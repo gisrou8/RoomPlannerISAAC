@@ -1,9 +1,9 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Interface;
 
-import com.example.gisro.roomplannerisaac.Classes.User;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import fhict.mylibrary.User;
 
 /**
  * Created by BePulverized on 20-11-2017.

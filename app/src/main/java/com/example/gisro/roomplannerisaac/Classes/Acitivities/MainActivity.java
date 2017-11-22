@@ -16,10 +16,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.Classes.Repository.AppointmentRepo;
-import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.AppointmentTestContext;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.AppointmentExContext;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.RoomExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.RoomTestContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.RoomRepo;
 import com.example.gisro.roomplannerisaac.R;
@@ -28,12 +27,13 @@ import com.microsoft.graph.extensions.Attendee;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import fhict.mylibrary.Appointment;
+
 public class MainActivity extends AppCompatActivity{
 
     public static final String ARG_GIVEN_NAME = "givenName";
     private static final int WAIT_TIME = 2000;
-    AppointmentRepo appointmentController = new AppointmentRepo(new AppointmentTestContext());
-    RoomRepo roomController = new RoomRepo(new RoomTestContext());
+    RoomRepo roomController = new RoomRepo(new RoomExContext());
     private ListView lv;
     private ListView lvAttendees;
     private Button btnOpenClose;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity{
                 arrayAdapter.clear();
 
                 mProgressbar.setVisibility(View.INVISIBLE);
-                if (appointmentController.getAllAppointments() != null) {
+               if (roomController.getCurrentRoom() != null) {
                     for(Appointment appointment : roomController.getCurrentRoom().getAppointments()){
                         //Check if appointment is today
                         if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {

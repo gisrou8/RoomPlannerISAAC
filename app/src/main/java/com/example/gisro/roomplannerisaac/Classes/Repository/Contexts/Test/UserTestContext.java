@@ -1,9 +1,9 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IUserContext;
-import com.example.gisro.roomplannerisaac.Classes.User;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import fhict.mylibrary.User;
 
 /**
  * Created by Martien on 08-Nov-17.

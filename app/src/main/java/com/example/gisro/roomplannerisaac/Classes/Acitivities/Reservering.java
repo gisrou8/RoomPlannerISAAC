@@ -6,11 +6,9 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,25 +16,21 @@ import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TimePicker;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
+
+import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.UserExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.UserTestContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.UserRepo;
-import com.example.gisro.roomplannerisaac.Classes.Room;
-import com.example.gisro.roomplannerisaac.Classes.User;
 import com.example.gisro.roomplannerisaac.R;
-import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.Attendee;
-import com.microsoft.graph.extensions.DateTimeTimeZone;
 import com.microsoft.graph.extensions.EmailAddress;
-import com.microsoft.graph.extensions.Event;
-import com.microsoft.graph.extensions.Message;
 
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import fhict.mylibrary.Appointment;
+import fhict.mylibrary.User;
 
 public class Reservering extends AppCompatActivity {
 
@@ -46,8 +40,8 @@ public class Reservering extends AppCompatActivity {
     private DatePicker datePicker;
     private NumberPicker numPicker;
     private EditText appointmentNameText;
-    final List<com.example.gisro.roomplannerisaac.Classes.User> selUsers = new ArrayList<>();
-    private UserRepo userController = new UserRepo(new UserTestContext());
+    final List<User> selUsers = new ArrayList<>();
+    UserRepo userController = new UserRepo(new UserExContext());
     private ProgressBar mProgressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +57,10 @@ public class Reservering extends AppCompatActivity {
         appointmentNameText = (EditText)findViewById(R.id.editText);
         selectedUserslv = (ListView) findViewById(R.id.lvSelectedUsers);
         mProgressbar = (ProgressBar)findViewById(R.id.progressBar);
-        final List<com.example.gisro.roomplannerisaac.Classes.User> users = new ArrayList<>();
-        final ArrayAdapter<com.example.gisro.roomplannerisaac.Classes.User> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+        final List<User> users = new ArrayList<>();
+        final ArrayAdapter<User> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
 
-        final ArrayAdapter<com.example.gisro.roomplannerisaac.Classes.User> selUsersarrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selUsers);
+        final ArrayAdapter<User> selUsersarrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selUsers);
         gebruikers.setChoiceMode(ListView.CHOICE_MODE_NONE);
         gebruikers.setAdapter(arrayAdapter);
         gebruikers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,7 +104,7 @@ public class Reservering extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void btnReserveer(View v){
         Appointment newApp = new Appointment(appointmentNameText.getText().toString(), new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute()));
-        for(com.example.gisro.roomplannerisaac.Classes.User user: selUsers)
+        for(User user: selUsers)
         {
             Attendee att = new Attendee();
             EmailAddress email = new EmailAddress();

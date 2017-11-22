@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         infoip = (TextView) findViewById(R.id.infoip);
         msg = (TextView) findViewById(R.id.msg);
 
+        infoip.setText(getIpAddress());
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
 

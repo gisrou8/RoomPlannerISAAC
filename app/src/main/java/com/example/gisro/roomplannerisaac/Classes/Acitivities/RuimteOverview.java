@@ -1,28 +1,22 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.RoomTestContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.RoomRepo;
-import com.example.gisro.roomplannerisaac.Classes.Room;
 import com.example.gisro.roomplannerisaac.R;
 
-import org.joda.time.LocalDate;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import fhict.mylibrary.Room;
 
 public class RuimteOverview extends AppCompatActivity{
 

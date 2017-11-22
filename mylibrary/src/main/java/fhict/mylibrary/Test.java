@@ -1,4 +1,4 @@
-package com.example.gisro.roomplannerisaac.Classes;
+package fhict.mylibrary;
 
 /**
  * Created by pieni on 20/09/2017.

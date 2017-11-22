@@ -1,12 +1,13 @@
-package com.example.gisro.roomplannerisaac.Classes;
+package fhict.mylibrary;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by gisro on 20-9-2017.
  */
 
-public class Room {
+public class Room implements Serializable{
     private String Name;
     private String id;
     private State state;

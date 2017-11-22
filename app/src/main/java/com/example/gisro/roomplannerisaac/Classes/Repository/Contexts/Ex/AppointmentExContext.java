@@ -1,10 +1,12 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
+
+import com.example.gisro.roomplannerisaac.Classes.Client.Client;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointmentContext;
+
+import fhict.mylibrary.Appointment;
 
 /**
  * Created by pieni on 20/09/2017.
@@ -12,9 +14,11 @@ import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointm
 
 public class AppointmentExContext implements IAppointmentContext {
 
+    private Client client;
 
     public AppointmentExContext(){
-        throw new UnsupportedOperationException();
+        client = new Client("192.168.178.118", 8080, "Appointments");
+        client.start();
     }
 
     @Override

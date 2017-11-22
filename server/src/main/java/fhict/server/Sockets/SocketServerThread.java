@@ -31,7 +31,6 @@ public class SocketServerThread extends Thread {
                 count++;
                 message += "#" + count + " from " + socket.getInetAddress()
                         + ":" + socket.getPort() + "\n";
-
                 SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
                         socket, count);
                 socketServerReplyThread.run();

@@ -1,4 +1,4 @@
-package com.example.gisro.roomplannerisaac.Classes;
+package fhict.mylibrary;
 
 import android.support.annotation.NonNull;
 
@@ -9,10 +9,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

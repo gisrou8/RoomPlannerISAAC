@@ -1,10 +1,11 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IUserContext;
-import com.example.gisro.roomplannerisaac.Classes.User;
+
+import fhict.mylibrary.User;
+
 
 /**
  * Created by Martien on 20-Sep-17.
@@ -18,7 +19,7 @@ public class UserRepo {
     }
 
     public ArrayList<User> getUsers() {
-        throw new UnsupportedOperationException();
+        return context.getAllUsers();
     }
 
     public void addUser(User newUser){

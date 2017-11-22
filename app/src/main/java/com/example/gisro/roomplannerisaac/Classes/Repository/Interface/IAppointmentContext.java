@@ -1,9 +1,8 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Interface;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
-
 import java.util.ArrayList;
-import java.util.List;
+
+import fhict.mylibrary.Appointment;
 
 /**
  * Created by BePulverized on 20-11-2017.

@@ -20,14 +20,13 @@ import com.microsoft.graph.extensions.User;
 import java.util.ArrayList;
 import java.util.List;
 
-import fhict.server.Objects.Appointment;
-import fhict.server.Objects.Room;
-
+import fhict.mylibrary.Appointment;
+import fhict.mylibrary.Room;
 
 public class GraphServiceController {
 
     private final IGraphServiceClient mGraphServiceClient;
-    private List<User> userList;
+    private ArrayList<fhict.mylibrary.User> userList;
     private Room room;
     private ArrayList<Room> roomList;
 
@@ -39,7 +38,7 @@ public class GraphServiceController {
         return roomList;
     }
 
-    public List<User> getUsers(){
+    public ArrayList<fhict.mylibrary.User> getUsers(){
         return userList;
     }
 
@@ -55,12 +54,12 @@ public class GraphServiceController {
      * Create a new Graph Event based on given Appointment
      */
     public void addAppointment(Appointment appointment){
-        try {
-            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
-        }
-        catch (Exception ex){
-            Log.d("GraphServiceController", ex.getMessage());
-        }
+//        try {
+////            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
+////        }
+//        catch (Exception ex){
+//            Log.d("GraphServiceController", ex.getMessage());
+//        }
     }
 
     /**
@@ -91,21 +90,21 @@ public class GraphServiceController {
     /**
      * Add's a new User
      */
-    public void addUser(fhict.server.Objects.User user){
+    public void addUser(fhict.mylibrary.User user){
 
     }
 
     /**
      * Updates User with the same name to User object specified
      */
-    public void updateUser(fhict.server.Objects.User user){
+    public void updateUser(fhict.mylibrary.User user){
 
     }
 
     /**
      * Removes a User
      */
-    public void removeUser(fhict.server.Objects.User user){
+    public void removeUser(fhict.mylibrary.User user){
 
     }
 
@@ -176,6 +175,7 @@ public class GraphServiceController {
             @Override
             public void success(User user) {
                 setThisRoom(user);
+                apiAppointmentsforRoom();
             }
 
             @Override
@@ -272,7 +272,7 @@ public class GraphServiceController {
 
     private void setUsers(List<User> users){
         Log.d("GraphServiceController", "Adding users to userlist");
-        userList = users;
+        userList = userConvert(users);
     }
 
     private void setRooms(List<User> users){
@@ -287,7 +287,10 @@ public class GraphServiceController {
     }
 
     private void setAppointmentsforRoom(List<Event> events) {
-        room.setAppointments(eventsToAppointments(events));
+        if(room != null) {
+            room.setAppointments(eventsToAppointments(events));
+        }
+
     }
 
     /**
@@ -301,6 +304,16 @@ public class GraphServiceController {
             appointments.add(new Appointment(event.subject, event.start, event.attendees));
         }
         return appointments;
+    }
+
+    private ArrayList<fhict.mylibrary.User> userConvert(List<User> users)
+    {
+        ArrayList<fhict.mylibrary.User> newUsers = new ArrayList<>();
+        for(User user: users)
+        {
+            newUsers.add(new fhict.mylibrary.User(user.displayName, user.mail));
+        }
+        return newUsers;
     }
 
     public void setThisRoom(User user)

@@ -1,17 +1,25 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import com.example.gisro.roomplannerisaac.Classes.Client.Client;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IRoomContext;
-import com.example.gisro.roomplannerisaac.Classes.Room;
-import com.example.gisro.roomplannerisaac.Classes.User;
+
+import fhict.mylibrary.Room;
+
 
 /**
  * Created by Martien on 20-Sep-17.
  */
 
 public class RoomExContext implements IRoomContext {
+
+    private Client client;
+    public RoomExContext()
+    {
+        client = new Client("192.168.178.118", 8080, "Room");
+        client.start();
+    }
 
     @Override
     public void addRoom(Room room) {
@@ -30,11 +38,11 @@ public class RoomExContext implements IRoomContext {
 
     @Override
     public ArrayList<Room> getAllRooms() {
-        return null;
+        return client.getAllRooms();
     }
 
     @Override
     public Room getCurrentRoom() {
-        return null;
+        return client.getRoom();
     }
 }

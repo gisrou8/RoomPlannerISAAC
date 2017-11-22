@@ -1,12 +1,11 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointmentContext;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import fhict.mylibrary.Appointment;
 
 /**
  * Created by Martien on 08-Nov-17.
