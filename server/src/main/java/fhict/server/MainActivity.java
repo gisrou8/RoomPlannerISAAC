@@ -15,7 +15,7 @@ import fhict.server.Sockets.SocketServerThread;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView info, infoip, msg;
+    TextView info, infoip;
 
 
 
@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         info = (TextView) findViewById(R.id.info);
         infoip = (TextView) findViewById(R.id.infoip);
-        msg = (TextView) findViewById(R.id.msg);
 
         infoip.setText(getIpAddress());
         Thread socketServerThread = new Thread(new SocketServerThread());

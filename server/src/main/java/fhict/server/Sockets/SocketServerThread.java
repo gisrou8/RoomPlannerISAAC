@@ -1,5 +1,7 @@
 package fhict.server.Sockets;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -28,9 +30,7 @@ public class SocketServerThread extends Thread {
             while (true) {
                 Socket socket = serverSocket.accept();
                 connectionArray.add(socket);
-                count++;
-                message += "#" + count + " from " + socket.getInetAddress()
-                        + ":" + socket.getPort() + "\n";
+                Log.d("Server", socket.getInetAddress().toString() + " has connected to server!");
                 SocketServerReplyThread socketServerReplyThread = new SocketServerReplyThread(
                         socket, count);
                 socketServerReplyThread.run();
@@ -40,12 +40,6 @@ public class SocketServerThread extends Thread {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-    }
-
-    public static void addUser(Socket socket) throws IOException {
-        Scanner input = new Scanner(socket.getInputStream());
-        String userName = input.nextLine();
-        currentUser.add(userName);
     }
 
 

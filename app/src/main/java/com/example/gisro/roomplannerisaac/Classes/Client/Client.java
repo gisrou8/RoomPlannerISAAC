@@ -3,6 +3,8 @@ package com.example.gisro.roomplannerisaac.Classes.Client;
 import android.os.AsyncTask;
 
 
+import org.joda.time.DateTime;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,6 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
 import fhict.mylibrary.User;
 
@@ -68,6 +71,11 @@ public class Client extends Thread {
                 case "Users":
                     oos.writeObject("getUsers");
                     userList = (ArrayList<User>) ois.readObject();
+                    oos.close();
+                    ois.close();
+                    break;
+                case "PostAppointment":
+                    oos.writeObject(new Appointment("blabla", DateTime.now()));
                     oos.close();
                     ois.close();
                     break;

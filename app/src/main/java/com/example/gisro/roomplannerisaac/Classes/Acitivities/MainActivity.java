@@ -28,6 +28,7 @@ import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
 import fhict.mylibrary.Appointment;
+import fhict.mylibrary.Room;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity{
     private ProgressBar mProgressbar;
     private TextView tvDate;
     private int checkCount = 2000;
+    private Room thisRoom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,8 @@ public class MainActivity extends AppCompatActivity{
         mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
         //Listview for attendees + adapter
         lvAttendees = (ListView) findViewById(R.id.listView2);
+        thisRoom = (Room)getIntent().getSerializableExtra("Room");
+        Log.d("Main", "Current room:" + thisRoom.toString());
         final List<String> attendees = new ArrayList<String>();
         final ArrayAdapter<String> arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
         lvAttendees.setAdapter(arrayAdapterAttendees);

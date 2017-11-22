@@ -229,12 +229,12 @@ public class GraphServiceController {
 
     /**
      * @param appointment the appointment and its information, will get converted to an event before posting to API
-     * @param callback
+     * @param
      */
-    public void apiScheduleMeeting(Appointment appointment, ICallback<Event> callback)
+    public void apiScheduleMeeting(Appointment appointment)
     {
         try {
-            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()), callback);
+            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
 
         }
         catch (Exception ex){

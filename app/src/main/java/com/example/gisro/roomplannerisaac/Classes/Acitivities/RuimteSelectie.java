@@ -1,7 +1,8 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
-import android.os.Bundle;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +11,6 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.RoomExContext;
-import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.RoomTestContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.RoomRepo;
 import com.example.gisro.roomplannerisaac.R;
 
@@ -19,7 +19,7 @@ import java.util.List;
 
 import fhict.mylibrary.Room;
 
-public class RuimteOverview extends AppCompatActivity{
+public class RuimteSelectie extends AppCompatActivity {
 
     public static final String ARG_GIVEN_NAME = "givenName";
     RoomRepo roomController = new RoomRepo(new RoomExContext());
@@ -30,7 +30,7 @@ public class RuimteOverview extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_overview);
+        setContentView(R.layout.activity_ruimte_selectie);
         //Demo data
         lv = (ListView) findViewById(R.id.listView);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
@@ -40,8 +40,9 @@ public class RuimteOverview extends AppCompatActivity{
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = (String) lv.getItemAtPosition(i);
-                String splitArray[] = s.split(" , ");
+                Intent intent = new Intent(RuimteSelectie.this, MainActivity.class);
+                intent.putExtra("Room", rooms.get(i));
+                startActivity(intent);
             }
         });
 
@@ -79,7 +80,6 @@ public class RuimteOverview extends AppCompatActivity{
 
 
     }
-
 
 
 }
