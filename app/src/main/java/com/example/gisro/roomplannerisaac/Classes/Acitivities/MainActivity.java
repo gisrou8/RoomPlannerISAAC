@@ -141,16 +141,16 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void btnVergaderingOnClick(View v){
-        Log.d("btnVergaderingOnClick", (String) btnOpenClose.getText());
         if("Open vergadering".equalsIgnoreCase((String)btnOpenClose.getText())){
             if(a != null) {
-                Log.d("btnVergaderingOnClick", "open");
+                a.open();
+                btnOpenClose.setText("Sluit vergadering");
             }
         }
         else if("Sluit vergadering".equalsIgnoreCase((String)btnOpenClose.getText())){
             if(a != null) {
                 a.close();
-                Log.d("btnVergaderingOnClick", "close");
+                btnOpenClose.setText("Open vergadering");
             }
         }
     }

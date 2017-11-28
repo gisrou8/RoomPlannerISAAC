@@ -16,7 +16,8 @@ import java.util.List;
  * Created by gisro on 20-9-2017.
  */
 
-public class Appointment implements Comparable<Appointment> {
+public class Appointment implements Comparable<Appointment>{
+
     private String Name;
     private DateTime reserveringsTijd;
     private DateTimeTimeZone reserveringsTijdTZ;
@@ -60,6 +61,15 @@ public class Appointment implements Comparable<Appointment> {
         return state;
     }
 
+    public boolean open(){
+        if(reserveringsTijd.isAfterNow() && reserveringsTijd.isBefore(new DateTime(System.currentTimeMillis()+10*60*1000))){
+            GraphServiceClientManager gcm = new GraphServiceClientManager();
+            gcm.updateStateRoom(State.Bezet);
+            return true;
+        }
+        return false;
+    }
+
 //    public boolean open(){
 //      if(reserveringsTijd.after(new Date()) && reserveringsTijd.before(new Date(System.currentTimeMillis()+5*60*1000))){
 //          this.state = State.Open;
@@ -68,21 +78,22 @@ public class Appointment implements Comparable<Appointment> {
 //      return false;
 //    }
 
-    public void close() {
-        this.state = State.Gesloten;
+    public void close(){
+        GraphServiceClientManager gcm = new GraphServiceClientManager();
+        gcm.updateStateRoom(State.Vrij);
     }
 
-    public String getName() {
+    public String getName()
+    {
         return Name;
     }
 
-    public DateTime getReserveringsTijd() {
+    public DateTime getReserveringsTijd()
+    {
         return reserveringsTijd;
     }
 
-    public DateTimeTimeZone getReserveringsTijdTZ() {
-        return reserveringsTijdTZ;
-    }
+    public DateTimeTimeZone getReserveringsTijdTZ(){return reserveringsTijdTZ;}
 
     @Override
     public String toString() {
@@ -103,4 +114,3 @@ public class Appointment implements Comparable<Appointment> {
         attendees.add(attendee);
     }
 }
-

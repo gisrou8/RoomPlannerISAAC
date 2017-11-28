@@ -8,6 +8,7 @@ import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
 import android.util.Log;
 
+import com.example.gisro.roomplannerisaac.Classes.State;
 import com.microsoft.graph.authentication.IAuthenticationProvider;
 import com.microsoft.graph.core.DefaultClientConfig;
 import com.microsoft.graph.core.IClientConfig;
@@ -24,8 +25,9 @@ import java.io.IOException;
 public class GraphServiceClientManager implements IAuthenticationProvider {
     private IGraphServiceClient mGraphServiceClient;
     private static GraphServiceClientManager INSTANCE;
+    final private GraphServiceController mGraphServiceController = new GraphServiceController();
 
-    private GraphServiceClientManager() {}
+    public GraphServiceClientManager() {}
 
     /**
      * Appends an access token obtained from the {@link AuthenticationManager} class to the
@@ -68,5 +70,10 @@ public class GraphServiceClientManager implements IAuthenticationProvider {
         }
 
         return mGraphServiceClient;
+    }
+
+    public void updateStateRoom(State state){
+        mGraphServiceController.setStateUser(state);
+        mGraphServiceClient.getUsers(mGraphServiceController.getRoom().getId()).buildRequest().patch(mGraphServiceController.getUser());
     }
 }
