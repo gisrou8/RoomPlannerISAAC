@@ -63,8 +63,8 @@ public class Appointment implements Comparable<Appointment>{
 
     public boolean open(){
         if(reserveringsTijd.isAfterNow() && reserveringsTijd.isBefore(new DateTime(System.currentTimeMillis()+10*60*1000))){
-            GraphServiceClientManager gcm = new GraphServiceClientManager();
-            gcm.updateStateRoom(State.Bezet);
+//            GraphServiceClientManager gcm = new GraphServiceClientManager();
+//            gcm.updateStateRoom(State.Bezet);
             return true;
         }
         return false;
@@ -79,8 +79,8 @@ public class Appointment implements Comparable<Appointment>{
 //    }
 
     public void close(){
-        GraphServiceClientManager gcm = new GraphServiceClientManager();
-        gcm.updateStateRoom(State.Vrij);
+//        GraphServiceClientManager gcm = new GraphServiceClientManager();
+//        gcm.updateStateRoom(State.Vrij);
     }
 
     public String getName()

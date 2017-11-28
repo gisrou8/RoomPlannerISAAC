@@ -18,11 +18,16 @@ import com.microsoft.graph.extensions.IGraphServiceClient;
 import com.microsoft.graph.extensions.IUserCollectionPage;
 import com.microsoft.graph.extensions.User;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
+import fhict.mylibrary.State;
 
 public class GraphServiceController {
 
@@ -31,12 +36,31 @@ public class GraphServiceController {
     private Room room;
     private User user;
     private ArrayList<Room> roomList;
+    private HashMap<Room, ArrayList<Appointment>> appointmentsandRooms;
+
+    public ArrayList<Appointment> getAppointmentsforRoom(Room room)
+    {
+        ArrayList<Appointment> apps = null;
+        for(Map.Entry<Room, ArrayList<Appointment>> e : appointmentsandRooms.entrySet())
+        {
+            Room r = e.getKey();
+            if(r.getName() == room.getName())
+            {
+                apps = e.getValue();
+            }
+
+        }
+
+        return apps;
+    }
+
 
     public Room getRoom() {
         return room;
     }
 
     public User getUser() { return user;}
+
 
     public void setStateUser(State state){
         switch (state)
@@ -194,7 +218,7 @@ public class GraphServiceController {
             @Override
             public void success(User user) {
                 setThisRoom(user);
-                apiAppointmentsforRoom();
+//                apiAppointmentsforRoom();
             }
 
             @Override
@@ -202,6 +226,23 @@ public class GraphServiceController {
 
             }
         });
+    }
+
+    public void apiAppointments(final Room room){
+        mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().get(new ICallback<IEventCollectionPage>() {
+            @Override
+            public void success(IEventCollectionPage iEventCollectionPage) {
+                List<Event> events = iEventCollectionPage.getCurrentPage();
+                setEvents(room, events);
+            }
+
+            @Override
+            public void failure(ClientException ex) {
+
+            }
+        });
+
+
     }
 
 
@@ -226,24 +267,6 @@ public class GraphServiceController {
         });
     }
 
-
-    /**
-     * Gets all the appointments for the current room. Only puts them in the list if they are happening today.
-     */
-    public void apiAppointmentsforRoom() {
-        Log.d(this.getClass().toString(), "Starting appointments get");
-        mGraphServiceClient.getMe().getEvents().buildRequest().get(new ICallback<IEventCollectionPage>() {
-            @Override
-            public void success(IEventCollectionPage iEventCollectionPage) {
-                setAppointmentsforRoom(iEventCollectionPage.getCurrentPage());
-            }
-
-            @Override
-            public void failure(ClientException ex) {
-
-            }
-        });
-    }
 
 
     /**
@@ -299,16 +322,20 @@ public class GraphServiceController {
         for(User user : users)
         {
             // Only add the user if it is a room
-            if(user.givenName != null && user.givenName.contains("ruimte")){
-                roomList.add(new Room(user.givenName, user.id, Integer.parseInt(user.surname)));
+            if(user.displayName.contains("Room")){
+                roomList.add(new Room(user.displayName, user.id, Integer.parseInt(user.surname)));
             }
         }
     }
 
-    private void setAppointmentsforRoom(List<Event> events) {
-        if(room != null) {
-            room.setAppointments(eventsToAppointments(events));
+    private void setEvents(Room room, List<Event> events)
+    {
+        ArrayList<Event> eventforRoom = new ArrayList<>();
+        for(Event event: events)
+        {
+            eventforRoom.add(event);
         }
+        appointmentsandRooms.put(room, eventsToAppointments(eventforRoom));
 
     }
 
@@ -316,7 +343,7 @@ public class GraphServiceController {
      * @param events
      * @return Convert the events to our own appointments methods
      */
-    private ArrayList<Appointment> eventsToAppointments(List<Event> events) {
+    private ArrayList<Appointment> eventsToAppointments(ArrayList<Event> events) {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
         {

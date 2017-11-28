@@ -3,6 +3,7 @@ package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 import java.util.ArrayList;
 
 import com.example.gisro.roomplannerisaac.Classes.Client.Client;
+import com.example.gisro.roomplannerisaac.Classes.Client.Task;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IRoomContext;
 
 import fhict.mylibrary.Room;
@@ -17,7 +18,7 @@ public class RoomExContext implements IRoomContext {
     private Client client;
     public RoomExContext()
     {
-        client = new Client("192.168.178.118", 8080, "Room");
+        client = new Client("192.168.178.118", 8080, new Task("Room", null));
         client.start();
     }
 

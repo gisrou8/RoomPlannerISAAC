@@ -20,19 +20,22 @@ import fhict.mylibrary.User;
 
 public class Client extends Thread {
 
+    private final boolean isConnected;
     String dstAddress;
     int dstPort;
     String response = "";
     String textResponse;
     private Room room;
     private ArrayList<Room> roomList;
-    String task = "";
+    private Task task;
     private ArrayList<User> userList;
+    private ArrayList<Appointment> appointments;
 
-    public Client(String addr, int port, String task) {
+    public Client(String addr, int port, Task task) {
         dstAddress = addr;
         dstPort = port;
         this.task = task;
+        isConnected = true;
     }
 
     public Room getRoom()
@@ -51,45 +54,51 @@ public class Client extends Thread {
     @Override
     public void run() {
         Socket socket = null;
-        try {
-            socket = new Socket(dstAddress, dstPort);
-            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
-            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-            switch (task) {
-                case "Appointments":
-                    oos.writeObject("getTestAppointments");
-                    oos.close();
-                    ois.close();
-                    break;
-                case "Room":
-                    oos.writeObject("getRoom");
-                    room = (Room) ois.readObject();
-                    roomList = (ArrayList<Room>) ois.readObject();
-                    oos.close();
-                    ois.close();
-                    break;
-                case "Users":
-                    oos.writeObject("getUsers");
-                    userList = (ArrayList<User>) ois.readObject();
-                    oos.close();
-                    ois.close();
-                    break;
-                case "PostAppointment":
-                    oos.writeObject(new Appointment("blabla", DateTime.now()));
-                    oos.close();
-                    ois.close();
-                    break;
+        while (isConnected) {
+            try {
+                socket = new Socket(dstAddress, dstPort);
+                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                switch (task.id) {
+                    case "Appointments":
+                        Room room = (Room) task.data;
+                        oos.writeObject("Appointments%" + room.getName());
+                        appointments = (ArrayList<Appointment>) ois.readObject();
+                        oos.close();
+                        ois.close();
+                        break;
+                    case "Room":
+                        oos.writeObject("Room");
+                        room = (Room) ois.readObject();
+                        roomList = (ArrayList<Room>) ois.readObject();
+                        oos.close();
+                        ois.close();
+                        break;
+                    case "Users":
+                        oos.writeObject("Users");
+                        userList = (ArrayList<User>) ois.readObject();
+                        oos.close();
+                        ois.close();
+                        break;
+                    case "PostAppointment":
+                        oos.writeObject(new Appointment("blabla", DateTime.now()));
+                        oos.close();
+                        ois.close();
+                        break;
+                }
+
+
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-
-
-
-
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
+    }
+
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
     }
 }

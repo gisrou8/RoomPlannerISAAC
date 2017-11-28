@@ -2,6 +2,7 @@ package fhict.server.Sockets.CommandList;
 
 import java.io.IOException;
 
+import fhict.server.GraphAPI.GraphServiceController;
 import fhict.server.Sockets.SocketServerReplyThread;
 
 /**
@@ -9,5 +10,5 @@ import fhict.server.Sockets.SocketServerReplyThread;
  */
 
 public interface ClientCommand {
-    void execute(SocketServerReplyThread server, String[] params) throws IOException;
+    void execute(SocketServerReplyThread server, String[] params, GraphServiceController controller) throws IOException, InterruptedException;
 }

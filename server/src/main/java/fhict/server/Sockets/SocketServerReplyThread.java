@@ -7,9 +7,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import fhict.mylibrary.Appointment;
-import fhict.mylibrary.Room;
 import fhict.server.GraphAPI.GraphServiceController;
+import fhict.server.Sockets.CommandList.AppointmentCommand;
+import fhict.server.Sockets.CommandList.ClientCommand;
+import fhict.server.Sockets.CommandList.Commands;
+import fhict.server.Sockets.CommandList.DisconnectCommand;
+import fhict.server.Sockets.CommandList.RoomCommand;
+import fhict.server.Sockets.CommandList.UserCommand;
 
 /**
  * Created by BePulverized on 16-11-2017.
@@ -17,69 +21,61 @@ import fhict.server.GraphAPI.GraphServiceController;
 
 public class SocketServerReplyThread extends Thread {
 
-    GraphServiceController mGraphServiceController = new GraphServiceController();
     private static final int WAIT_TIME = 2000;
     private Socket hostThreadSocket;
-    int cnt;
+    private boolean isConnected;
+    private Commands cmds;
+    private ObjectInputStream ois;
+    private ObjectOutputStream oossend;
+    private GraphServiceController controller;
 
-    SocketServerReplyThread(Socket socket, int c) {
+    SocketServerReplyThread(Socket socket, GraphServiceController controller) {
         hostThreadSocket = socket;
-        cnt = c;
+        cmds = new Commands();
+        cmds.addCommand(new RoomCommand(), "Room");
+        cmds.addCommand(new DisconnectCommand(), "disconnect");
+        cmds.addCommand(new UserCommand(), "Users");
+        cmds.addCommand(new AppointmentCommand(), "Appointment");
+        Commands server = new Commands();
+        cmds.addCommand(server, "server");
+        this.controller = controller;
+        isConnected = true;
+    }
+
+    public void addCommand(ClientCommand cmd, String name){
+        cmds.addCommand(cmd, name);
+    }
+
+    public void close(){
+        isConnected = false;
     }
 
     @Override
     public void run() {
-        final ObjectOutputStream oos;
-        final ObjectInputStream ois;
-
-        String msgReply = "Hello from Android, you are #" + cnt;
-
         try {
-            oos = new ObjectOutputStream(hostThreadSocket.getOutputStream());
-            ois = new ObjectInputStream(hostThreadSocket.getInputStream());
-            //writing api data
-            Log.d("Writing", "Sending room");
-            String task = (String)ois.readObject();
-            switch(task)
-            {
-                case "getRoom":
-                    mGraphServiceController.apiThisRoom();
-                    mGraphServiceController.apiRooms();
-                    Thread.sleep(1000);
-                    Log.d("ServiceController", mGraphServiceController.getRoom().toString());
-                    oos.writeObject(mGraphServiceController.getRoom());
-                    oos.writeObject(mGraphServiceController.getRooms());
-                    oos.close();
-                    ois.close();
-                    break;
-                case "getApointments":
-                    oos.writeObject(new Room("LOL", "lol", 0));
-                    oos.close();
-                    ois.close();
-                    break;
-                case "getUsers":
-                    mGraphServiceController.apiUsers();
-                    Thread.sleep(1000);
-                    oos.writeObject(mGraphServiceController.getUsers());
-                    oos.close();
-                    ois.close();
-                    break;
-                case "postAppointment":
-                    mGraphServiceController.apiScheduleMeeting((Appointment)ois.readObject());
+            ObjectOutputStream oos = new ObjectOutputStream(hostThreadSocket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(hostThreadSocket.getInputStream());
+
+            oossend = oos;
+
+            while (isConnected) {
+                String recv = (String)ois.readObject();
+                Log.d("Server says", "Received message: " + recv);
+                if (recv != null) {
+                    String[] data = recv.split("%");
+
+                    cmds.execute(this, data, controller);
+
+                }
             }
-
-
-
-
-
-
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException e) {} catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public synchronized void send(Object data) throws IOException {
+        oossend.writeObject(data);
     }
 }

@@ -34,8 +34,8 @@ public class RuimteSelectie extends AppCompatActivity {
         //Demo data
         lv = (ListView) findViewById(R.id.listView);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
-        final List<String> rooms = new ArrayList<String>();
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
+        final List<Room> rooms = new ArrayList<>();
+        final ArrayAdapter<Room> arrayAdapter = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, rooms);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,7 +63,7 @@ public class RuimteSelectie extends AppCompatActivity {
                     if (roomController.getAllRooms() != null) {
                         for (Room r: roomController.getAllRooms()) {
                             //Check if appointment is today
-                            rooms.add(r.toString());
+                            rooms.add(r);
                         }
                         // Order the appointments on time
 

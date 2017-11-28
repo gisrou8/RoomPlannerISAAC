@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity{
     public static final String ARG_GIVEN_NAME = "givenName";
     private static final int WAIT_TIME = 2000;
     RoomRepo roomController = new RoomRepo(new RoomExContext());
+    AppointmentRepo appointmentController;
     private ListView lv;
     private ListView lvAttendees;
     private Button btnOpenClose;
@@ -56,6 +57,10 @@ public class MainActivity extends AppCompatActivity{
         //Listview for attendees + adapter
         lvAttendees = (ListView) findViewById(R.id.listView2);
         thisRoom = (Room)getIntent().getSerializableExtra("Room");
+        TextView textViewRoom = (TextView) findViewById(R.id.textViewRoom);
+        appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom));
+        // Set current room, currently defaulted to NewtonRuimte
+        textViewRoom.setText(thisRoom.getName());
         Log.d("Main", "Current room:" + thisRoom.toString());
         final List<String> attendees = new ArrayList<String>();
         final ArrayAdapter<String> arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
@@ -80,19 +85,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-//        final Handler apiHandler = new Handler();
-//        apiHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                // Init userlist from API
-//                appointmentController.apiThisRoom();
-//                // Init roomlist from API
-////        appointmentController.apiRooms();
-////        // Add appointments to rooms
-//                appointmentController.apiAppointmentsforRoom();
-//                apiHandler.postDelayed(this, 10000);
-//            }
-//        }, 0);
+
 
         // Wait for the graph api to get the data, when data has arrived do something with this data
         final Handler handler = new android.os.Handler();
@@ -103,7 +96,7 @@ public class MainActivity extends AppCompatActivity{
 
                 mProgressbar.setVisibility(View.INVISIBLE);
                if (roomController.getCurrentRoom() != null) {
-                    for(Appointment appointment : roomController.getCurrentRoom().getAppointments()){
+                    for(Appointment appointment : appointmentController.getAllAppointments()){
                         //Check if appointment is today
                         if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
                             appointments.add(appointment);
@@ -117,12 +110,6 @@ public class MainActivity extends AppCompatActivity{
                 } else {
                     Log.d("MainActivity", "userlist is null");
                 }
-                if (roomController.getCurrentRoom() != null) {
-                    TextView textViewRoom = (TextView) findViewById(R.id.textViewRoom);
-                    // Set current room, currently defaulted to NewtonRuimte
-                    textViewRoom.setText(roomController.getCurrentRoom().getName());
-                }
-                handler.postDelayed(this, 5000);
 
             }
         }, WAIT_TIME);

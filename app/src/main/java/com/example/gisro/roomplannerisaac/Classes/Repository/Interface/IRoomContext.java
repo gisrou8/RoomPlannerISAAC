@@ -13,5 +13,5 @@ public interface IRoomContext {
     void updateRoom(Room room);
     void removeRoom(Room room);
     ArrayList<Room> getAllRooms();
-    Room getCurrentRoom();
+    Room getCurrentRoom(   );
 }

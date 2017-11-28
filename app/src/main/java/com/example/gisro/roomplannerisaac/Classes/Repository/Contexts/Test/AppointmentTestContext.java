@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import java.util.ArrayList;
 
 import fhict.mylibrary.Appointment;
+import fhict.mylibrary.Room;
 
 /**
  * Created by Martien on 08-Nov-17.
@@ -53,6 +54,7 @@ public class AppointmentTestContext implements IAppointmentContext {
 
     @Override
     public ArrayList<Appointment> getAllAppointments() {
-        return appointments;
+        return null;
     }
+
 }

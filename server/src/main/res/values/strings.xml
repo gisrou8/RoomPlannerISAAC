@@ -1,5 +1,5 @@
 <!DOCTYPE resources [
-    <!ENTITY clientId "b8e0d73b-5f43-41b5-8d5b-bea1ca25ac59">
+    <!ENTITY clientId "57170be3-ef53-41fb-a19f-97f5ee4b5b29">
     ]>
 <resources>
     <string name="app_name">ISAAC Room planner Server</string>
