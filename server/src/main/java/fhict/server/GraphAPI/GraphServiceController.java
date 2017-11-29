@@ -276,8 +276,8 @@ public class GraphServiceController {
     public void apiScheduleMeeting(Appointment appointment)
     {
         try {
-            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
-
+            Event e = createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees());
+            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
         }
         catch (Exception ex){
             Log.d("GraphServiceController", ex.getMessage());

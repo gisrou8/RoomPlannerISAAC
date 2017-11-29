@@ -7,9 +7,9 @@ import fhict.server.Sockets.SocketServerReplyThread;
  * Created by BePulverized on 28-11-2017.
  */
 
-public class DisconnectCommand implements ClientCommand {
+public class DisconnectCommandI implements IClientCommand {
     @Override
-    public void execute(SocketServerReplyThread server, String[] params, GraphServiceController controller) {
+    public void execute(SocketServerReplyThread server, Object[] params, GraphServiceController controller) {
         server.close();
     }
 }

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ClassLibrary/ClassLibrary.iml" filepath="$PROJECT_DIR$/ClassLibrary/ClassLibrary.iml" />
+      <module fileurl="file://D:\Documents\School\PTS\RoomPlannerISAAC\ClassLibrary\ClassLibrary.iml" filepath="D:\Documents\School\PTS\RoomPlannerISAAC\ClassLibrary\ClassLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/RoomPlannerISAAC.iml" filepath="$PROJECT_DIR$/RoomPlannerISAAC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />

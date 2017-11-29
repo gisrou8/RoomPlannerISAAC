@@ -1,5 +1,6 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 
@@ -17,17 +18,17 @@ import fhict.mylibrary.Room;
 public class AppointmentExContext implements IAppointmentContext {
 
     private Client client;
+    private Room room;
 
     public AppointmentExContext(Room room){
-        client = new Client("192.168.178.118", 8080, new Task("Appointments", room));
-        client.start();
+        this.room = room;
     }
 
     @Override
     public void addAppointment(Appointment item) {
-
+        client = new Client("192.168.178.118", 8080, new Task("schedule", item));
+        client.start();
     }
-
     @Override
     public void updateAppointment(Appointment item) {
         throw new UnsupportedOperationException();
@@ -40,6 +41,8 @@ public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public ArrayList<Appointment> getAllAppointments() {
+        client = new Client("192.168.178.118", 8080, new Task("Appointments", room));
+        client.start();
         return client.getAppointments();
     }
 }
