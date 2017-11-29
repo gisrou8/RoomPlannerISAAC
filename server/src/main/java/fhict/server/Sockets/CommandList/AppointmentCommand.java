@@ -13,8 +13,8 @@ import fhict.server.Sockets.SocketServerReplyThread;
 public class AppointmentCommand implements ClientCommand {
     @Override
     public void execute(SocketServerReplyThread server, String[] params, GraphServiceController controller) throws IOException, InterruptedException {
-        controller.apiAppointments(new Room(params[1], null,0));
-        Thread.sleep(2000);
-        server.send(controller.getAppointmentsforRoom(new Room(params[1], null, 0)));
+        controller.apiAppointments(new Room(params[0], null,0));
+        Thread.sleep(1100);
+        server.send(controller.getAppointmentsforRoom(new Room(params[0], null, 0)));
     }
 }

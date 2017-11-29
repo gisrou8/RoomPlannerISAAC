@@ -111,7 +111,7 @@ public class Reservering extends AppCompatActivity {
             email.name = user.getName();
             email.address = user.getEmail();
             att.emailAddress = email;
-            newApp.addAttendee(att);
+            newApp.addAttendee(new User(att.emailAddress.name, att.emailAddress.address));
         }
         scheduleMeeting(newApp);
         Intent i = new Intent(this, MainActivity.class);

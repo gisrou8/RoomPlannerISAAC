@@ -60,6 +60,7 @@ public class RuimteOverview extends AppCompatActivity{
                 else {
                     mProgressbar.setVisibility(View.INVISIBLE);
                     if (roomController.getAllRooms() != null) {
+                        rooms.clear();
                         for (Room r: roomController.getAllRooms()) {
                             //Check if appointment is today
                             rooms.add(r.toString());

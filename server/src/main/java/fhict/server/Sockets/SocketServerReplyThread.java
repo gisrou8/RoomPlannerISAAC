@@ -35,7 +35,7 @@ public class SocketServerReplyThread extends Thread {
         cmds.addCommand(new RoomCommand(), "Room");
         cmds.addCommand(new DisconnectCommand(), "disconnect");
         cmds.addCommand(new UserCommand(), "Users");
-        cmds.addCommand(new AppointmentCommand(), "Appointment");
+        cmds.addCommand(new AppointmentCommand(), "Appointments");
         Commands server = new Commands();
         cmds.addCommand(server, "server");
         this.controller = controller;
@@ -60,10 +60,10 @@ public class SocketServerReplyThread extends Thread {
 
             while (isConnected) {
                 String recv = (String)ois.readObject();
-                Log.d("Server says", "Received message: " + recv);
+
                 if (recv != null) {
                     String[] data = recv.split("%");
-
+                    Log.d("Server says", "Received message: " + data[0]);
                     cmds.execute(this, data, controller);
 
                 }

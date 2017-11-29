@@ -1,7 +1,10 @@
 package com.example.gisro.roomplannerisaac.Classes.Client;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
+
+import com.example.gisro.roomplannerisaac.Classes.Acitivities.MainActivity;
 
 import org.joda.time.DateTime;
 
@@ -64,6 +67,7 @@ public class Client extends Thread {
                         Room room = (Room) task.data;
                         oos.writeObject("Appointments%" + room.getName());
                         appointments = (ArrayList<Appointment>) ois.readObject();
+                        oos.writeObject("disconnect");
                         oos.close();
                         ois.close();
                         break;
@@ -71,6 +75,7 @@ public class Client extends Thread {
                         oos.writeObject("Room");
                         room = (Room) ois.readObject();
                         roomList = (ArrayList<Room>) ois.readObject();
+                        oos.writeObject("disconnect");
                         oos.close();
                         ois.close();
                         break;

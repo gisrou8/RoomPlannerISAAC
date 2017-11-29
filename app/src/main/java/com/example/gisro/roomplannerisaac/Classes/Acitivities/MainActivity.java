@@ -29,11 +29,12 @@ import org.joda.time.LocalDate;
 
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
+import fhict.mylibrary.User;
 
 public class MainActivity extends AppCompatActivity{
 
     public static final String ARG_GIVEN_NAME = "givenName";
-    private static final int WAIT_TIME = 2000;
+    private static final int WAIT_TIME = 7000;
     RoomRepo roomController = new RoomRepo(new RoomExContext());
     AppointmentRepo appointmentController;
     private ListView lv;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity{
     private TextView tvDate;
     private int checkCount = 2000;
     private Room thisRoom;
+    ArrayList<Appointment> appointments = null;
+    ArrayAdapter<Appointment> arrayAdapter = null;
+    ArrayAdapter<String> arrayAdapterAttendees = null;
+    List<String> attendees = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,15 +67,15 @@ public class MainActivity extends AppCompatActivity{
         // Set current room, currently defaulted to NewtonRuimte
         textViewRoom.setText(thisRoom.getName());
         Log.d("Main", "Current room:" + thisRoom.toString());
-        final List<String> attendees = new ArrayList<String>();
-        final ArrayAdapter<String> arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
+        attendees = new ArrayList<String>();
+        arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
         lvAttendees.setAdapter(arrayAdapterAttendees);
         lvAttendees.setEnabled(false);
         lvAttendees.setOnItemClickListener(null);
         //Listview for appointments + adapter
         lv = (ListView) findViewById(R.id.listView);
-        final ArrayList<Appointment> appointments = new ArrayList<>();
-        final ArrayAdapter<Appointment> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointments);
+        appointments = new ArrayList<>();
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointments);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -78,14 +83,14 @@ public class MainActivity extends AppCompatActivity{
                 arrayAdapterAttendees.clear();
                 arrayAdapterAttendees.notifyDataSetChanged();
                 Appointment app = (Appointment)adapterView.getAdapter().getItem(i);
-                for(Attendee att : app.getAttendees())
+                for(User att : app.getAttendees())
                 {
-                    attendees.add(att.emailAddress.name);
+                    if(!att.getName().toUpperCase().contains("ROOM") && !att.getName().toUpperCase().contains("MOD")) {
+                        attendees.add(att.getName());
+                    }
                 }
             }
         });
-
-
 
         // Wait for the graph api to get the data, when data has arrived do something with this data
         final Handler handler = new android.os.Handler();
@@ -93,26 +98,37 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void run() {
                 arrayAdapter.clear();
-
                 mProgressbar.setVisibility(View.INVISIBLE);
-               if (roomController.getCurrentRoom() != null) {
-                    for(Appointment appointment : appointmentController.getAllAppointments()){
-                        //Check if appointment is today
-                        if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
-                            appointments.add(appointment);
+                boolean checkappointments = true;
+                    if (appointmentController.getAllAppointments() != null) {
+                        checkappointments = false;
+                        for (Appointment appointment : appointmentController.getAllAppointments()) {
+                            //Check if appointment is today
+                            Log.d("DateCheck", "Checking if date is today");
+                            if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
+                                Log.d("DateCheck", "Yes");
+                                appointments.add(appointment);
+                            }
                         }
+                        // Order the appointments on time
+                        Collections.sort(appointments);
+                        Log.d("MainActivity", "Adding " + appointments.size() + " items to appointment list");
+                        arrayAdapter.notifyDataSetChanged();
+                        arrayAdapterAttendees.notifyDataSetChanged();
+                    } else {
+                        Log.d("MainActivity", "userlist is null");
                     }
-                    // Order the appointments on time
-                    Collections.sort(appointments);
-                    Log.d("MainActivity", "Adding " + appointments.size() + " items to appointment list");
-                    arrayAdapter.notifyDataSetChanged();
-                    arrayAdapterAttendees.notifyDataSetChanged();
-                } else {
-                    Log.d("MainActivity", "userlist is null");
                 }
 
-            }
         }, WAIT_TIME);
+
+
+
+    }
+
+    public void updateList(final ArrayList<Appointment> apps)
+    {
+
     }
 
     public void btnLogout(View v){
