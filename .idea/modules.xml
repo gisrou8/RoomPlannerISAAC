@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RoomPlannerISAAC.iml" filepath="$PROJECT_DIR$/RoomPlannerISAAC.iml" />
+      <module fileurl="file://C:\Users\gisro\OneDrive\Documenten\GitHub\RoomPlannerISAACadmin\RoomPlannerISAAC.iml" filepath="C:\Users\gisro\OneDrive\Documenten\GitHub\RoomPlannerISAACadmin\RoomPlannerISAAC.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RoomPlannerISAACadmin.iml" filepath="$PROJECT_DIR$/RoomPlannerISAACadmin.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
+      <module fileurl="file://C:\Users\gisro\OneDrive\Documenten\GitHub\RoomPlannerISAACadmin\mylibrary\mylibrary.iml" filepath="C:\Users\gisro\OneDrive\Documenten\GitHub\RoomPlannerISAACadmin\mylibrary\mylibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/server/server.iml" filepath="$PROJECT_DIR$/server/server.iml" />
+      <module fileurl="file://C:\Users\gisro\OneDrive\Documenten\GitHub\RoomPlannerISAACadmin\server\server.iml" filepath="C:\Users\gisro\OneDrive\Documenten\GitHub\RoomPlannerISAACadmin\server\server.iml" />
     </modules>
   </component>
 </project>
