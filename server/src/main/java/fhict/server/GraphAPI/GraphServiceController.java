@@ -233,7 +233,6 @@ public class GraphServiceController {
             @Override
             public void success(IEventCollectionPage iEventCollectionPage) {
                 List<Event> events = iEventCollectionPage.getCurrentPage();
-                Log.d("apiAppointments", Integer.toString(events.size()));
                 setEvents(room, events);
             }
 
@@ -274,16 +273,16 @@ public class GraphServiceController {
      * @param appointment the appointment and its information, will get converted to an event before posting to API
      * @param
      */
-//    public void apiScheduleMeeting(Appointment appointment)
-//    {
-//        try {
-//            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
-//
-//        }
-//        catch (Exception ex){
-//            Log.d("GraphServiceController", ex.getMessage());
-//        }
-//    }
+    public void apiScheduleMeeting(Appointment appointment)
+    {
+        try {
+            Event e = createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees());
+            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
+        }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
+    }
 
 
     /**
@@ -320,7 +319,6 @@ public class GraphServiceController {
 
     private void setRooms(List<User> users){
         Log.d("GraphServiceController", "Adding rooms to roomlist");
-        roomList.clear();
         for(User user : users)
         {
             // Only add the user if it is a room
@@ -333,17 +331,9 @@ public class GraphServiceController {
     private void setEvents(Room room, List<Event> events)
     {
         ArrayList<Event> eventforRoom = new ArrayList<>();
-        appointmentsandRooms = new HashMap<>();
         for(Event event: events)
         {
-            for(Attendee attendee : event.attendees)
-            {
-                if(attendee.emailAddress.name.equals(room.getName()))
-                {
-                    eventforRoom.add(event);
-                }
-            }
-
+            eventforRoom.add(event);
         }
         appointmentsandRooms.put(room, eventsToAppointments(eventforRoom));
 
@@ -357,12 +347,7 @@ public class GraphServiceController {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
         {
-            ArrayList<fhict.mylibrary.User> attendees = new ArrayList<>();
-            for(Attendee attendee: event.attendees)
-            {
-                attendees.add(new fhict.mylibrary.User(attendee.emailAddress.name, attendee.emailAddress.address));
-            }
-            appointments.add(new Appointment(event.subject, event.start, attendees));
+            appointments.add(new Appointment(event.subject, event.start, event.attendees));
         }
         return appointments;
     }

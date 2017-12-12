@@ -8,12 +8,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 import fhict.server.GraphAPI.GraphServiceController;
-import fhict.server.Sockets.CommandList.AppointmentCommand;
-import fhict.server.Sockets.CommandList.ClientCommand;
+import fhict.server.Sockets.CommandList.AppointmentCommandI;
+import fhict.server.Sockets.CommandList.IClientCommand;
 import fhict.server.Sockets.CommandList.Commands;
-import fhict.server.Sockets.CommandList.DisconnectCommand;
-import fhict.server.Sockets.CommandList.RoomCommand;
-import fhict.server.Sockets.CommandList.UserCommand;
+import fhict.server.Sockets.CommandList.DisconnectCommandI;
+import fhict.server.Sockets.CommandList.RoomCommandI;
+import fhict.server.Sockets.CommandList.ScheduleCommandI;
+import fhict.server.Sockets.CommandList.UserCommandI;
 
 /**
  * Created by BePulverized on 16-11-2017.
@@ -32,17 +33,18 @@ public class SocketServerReplyThread extends Thread {
     SocketServerReplyThread(Socket socket, GraphServiceController controller) {
         hostThreadSocket = socket;
         cmds = new Commands();
-        cmds.addCommand(new RoomCommand(), "Room");
-        cmds.addCommand(new DisconnectCommand(), "disconnect");
-        cmds.addCommand(new UserCommand(), "Users");
-        cmds.addCommand(new AppointmentCommand(), "Appointments");
+        cmds.addCommand(new RoomCommandI(), "Room");
+        cmds.addCommand(new DisconnectCommandI(), "disconnect");
+        cmds.addCommand(new UserCommandI(), "Users");
+        cmds.addCommand(new AppointmentCommandI(), "Appointment");
+        cmds.addCommand(new ScheduleCommandI(), "schedule");
         Commands server = new Commands();
         cmds.addCommand(server, "server");
         this.controller = controller;
         isConnected = true;
     }
 
-    public void addCommand(ClientCommand cmd, String name){
+    public void addCommand(IClientCommand cmd, String name){
         cmds.addCommand(cmd, name);
     }
 
@@ -59,14 +61,8 @@ public class SocketServerReplyThread extends Thread {
             oossend = oos;
 
             while (isConnected) {
-                String recv = (String)ois.readObject();
-
-                if (recv != null) {
-                    String[] data = recv.split("%");
-                    Log.d("Server says", "Received message: " + data[0]);
-                    cmds.execute(this, data, controller);
-
-                }
+                Object[] data = (Object[])ois.readObject();
+                cmds.execute(this, data, controller);
             }
         } catch (IOException e) {} catch (ClassNotFoundException e) {
             e.printStackTrace();

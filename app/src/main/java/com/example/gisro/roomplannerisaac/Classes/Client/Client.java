@@ -4,8 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 
-import com.example.gisro.roomplannerisaac.Classes.Acitivities.MainActivity;
-
 import org.joda.time.DateTime;
 
 import java.io.IOException;
@@ -54,56 +52,57 @@ public class Client extends Thread {
         return userList;
     }
 
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
+
     @Override
     public void run() {
         Socket socket = null;
         while (isConnected) {
+            ObjectOutputStream oos = null;
+            ObjectInputStream ois = null;
             try {
                 socket = new Socket(dstAddress, dstPort);
-                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+                oos = new ObjectOutputStream(socket.getOutputStream());
+                ois = new ObjectInputStream(socket.getInputStream());
                 switch (task.id) {
                     case "Appointments":
                         Room room = (Room) task.data;
-                        oos.writeObject("Appointments%" + room.getName());
+                        Object[] oa = {"Appointments", room};
+                        oos.writeObject(oa);
                         appointments = (ArrayList<Appointment>) ois.readObject();
-                        oos.writeObject("disconnect");
-                        oos.close();
-                        ois.close();
                         break;
                     case "Room":
-                        oos.writeObject("Room");
-                        room = (Room) ois.readObject();
+                        Object[] ob = {"Room"};
+                        oos.writeObject(ob);
                         roomList = (ArrayList<Room>) ois.readObject();
-                        oos.writeObject("disconnect");
-                        oos.close();
-                        ois.close();
                         break;
                     case "Users":
                         oos.writeObject("Users");
                         userList = (ArrayList<User>) ois.readObject();
-                        oos.close();
-                        ois.close();
                         break;
-                    case "PostAppointment":
-                        oos.writeObject(new Appointment("blabla", DateTime.now()));
-                        oos.close();
-                        ois.close();
+                    case "schedule":
+                        Object[] od = {"schedule", };
+                        oos.writeObject(od);
                         break;
                 }
-
-
             } catch (UnknownHostException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    oos.close();
+                    ois.close();
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d("client", "Closing error; Sockits/Object streams failed to close");
+                }
             }
         }
-    }
-
-    public ArrayList<Appointment> getAppointments() {
-        return appointments;
     }
 }
