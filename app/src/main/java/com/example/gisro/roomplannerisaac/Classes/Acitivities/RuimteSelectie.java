@@ -19,14 +19,15 @@ import java.util.List;
 
 import fhict.mylibrary.Room;
 
-public class RuimteSelectie extends AppCompatActivity {
+public class RuimteSelectie extends AppCompatActivity implements ActivityData {
 
     public static final String ARG_GIVEN_NAME = "givenName";
-    RoomRepo roomController = new RoomRepo(new RoomExContext());
+    RoomRepo roomController = new RoomRepo(new RoomExContext(this));
     private ListView lv;
     private ProgressBar mProgressbar;
     private int checkCount = 2000;
-
+    final List<Room> rooms = new ArrayList<>();
+    ArrayAdapter<Room> arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,8 @@ public class RuimteSelectie extends AppCompatActivity {
         //Demo data
         lv = (ListView) findViewById(R.id.listView);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
-        final List<Room> rooms = new ArrayList<>();
-        final ArrayAdapter<Room> arrayAdapter = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, rooms);
+        mProgressbar.setVisibility(View.VISIBLE);
+        arrayAdapter = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, rooms);
         lv.setAdapter(arrayAdapter);
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -47,39 +48,32 @@ public class RuimteSelectie extends AppCompatActivity {
         });
 
         // Init roomlist from API
-//        mGraphServiceController.apiRooms();
-        // Wait for the graph api to get the data, when data has arrived do something with this data
-        final android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mProgressbar.setVisibility(View.VISIBLE);
-                checkCount -= 1000;
-                if(checkCount > 0){
-                    handler.postDelayed(this, 1000);
-                }
-                else {
-                    mProgressbar.setVisibility(View.INVISIBLE);
-                    if (roomController.getAllRooms() != null) {
-                        for (Room r: roomController.getAllRooms()) {
-                            //Check if appointment is today
-                            rooms.add(r);
-                        }
-                        // Order the appointments on time
-
-                        arrayAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("MainActivity", "userlist is null");
-                    }
-                }
-            }
-        }, 2000);
-
+        roomController.getAllRooms();
 
 
 
 
     }
 
+    public void setList(ArrayList<Room> roomList)
+    {
 
+    }
+
+
+    @Override
+    public void setData(final Object data) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(Room r : (ArrayList<Room>)data)
+                {
+                    rooms.add(r);
+                }
+                arrayAdapter.notifyDataSetChanged();
+                mProgressbar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
 }

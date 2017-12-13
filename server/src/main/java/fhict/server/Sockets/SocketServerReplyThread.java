@@ -2,7 +2,9 @@ package fhict.server.Sockets;
 
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -26,12 +28,14 @@ public class SocketServerReplyThread extends Thread {
     private Socket hostThreadSocket;
     private boolean isConnected;
     private Commands cmds;
-    private ObjectInputStream ois;
-    private ObjectOutputStream oossend;
     private GraphServiceController controller;
+    ObjectOutputStream oos = null;
+    ObjectInputStream ois = null;
 
-    SocketServerReplyThread(Socket socket, GraphServiceController controller) {
+    public SocketServerReplyThread(Socket socket, GraphServiceController controller) throws IOException {
         hostThreadSocket = socket;
+        oos = new ObjectOutputStream(hostThreadSocket.getOutputStream());
+        ois = new ObjectInputStream(hostThreadSocket.getInputStream());
         cmds = new Commands();
         cmds.addCommand(new RoomCommandI(), "Room");
         cmds.addCommand(new DisconnectCommandI(), "disconnect");
@@ -55,11 +59,6 @@ public class SocketServerReplyThread extends Thread {
     @Override
     public void run() {
         try {
-            ObjectOutputStream oos = new ObjectOutputStream(hostThreadSocket.getOutputStream());
-            ObjectInputStream ois = new ObjectInputStream(hostThreadSocket.getInputStream());
-
-            oossend = oos;
-
             while (isConnected) {
                 Object[] data = (Object[])ois.readObject();
                 cmds.execute(this, data, controller);
@@ -72,6 +71,8 @@ public class SocketServerReplyThread extends Thread {
     }
 
     public synchronized void send(Object data) throws IOException {
-        oossend.writeObject(data);
+        oos.writeObject(data);
+        oos.flush();
+        Log.d("Server says: ", "Sending data" + data.getClass().toString());
     }
 }

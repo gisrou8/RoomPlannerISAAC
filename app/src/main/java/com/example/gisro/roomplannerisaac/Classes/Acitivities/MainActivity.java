@@ -31,11 +31,11 @@ import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
 import fhict.mylibrary.User;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements ActivityData{
 
     public static final String ARG_GIVEN_NAME = "givenName";
     private static final int WAIT_TIME = 7000;
-    RoomRepo roomController = new RoomRepo(new RoomExContext());
+    RoomRepo roomController = new RoomRepo(new RoomExContext(null));
     AppointmentRepo appointmentController;
     private ListView lv;
     private ListView lvAttendees;
@@ -63,7 +63,8 @@ public class MainActivity extends AppCompatActivity{
         lvAttendees = (ListView) findViewById(R.id.listView2);
         thisRoom = (Room)getIntent().getSerializableExtra("Room");
         TextView textViewRoom = (TextView) findViewById(R.id.textViewRoom);
-        appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom));
+        appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
+        appointmentController.getAllAppointments();
         // Set current room, currently defaulted to NewtonRuimte
         textViewRoom.setText(thisRoom.getName());
         Log.d("Main", "Current room:" + thisRoom.toString());
@@ -91,39 +92,6 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-
-        // Wait for the graph api to get the data, when data has arrived do something with this data
-        final Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                arrayAdapter.clear();
-                mProgressbar.setVisibility(View.INVISIBLE);
-                boolean checkappointments = true;
-                    if (appointmentController.getAllAppointments() != null) {
-                        checkappointments = false;
-                        for (Appointment appointment : appointmentController.getAllAppointments()) {
-                            //Check if appointment is today
-                            Log.d("DateCheck", "Checking if date is today");
-                            if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
-                                Log.d("DateCheck", "Yes");
-                                appointments.add(appointment);
-                            }
-                        }
-                        // Order the appointments on time
-                        Collections.sort(appointments);
-                        Log.d("MainActivity", "Adding " + appointments.size() + " items to appointment list");
-                        arrayAdapter.notifyDataSetChanged();
-                        arrayAdapterAttendees.notifyDataSetChanged();
-                    } else {
-                        Log.d("MainActivity", "userlist is null");
-                    }
-                }
-
-        }, WAIT_TIME);
-
-
-
     }
 
     public void updateList(final ArrayList<Appointment> apps)
@@ -168,4 +136,22 @@ public class MainActivity extends AppCompatActivity{
         Log.d("getSelectedItem", s);
     }
 
+    @Override
+    public void setData(final Object data) throws ClassNotFoundException {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for(Appointment appointment : (ArrayList<Appointment>)data)
+                {
+                    if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
+                        Log.d("DateCheck", "Yes");
+                        appointments.add(appointment);
+                    }
+                }
+                arrayAdapter.notifyDataSetChanged();
+                arrayAdapterAttendees.notifyDataSetChanged();
+                mProgressbar.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
 }

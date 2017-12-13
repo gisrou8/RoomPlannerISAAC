@@ -22,7 +22,7 @@ import fhict.mylibrary.Room;
 public class RuimteOverview extends AppCompatActivity{
 
     public static final String ARG_GIVEN_NAME = "givenName";
-    RoomRepo roomController = new RoomRepo(new RoomExContext());
+    RoomRepo roomController = new RoomRepo(new RoomExContext(null));
     private ListView lv;
     private ProgressBar mProgressbar;
     private int checkCount = 2000;

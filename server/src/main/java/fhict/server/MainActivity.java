@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
 
-import fhict.server.Sockets.SocketServerThread;
+import fhict.server.GraphAPI.GraphServiceController;
+import fhict.server.Sockets.SocketServerReplyThread;
+import fhict.server.Sockets.StartSocketAsync;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
         infoip = (TextView) findViewById(R.id.infoip);
 
         infoip.setText(getIpAddress());
-        Thread socketServerThread = new Thread(new SocketServerThread());
-        socketServerThread.start();
-
+        new StartSocketAsync().execute();
     }
 
 

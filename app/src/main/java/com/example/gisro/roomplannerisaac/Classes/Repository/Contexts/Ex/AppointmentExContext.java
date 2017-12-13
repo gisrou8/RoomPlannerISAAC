@@ -1,10 +1,9 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 
-import java.net.Socket;
 import java.util.ArrayList;
 
 
-import com.example.gisro.roomplannerisaac.Classes.Acitivities.MainActivity;
+import com.example.gisro.roomplannerisaac.Classes.Acitivities.ActivityData;
 import com.example.gisro.roomplannerisaac.Classes.Client.Client;
 import com.example.gisro.roomplannerisaac.Classes.Client.Task;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointmentContext;
@@ -20,14 +19,15 @@ public class AppointmentExContext implements IAppointmentContext {
 
     private Client client;
     private Room room;
-
-    public AppointmentExContext(Room room){
+    private ActivityData activity;
+    public AppointmentExContext(Room room, ActivityData activity){
         this.room = room;
+        this.activity = activity;
     }
 
     @Override
     public void addAppointment(Appointment item) {
-        client = new Client("192.168.178.118", 8080, new Task("schedule", item));
+        client = new Client("192.168.178.118", 8080, new Task("schedule", item), activity);
         client.start();
     }
     @Override
@@ -42,7 +42,7 @@ public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public ArrayList<Appointment> getAllAppointments() {
-        client = new Client("192.168.178.118", 8080, new Task("Appointments", room));
+        client = new Client("192.168.178.118", 8080, new Task("Appointments", room), activity);
         client.start();
         return client.getAppointments();
     }

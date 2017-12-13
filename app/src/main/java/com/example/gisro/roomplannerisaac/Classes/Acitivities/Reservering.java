@@ -32,7 +32,7 @@ import java.util.List;
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.User;
 
-public class Reservering extends AppCompatActivity {
+public class Reservering extends AppCompatActivity implements ActivityData{
 
     private ListView gebruikers;
     private ListView selectedUserslv;
@@ -41,7 +41,9 @@ public class Reservering extends AppCompatActivity {
     private NumberPicker numPicker;
     private EditText appointmentNameText;
     final List<User> selUsers = new ArrayList<>();
-    UserRepo userController = new UserRepo(new UserExContext());
+    final List<User> users = new ArrayList<>();
+    ArrayAdapter<User> arrayAdapter;
+    UserRepo userController = new UserRepo(new UserExContext(this));
     private ProgressBar mProgressbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,8 @@ public class Reservering extends AppCompatActivity {
         appointmentNameText = (EditText)findViewById(R.id.editText);
         selectedUserslv = (ListView) findViewById(R.id.lvSelectedUsers);
         mProgressbar = (ProgressBar)findViewById(R.id.progressBar);
-        final List<User> users = new ArrayList<>();
-        final ArrayAdapter<User> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, users);
+        userController.getUsers();
 
         final ArrayAdapter<User> selUsersarrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, selUsers);
         gebruikers.setChoiceMode(ListView.CHOICE_MODE_NONE);
@@ -74,30 +76,6 @@ public class Reservering extends AppCompatActivity {
         });
         selectedUserslv.setAdapter(selUsersarrayAdapter);
         selectedUserslv.setOnItemClickListener(null);
-
-//        // Init userlist from API
-//        mGraphServiceController.apiUsers();
-        // Wait for the graph api to get the data, when data has arrived do something with this data
-        final android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mProgressbar.setVisibility(View.VISIBLE);
-
-                mProgressbar.setVisibility(View.INVISIBLE);
-                if (userController.getUsers() != null) {
-                    for (User user : userController.getUsers()) {
-                        users.add(user);
-                    }
-
-
-                    arrayAdapter.notifyDataSetChanged();
-                } else {
-                    Log.d("MainActivity", "userlist is null");
-                }
-
-            }
-        }, 2000);
 
     }
 
@@ -134,4 +112,19 @@ public class Reservering extends AppCompatActivity {
     }
 
 
+    @Override
+    public void setData(final Object data) throws ClassNotFoundException {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (User user : ((ArrayList<User>)
+                        data)) {
+                    users.add(user);
+                }
+                arrayAdapter.notifyDataSetChanged();
+                mProgressbar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+    }
 }

@@ -5,4 +5,5 @@ package com.example.gisro.roomplannerisaac.Classes.Acitivities;
  */
 
 public interface ActivityData {
+    void setData(Object data) throws ClassNotFoundException;
 }
