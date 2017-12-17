@@ -40,7 +40,7 @@ public class UserExContext implements IUserContext {
 
     @Override
     public ArrayList<User> getAllUsers() {
-        client = new Client("192.168.178.118", 8080, new Task("Users", null), activity);
+        client = new Client(new Task("Users", null), activity);
         client.start();
         return client.getUsers();
     }
