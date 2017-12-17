@@ -1,5 +1,7 @@
 package fhict.mylibrary;
 
+import com.microsoft.graph.extensions.Attendee;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,12 +13,16 @@ public class Room implements Serializable{
     private String Name;
     private String id;
     private State state;
+    private int persons;
+    private int floor;
     private ArrayList<Appointment> appointments;
-    public Room(String name, String id, int state)
+    public Room(String name, String id, int state, int persons, int floor)
     {
         this.Name = name;
         this.appointments = new ArrayList<>();
         this.id = id;
+        this.persons = persons;
+        this.floor = floor;
         switch (state)
         {
             case 0:
@@ -29,6 +35,14 @@ public class Room implements Serializable{
                 this.state = State.Bezet;
                 break;
         }
+    }
+
+    public int getPersons(){
+        return persons;
+    }
+
+    public int getFloor(){
+        return floor;
     }
 
     public void setState(State state){

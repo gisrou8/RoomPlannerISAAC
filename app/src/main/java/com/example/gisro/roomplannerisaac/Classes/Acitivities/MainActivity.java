@@ -2,6 +2,7 @@ package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,9 +14,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.TimeZone;
+
 import com.example.gisro.roomplannerisaac.Classes.Repository.AppointmentRepo;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.AppointmentExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.RoomExContext;
@@ -26,6 +31,7 @@ import com.microsoft.graph.extensions.Attendee;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.w3c.dom.Text;
 
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
@@ -44,6 +50,12 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
     private Appointment a;
     private ProgressBar mProgressbar;
     private TextView tvDate;
+    private TextView tvTime;
+    private TextView tvFloor;
+    private TextView tvPersons;
+    private TextView tvRoom;
+    private TextView tvStatus;
+    private ConstraintLayout layout;
     private int checkCount = 2000;
     private Room thisRoom;
     ArrayList<Appointment> appointments = null;
@@ -55,21 +67,35 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button)findViewById(R.id.btnVergadering);
-        btnLogout = (Button)findViewById(R.id.btnLogout);
         tvDate = (TextView)findViewById(R.id.appointmentTitle);
-        tvDate.setText("Geplande vergaderingen " + DateTime.now().toString("dd-MM-yyyy") + ":");
+        tvTime = (TextView)findViewById(R.id.tvTime);
+        tvFloor = (TextView)findViewById(R.id.tvFloor);
+        tvPersons = (TextView)findViewById(R.id.tvPersons);
+        tvRoom = (TextView) findViewById(R.id.textViewRoom);
+        tvStatus = (TextView) findViewById(R.id.tvStatus);
+        layout = (ConstraintLayout)findViewById(R.id.layoutMain);
+        //Current time
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.HOUR_OF_DAY, 1);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        tvTime.setText(df.format(c.getTime()));
+        //Setting this room
+        thisRoom = (Room)getIntent().getSerializableExtra("Room");
+        tvRoom.setText(thisRoom.getName());
+        tvPersons.setText(thisRoom.getPersons() + "Persons");
+        tvFloor.setText("Floor " + thisRoom.getFloor());
+        //Progressbar
         mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
         //Listview for attendees + adapter
         lvAttendees = (ListView) findViewById(R.id.listView2);
-        thisRoom = (Room)getIntent().getSerializableExtra("Room");
-        TextView textViewRoom = (TextView) findViewById(R.id.textViewRoom);
         appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
         appointmentController.getAllAppointments();
-        // Set current room, currently defaulted to NewtonRuimte
-        textViewRoom.setText(thisRoom.getName());
         Log.d("Main", "Current room:" + thisRoom.toString());
         attendees = new ArrayList<String>();
-        arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
+        arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_2, attendees);
         lvAttendees.setAdapter(arrayAdapterAttendees);
         lvAttendees.setEnabled(false);
         lvAttendees.setOnItemClickListener(null);
@@ -144,8 +170,14 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
                 for(Appointment appointment : (ArrayList<Appointment>)data)
                 {
                     if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
-                        Log.d("DateCheck", "Yes");
                         appointments.add(appointment);
+                        if(appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow()){
+                            layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
+                            btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
+                            tvStatus.setText("RESERVED");
+                        }
+                        Log.d("DateCheck", "Yes");
+
                     }
                 }
                 arrayAdapter.notifyDataSetChanged();

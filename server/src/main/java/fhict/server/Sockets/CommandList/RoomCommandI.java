@@ -48,7 +48,12 @@ public class RoomCommandI implements IClientCommand {
         {
             // Only add the user if it is a room
             if(user.displayName.contains("Room")){
-                roomList.add(new Room(user.displayName, user.id, Integer.parseInt(user.surname)));
+                if(user.givenName != null) {
+                    String[] data = user.givenName.split("/");
+                    //givenname = personmaximum per room
+                    //jobTitle = floornumber
+                    roomList.add(new Room(user.displayName, user.id, Integer.parseInt(user.surname), Integer.parseInt(data[0]), Integer.parseInt(data[1])));
+                }
             }
         }
         return roomList;
