@@ -33,7 +33,7 @@ public class Client extends Thread {
     private ActivityData activity;
 
     public Client(Task task, ActivityData activity) {
-        dstAddress = "192.168.178.118";
+        dstAddress = "145.93.48.13";
         dstPort = 8080;
         this.task = task;
         isConnected = true;
