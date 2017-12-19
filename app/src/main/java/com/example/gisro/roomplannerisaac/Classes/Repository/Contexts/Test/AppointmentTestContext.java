@@ -1,14 +1,13 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test;
 
-import com.example.gisro.roomplannerisaac.Classes.Appointment;
-import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IAppointmentContext;
-import com.microsoft.graph.extensions.Attendee;
-
+import com.example.gisro.roomplannerisaac.Classes.Acitivities.MainActivity;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointmentContext;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+
+import fhict.mylibrary.Appointment;
+import fhict.mylibrary.Room;
 
 /**
  * Created by Martien on 08-Nov-17.
@@ -19,13 +18,13 @@ public class AppointmentTestContext implements IAppointmentContext {
 
     public AppointmentTestContext() {
         appointments = new ArrayList<>();
-        appointments.add(new Appointment("Standup", new DateTime(2017, 12, 5, 13, 45)));
+        appointments.add(new Appointment("Standup", DateTime.now()));
         appointments.add(new Appointment("McDonalds", new DateTime(2017, 12, 5, 11, 10)));
         appointments.add(new Appointment("Dinosaurus", new DateTime(2017, 12, 5, 19, 0)));
     }
 
     @Override
-    public void addAppointment(Object item) {
+    public void addAppointment(Appointment item) {
         if (!appointments.contains(item)) {
             appointments.add((Appointment)item);
         }else{
@@ -35,7 +34,7 @@ public class AppointmentTestContext implements IAppointmentContext {
     }
 
     @Override
-    public void updateAppointment(Object item) {
+    public void updateAppointment(Appointment item) {
         if (appointments.contains(item)) {
             appointments.set(appointments.indexOf(item), (Appointment)item);
         }else{
@@ -45,7 +44,7 @@ public class AppointmentTestContext implements IAppointmentContext {
     }
 
     @Override
-    public void removeAppointment(Object item) {
+    public void removeAppointment(Appointment item) {
         if (appointments.contains(item)) {
             appointments.remove(item);
         }else{
@@ -55,7 +54,8 @@ public class AppointmentTestContext implements IAppointmentContext {
     }
 
     @Override
-    public List getAllAppointments() {
-        return appointments;
+    public ArrayList<Appointment> getAllAppointments() {
+        return null;
     }
+
 }

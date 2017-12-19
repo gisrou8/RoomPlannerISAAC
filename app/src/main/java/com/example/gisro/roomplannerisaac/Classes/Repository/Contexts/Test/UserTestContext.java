@@ -1,10 +1,9 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test;
-
-import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IUserContext;
-import com.example.gisro.roomplannerisaac.Classes.User;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IUserContext;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import fhict.mylibrary.User;
 
 /**
  * Created by Martien on 08-Nov-17.
@@ -54,7 +53,7 @@ public class UserTestContext implements IUserContext {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public ArrayList<User> getAllUsers() {
         return users;
     }
 }

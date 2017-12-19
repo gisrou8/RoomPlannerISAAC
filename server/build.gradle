@@ -10,7 +10,10 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
+        javaCompileOptions.annotationProcessorOptions{
+            includeCompileClasspath true
+        }
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -56,4 +59,9 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
 
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
+
+    compile('com.microsoft.aad:adal:1.13.+')
+
+
+    compile project(path: ':mylibrary')
 }

@@ -1,40 +1,67 @@
 package com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import com.example.gisro.roomplannerisaac.Classes.GraphAPI.GraphServiceController;
-import com.example.gisro.roomplannerisaac.Classes.Repository.Interfaces.IRoomContext;
-import com.example.gisro.roomplannerisaac.Classes.Room;
-import com.example.gisro.roomplannerisaac.Classes.User;
+import com.example.gisro.roomplannerisaac.Classes.Acitivities.ActivityData;
+import com.example.gisro.roomplannerisaac.Classes.Acitivities.MainActivity;
+import com.example.gisro.roomplannerisaac.Classes.Acitivities.RuimteSelectie;
+import com.example.gisro.roomplannerisaac.Classes.Client.Client;
+import com.example.gisro.roomplannerisaac.Classes.Client.Task;
+import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IRoomContext;
+
+import fhict.mylibrary.Room;
+
 
 /**
  * Created by Martien on 20-Sep-17.
  */
 
 public class RoomExContext implements IRoomContext {
-    final private GraphServiceController gsc;
 
-    public RoomExContext(){
-        this.gsc = new GraphServiceController();
+    private Client client;
+    private ActivityData activity;
+    public RoomExContext(ActivityData activity)
+    {
+        this.activity = activity;
+        client = new Client("192.168.178.118", 8080, new Task("Room", null), activity);
     }
 
     @Override
     public void addRoom(Room room) {
-        gsc.addRoom(room);
+
     }
 
     @Override
     public void updateRoom(Room room) {
-        gsc.updateRoom(room);
+
     }
 
     @Override
     public void removeRoom(Room room) {
-        gsc.removeRoom(room);
+
     }
 
     @Override
-    public List getAllRooms() {
-        return gsc.getAllRooms();
+    public ArrayList<Room> getAllRooms() {
+        client.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.end();
+        return client.getAllRooms();
+    }
+
+    @Override
+    public Room getCurrentRoom() {
+        client.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.end();
+        return client.getRoom();
     }
 }
