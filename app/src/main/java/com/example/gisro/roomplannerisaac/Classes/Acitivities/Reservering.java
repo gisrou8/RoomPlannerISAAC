@@ -114,7 +114,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
             btn[i].setTextColor(Color.parseColor("#FF535353"));
         }
         btn_unfocus = btn[0];
-        tvThisRoom.setText("Reserve " + thisRoom.getName());
+        tvThisRoom.setText(getString(R.string.reserveRoom) + thisRoom.getName());
         userController.getUsers();
     }
 

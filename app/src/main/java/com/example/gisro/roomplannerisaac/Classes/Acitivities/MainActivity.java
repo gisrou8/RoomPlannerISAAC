@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
         if(thisRoom.getState() == State.Gereserveerd){
             thisRoom.setState(State.Bezet);
             roomController.updateRoom(thisRoom);
-            btnOpenClose.setText("FIND A FREE ROOM");
+            btnOpenClose.setText(getString(R.string.findaRoom));
             tvStatus.setText("OCCUPIED");
             layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
             btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
@@ -205,13 +205,18 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
                 appointments.clear();
                 for(Appointment appointment : (ArrayList<Appointment>)data)
                 {
-                    if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
+                    Log.d("Date", LocalDate.now().toString());
+                    Calendar calnow = Calendar.getInstance();
+                    Calendar calappointment = Calendar.getInstance();
+                    calnow.setTime(LocalDate.now().toDate());
+                    calappointment.setTime(appointment.getReserveringsTijd().toDate());
+                    if (calnow.get(Calendar.YEAR) == calappointment.get(Calendar.YEAR) &&
+                        calnow.get(Calendar.DAY_OF_YEAR) == calappointment.get(Calendar.DAY_OF_YEAR)) {
                         appointments.add(appointment);
                     }
                 }
                 //Add today's appointments to this room
                 //Check for reservations
-
                 thisRoom.setAppointments(appointments);
                 Appointment currentReservation = thisRoom.updateState();
                 if(currentReservation != null && thisRoom.getState() == State.Bezet)
