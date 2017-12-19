@@ -7,5 +7,5 @@ package fhict.mylibrary;
 public enum State {
     Bezet,
     Vrij,
-    Gesloten
+    Gereserveerd,
 }

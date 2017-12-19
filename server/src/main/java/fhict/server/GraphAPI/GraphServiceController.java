@@ -11,6 +11,7 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.Attendee;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
+import com.microsoft.graph.extensions.EmailAddress;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.GraphServiceClient;
 import com.microsoft.graph.extensions.IEventCollectionPage;
@@ -18,6 +19,8 @@ import com.microsoft.graph.extensions.IGraphServiceClient;
 import com.microsoft.graph.extensions.IUserCollectionPage;
 import com.microsoft.graph.extensions.User;
 import com.microsoft.graph.extensions.UserCollectionPage;
+
+import org.joda.time.DateTime;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -46,22 +49,6 @@ public class GraphServiceController {
     }
 
     public User getUser() { return user;}
-
-
-    public void setStateUser(State state){
-        switch (state)
-        {
-            case Vrij:
-                user.surname = "0";
-                break;
-            case Gesloten:
-                user.surname = "1";
-                break;
-            case Bezet:
-                user.surname = "2";
-                break;
-        }
-    }
 
     public ArrayList<Room> getRooms(){
         return roomList;
@@ -210,6 +197,23 @@ public class GraphServiceController {
         mGraphServiceClient.getUsers().buildRequest().get(callback);
     }
 
+    public void apiOpenMeeting(Room room)
+    {
+        User user = new User();
+        if(room.getState() == State.Bezet) {
+            user.surname = "1";
+        }
+        else if(room.getState() == State.Vrij){
+            user.surname = "0";
+        }
+        mGraphServiceClient.getUsers(room.getId()).buildRequest().patch(user);
+    }
+
+    public void closeMeeting(Appointment appointment)
+    {
+        mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents(appointment.getId()).buildRequest().delete();
+    }
+
 
 
     /**
@@ -218,13 +222,13 @@ public class GraphServiceController {
      */
     public void apiScheduleMeeting(Appointment appointment)
     {
-//        try {
-//            Event e = createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees());
-//            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
-//        }
-//        catch (Exception ex){
-//            Log.d("GraphServiceController", ex.getMessage());
-//        }
+        try {
+            Event e = createEvent(appointment.getName(), appointment.getReserveringsTijd(), appointment.getReserveringEind(), appointment.getAttendees());
+            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
+        }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
     }
 
 
@@ -232,26 +236,39 @@ public class GraphServiceController {
      * @param name
      * @param reserveringsTijd
      * @param reserveringsTijd1
-     * @param attendees
+     * @param libattendees
      * @return converts our own appointments object to an usable object for posting to the API.
      */
-    private Event createEvent(String name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringsTijd1, List<Attendee> attendees) {
-        reserveringsTijd.timeZone = "UTC";
-        reserveringsTijd1.timeZone = "UTC";
+    private Event createEvent(String name, DateTime reserveringsTijd, DateTime reserveringsTijd1, List<fhict.mylibrary.User> libattendees) {
+        DateTimeTimeZone timeTimeZoneStart = new DateTimeTimeZone();
+        timeTimeZoneStart.dateTime = reserveringsTijd.toString();
+        timeTimeZoneStart.timeZone = "CET";
+        DateTimeTimeZone timeTimeZoneEnd = new DateTimeTimeZone();
+        timeTimeZoneEnd.dateTime = reserveringsTijd1.toString();
+        timeTimeZoneEnd.timeZone = "CET";
         Event event = new Event();
         event.subject = name;
-        event.start = reserveringsTijd;
-        event.end = reserveringsTijd1;
+        event.start = timeTimeZoneStart;
+        event.end = timeTimeZoneEnd;
+        List<Attendee> attendees = new ArrayList<>();
+        for(fhict.mylibrary.User user: libattendees)
+        {
+            Attendee att = new Attendee();
+            EmailAddress email = new EmailAddress();
+            email.name = user.getName();
+            if(user.getEmail() != null) {
+                email.address = user.getEmail();
+            }
+            else{
+                email.address = "N/A";
+            }
+            att.emailAddress = email;
+            attendees.add(att);
+        }
+        //enzzz je maakt all attendees aan
+        // gooit ze daarna in een list<attentee>
+        // en voegt ze toe aan het te pushen event
         event.attendees = attendees;
-//        Attendee att = new Attendee();
-//        EmailAddress email = new EmailAddress();
-//        email.address = "xandersteinmann@ISAACFontys1.onmicrosoft.com";
-//        att.emailAddress = email;
-//        //enzzz je maakt all attendees aan
-//        List<Attendee> attendees;
-//        // gooit ze daarna in een list<attentee>
-//        // en voegt ze toe aan het te pushen event
-//        event.attendees = attendees;
         return event;
     }
 

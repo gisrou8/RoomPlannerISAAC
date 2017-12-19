@@ -33,7 +33,7 @@ public class Client extends Thread {
     private ActivityData activity;
 
     public Client(Task task, ActivityData activity) {
-        dstAddress = "145.93.48.13";
+        dstAddress = "192.168.178.118";
         dstPort = 8080;
         this.task = task;
         isConnected = true;
@@ -89,6 +89,21 @@ public class Client extends Thread {
                 case "schedule":
                     Object[] od = {"schedule",};
                     oos.writeObject(od);
+                    break;
+                case "openMeeting":
+                    Room meetingRoom = (Room)task.data;
+                    Object[] oe = {"openMeeting", meetingRoom};
+                    oos.writeObject(oe);
+                    break;
+                case "closeMeeting":
+                    Appointment app = (Appointment)task.data;
+                    Object[] of = {"closeMeeting", app};
+                    oos.writeObject(of);
+                    break;
+                case "newAppointment":
+                    Appointment newApp = (Appointment)task.data;
+                    Object[] og = {"newAppointment", newApp};
+                    oos.writeObject(og);
                     break;
             }
         } catch (UnknownHostException e) {

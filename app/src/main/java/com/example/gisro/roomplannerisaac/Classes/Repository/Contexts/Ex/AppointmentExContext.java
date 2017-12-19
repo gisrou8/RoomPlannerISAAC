@@ -27,8 +27,14 @@ public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public void addAppointment(Appointment item) {
-        client = new Client(new Task("schedule", item), activity);
+        client = new Client(new Task("newAppointment", item), activity);
         client.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.end();
     }
     @Override
     public void updateAppointment(Appointment item) {
@@ -37,7 +43,14 @@ public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public void removeAppointment(Appointment item) {
-        throw new UnsupportedOperationException();
+        client = new Client(new Task("closeMeeting", item), activity);
+        client.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.end();
     }
 
     @Override

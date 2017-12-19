@@ -33,7 +33,14 @@ public class RoomExContext implements IRoomContext {
 
     @Override
     public void updateRoom(Room room) {
-
+        client = new Client(new Task("openMeeting", room), activity);
+        client.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.end();
     }
 
     @Override

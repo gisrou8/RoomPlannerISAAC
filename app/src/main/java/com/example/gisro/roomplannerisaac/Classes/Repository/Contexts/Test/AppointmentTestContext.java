@@ -18,9 +18,9 @@ public class AppointmentTestContext implements IAppointmentContext {
 
     public AppointmentTestContext() {
         appointments = new ArrayList<>();
-        appointments.add(new Appointment("Standup", DateTime.now()));
-        appointments.add(new Appointment("McDonalds", new DateTime(2017, 12, 5, 11, 10)));
-        appointments.add(new Appointment("Dinosaurus", new DateTime(2017, 12, 5, 19, 0)));
+        appointments.add(new Appointment("Standup", DateTime.now(), DateTime.now()));
+        appointments.add(new Appointment("McDonalds", new DateTime(2017, 12, 5, 11, 10), DateTime.now()));
+        appointments.add(new Appointment("Dinosaurus", new DateTime(2017, 12, 5, 19, 0), DateTime.now()));
     }
 
     @Override

@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layoutMain"
     android:background="@color/colorBackground">
     tools:context="fhict.server.GraphAPI.MainActivity">
 
@@ -21,29 +21,19 @@
 
     <TextView
         android:id="@+id/attendeeTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="160dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="228dp"
+        android:layout_height="41dp"
+        android:background="#FFCCCCCC"
+        android:fontFamily="@font/rockwen"
+        android:gravity="center"
         android:text="Genodigden:"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/appointmentTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="84dp"
-        android:layout_marginTop="324dp"
-        android:text="Geplande vergaderingen:"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/tvOpenUntil"
         android:layout_width="200dp"
-        android:layout_height="33dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="32dp"
         android:width="144dp"
         android:height="41dp"
         android:gravity="center"
@@ -148,21 +138,10 @@
         android:background="#FFFFFF"
         android:fontFamily="@font/rockwen"
         android:onClick="btnVergaderingOnClick"
-        android:text="Open vergadering"
+        android:text="USE MEETING ROOM"
         android:textColor="#FF009DDC"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="56dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="28dp"
-        android:layout_marginRight="364dp"
-        android:onClick="btnReserveer"
-        android:text="Reserveren"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
 
     <Button
         android:id="@+id/btBack"
@@ -173,24 +152,52 @@
         android:background="@drawable/overview_button_bg"
         android:fontFamily="@font/rockwen"
         android:onClick="btnAltRoomOnClick"
-        android:text="Alternatieve ruimtes"
+        android:text="FIND A FREE ROOM"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/btEnd"
+        android:layout_width="92dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="84dp"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/overview_button_bg"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btnEnd"
+        android:text="END"
+        android:visibility="invisible"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/btExtend"
+        android:layout_width="128dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/overview_button_bg"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btnExtend"
+        android:text="EXTEND"
+        android:visibility="invisible"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
     <ListView
         android:id="@+id/listView2"
-        android:layout_width="229dp"
+        android:layout_width="228dp"
         android:layout_height="279dp"
         android:background="#FFFFFF"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:focusableInTouchMode="false"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attendeeTitle" />
 
     <TextView
-        android:id="@+id/tvFloor"
+        android:id="@+id/tvMeetingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -210,7 +217,7 @@
         android:layout_marginTop="60dp"
         android:text="4 persons"
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toEndOf="@+id/tvFloor"
+        app:layout_constraintStart_toEndOf="@+id/tvMeetingTime"
         app:layout_constraintTop_toTopOf="@+id/textViewRoom" />
 
     <ImageView
@@ -219,8 +226,8 @@
         android:layout_height="19dp"
         android:layout_marginEnd="52dp"
         android:src="@drawable/floor"
-        app:layout_constraintEnd_toEndOf="@+id/tvFloor"
-        app:layout_constraintTop_toTopOf="@+id/tvFloor" />
+        app:layout_constraintEnd_toEndOf="@+id/tvMeetingTime"
+        app:layout_constraintTop_toTopOf="@+id/tvMeetingTime" />
 
     <ImageView
         android:id="@+id/imageView7"
@@ -233,14 +240,9 @@
 
     <ListView
         android:id="@+id/listView"
-        android:layout_width="229dp"
-        android:layout_height="328dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_width="228dp"
+        android:layout_height="376dp"
         android:background="#FFFFFF"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appointmentTitle" />
@@ -249,7 +251,6 @@
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:src="@drawable/clock"
         app:layout_constraintEnd_toStartOf="@+id/tvOpenUntil"
         app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
@@ -258,10 +259,22 @@
         android:id="@+id/imgPerson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/tvReservedBy"
         app:layout_constraintTop_toBottomOf="@+id/imageView8"
         app:srcCompat="@drawable/person" />
+
+    <TextView
+        android:id="@+id/appointmentTitle"
+        android:layout_width="228dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="320dp"
+        android:background="#FFCCCCCC"
+        android:fontFamily="@font/rockwen"
+        android:gravity="center"
+        android:text="Geplande vergaderingen:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

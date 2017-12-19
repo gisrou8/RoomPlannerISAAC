@@ -74,7 +74,7 @@ public class AppointmentCommandI implements IClientCommand {
             for(Attendee attendee : event.attendees) {
                attendees.add(new User(attendee.emailAddress.name, attendee.emailAddress.address));
             }
-            appointments.add(new Appointment(event.subject, event.start, event.end, attendees));
+            appointments.add(new Appointment(event.subject, event.start, event.end, attendees, event.id));
         }
         return appointments;
     }
