@@ -186,7 +186,7 @@ public class GraphServiceController {
         mGraphServiceClient.getMe().buildRequest().get(new ICallback<User>() {
             @Override
             public void success(User user) {
-                setThisRoom(user);
+//                setThisRoom(user);
 //                apiAppointmentsforRoom();
             }
 
@@ -255,16 +255,16 @@ public class GraphServiceController {
         return event;
     }
 
-    public void setThisRoom(User user)
-    {
-
-        if(user.surname != null) {
-            room = new Room(user.givenName, user.id, Integer.parseInt(user.surname));
-        }
-        else{
-            room = new Room(user.givenName, user.id, 0);
-        }
-    }
+//    public void setThisRoom(User user)
+//    {
+//
+//        if(user.surname != null) {
+//            room = new Room(user.givenName, user.id, Integer.parseInt(user.surname));
+//        }
+//        else{
+//            room = new Room(user.givenName, user.id, 0);
+//        }
+//    }
 
 
 

@@ -9,6 +9,7 @@ import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.IEventCollectionPage;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,8 @@ public class AppointmentCommandI implements IClientCommand {
                     server.send(setEvents((Room)params[0], events));
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -47,31 +50,23 @@ public class AppointmentCommandI implements IClientCommand {
         });
     }
 
-    private ArrayList<Appointment> setEvents(Room room, List<Event> events)
-    {
-        HashMap<Room, ArrayList<Appointment>> appointmentsandRooms = new HashMap<>();
+    private ArrayList<Appointment> setEvents(Room room, List<Event> events) throws ParseException {
         ArrayList<Event> eventforRoom = new ArrayList<>();
         for(Event event: events)
         {
-            eventforRoom.add(event);
-        }
-        appointmentsandRooms.put(room, eventsToAppointments(eventforRoom));
-
-        ArrayList<Appointment> apps = null;
-        for(Map.Entry<Room, ArrayList<Appointment>> e : appointmentsandRooms.entrySet())
-        {
-            Room r = e.getKey();
-            if(r.getName() == room.getName())
+            for(Attendee attendee:event.attendees)
             {
-                apps = e.getValue();
+                if(room.getName().equals(attendee.emailAddress.name)){
+                eventforRoom.add(event);
+            }
             }
 
-        }
 
-        return apps;
+        }
+       return eventsToAppointments(eventforRoom);
     }
 
-    private ArrayList<Appointment> eventsToAppointments(ArrayList<Event> events) {
+    private ArrayList<Appointment> eventsToAppointments(ArrayList<Event> events) throws ParseException {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
         {
@@ -79,7 +74,7 @@ public class AppointmentCommandI implements IClientCommand {
             for(Attendee attendee : event.attendees) {
                attendees.add(new User(attendee.emailAddress.name, attendee.emailAddress.address));
             }
-            appointments.add(new Appointment(event.subject, event.start, attendees));
+            appointments.add(new Appointment(event.subject, event.start, event.end, attendees));
         }
         return appointments;
     }

@@ -23,7 +23,7 @@ public class RoomExContext implements IRoomContext {
     public RoomExContext(ActivityData activity)
     {
         this.activity = activity;
-        client = new Client("192.168.178.118", 8080, new Task("Room", null), activity);
+        client = new Client(new Task("Room", null), activity);
     }
 
     @Override

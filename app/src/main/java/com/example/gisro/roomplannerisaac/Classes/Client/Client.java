@@ -32,9 +32,9 @@ public class Client extends Thread {
     private ArrayList<Appointment> appointments;
     private ActivityData activity;
 
-    public Client(String addr, int port, Task task, ActivityData activity) {
-        dstAddress = addr;
-        dstPort = port;
+    public Client(Task task, ActivityData activity) {
+        dstAddress = "145.93.48.13";
+        dstPort = 8080;
         this.task = task;
         isConnected = true;
         this.activity =activity;

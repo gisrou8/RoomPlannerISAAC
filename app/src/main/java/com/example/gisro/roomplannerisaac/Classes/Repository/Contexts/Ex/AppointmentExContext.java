@@ -27,7 +27,7 @@ public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public void addAppointment(Appointment item) {
-        client = new Client("192.168.178.118", 8080, new Task("schedule", item), activity);
+        client = new Client(new Task("schedule", item), activity);
         client.start();
     }
     @Override
@@ -42,7 +42,7 @@ public class AppointmentExContext implements IAppointmentContext {
 
     @Override
     public ArrayList<Appointment> getAllAppointments() {
-        client = new Client("192.168.178.118", 8080, new Task("Appointments", room), activity);
+        client = new Client(new Task("Appointments", room), activity);
         client.start();
         return client.getAppointments();
     }
