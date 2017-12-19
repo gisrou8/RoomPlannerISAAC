@@ -22,7 +22,7 @@ public class Appointment implements Comparable<Appointment>, Serializable{
     private String Name;
     private DateTime reserveringsTijd;
     private State state;
-    private List<User> attendees;
+    private List<fhict.mylibrary.User> attendees;
 
     public Appointment(String Name, DateTime reserveringsTijd) {
         this.Name = Name;
@@ -90,12 +90,12 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         return reserveringsTijd.compareTo(appointment.getReserveringsTijd());
     }
 
-    public List<User> getAttendees() {
+    public List<fhict.mylibrary.User> getAttendees() {
         return attendees;
     }
 
 
-    public void addAttendee(User attendee) {
+    public void addAttendee(fhict.mylibrary.User attendee) {
         attendees.add(attendee);
     }
 }

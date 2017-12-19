@@ -1,7 +1,13 @@
 package fhict.server;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -9,7 +15,9 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import fhict.server.GraphAPI.GraphServiceController;
 import fhict.server.Sockets.SocketServerReplyThread;
@@ -19,6 +27,13 @@ import fhict.server.Sockets.StartSocketAsync;
 public class MainActivity extends AppCompatActivity {
 
     TextView info, infoip;
+    private ListView lv;
+    private ListView lvMeetings;
+    final private GraphServiceController mGraphServiceController = new GraphServiceController();
+    public static final String ARG_GIVEN_NAME = "givenName";
+    private int checkCount = 2000;
+    List<String> rooms;
+    ArrayAdapter<String> arrayAdapter;
 
 
 
@@ -31,6 +46,34 @@ public class MainActivity extends AppCompatActivity {
 
         infoip.setText(getIpAddress());
         new StartSocketAsync().execute();
+        Thread socketServerThread = new Thread(new SocketServerThread());
+        socketServerThread.start();
+
+        lv = (ListView) findViewById(R.id.listview);
+        lvMeetings = (ListView) findViewById(R.id.listview1);
+        rooms = new ArrayList<String>();
+        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
+        lv.setAdapter(arrayAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String s = (String) lv.getItemAtPosition(i);
+                String splitArray[] = s.split(" , ");
+            }
+        });
+        getRooms();
+
+    }
+
+    public void btnBlokkeer(View v){
+        mGraphServiceController.removeMeeting("Hier komt de id");
+    }
+
+
+
+    public void btnReserveer(View v){
+        Intent i = new Intent(this, Reservering.class);
+        startActivity(i);
     }
 
 
@@ -63,6 +106,36 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return ip;
+    }
+
+    public void getRooms()
+    {
+        // Init roomlist from API
+        mGraphServiceController.apiRooms();
+        // Wait for the graph api to get the data, when data has arrived do something with this data
+        final android.os.Handler handler = new android.os.Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkCount -= 1000;
+                if(checkCount > 0){
+                    handler.postDelayed(this, 1000);
+                }
+                else {
+                    if (mGraphServiceController.getRooms() != null) {
+                        for (Room r : mGraphServiceController.getRooms()) {
+                            //Check if appointment is today
+                            rooms.add(r.toString());
+                        }
+                        // Order the appointments on time
+
+                        arrayAdapter.notifyDataSetChanged();
+                    } else {
+                        Log.d("MainActivity", "userlist is null");
+                    }
+                }
+            }
+        }, 2000);
     }
 
 

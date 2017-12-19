@@ -11,6 +11,7 @@ import com.microsoft.graph.concurrency.ICallback;
 import com.microsoft.graph.core.ClientException;
 import com.microsoft.graph.extensions.Attendee;
 import com.microsoft.graph.extensions.DateTimeTimeZone;
+import com.microsoft.graph.extensions.EmailAddress;
 import com.microsoft.graph.extensions.Event;
 import com.microsoft.graph.extensions.GraphServiceClient;
 import com.microsoft.graph.extensions.IEventCollectionPage;
@@ -18,6 +19,8 @@ import com.microsoft.graph.extensions.IGraphServiceClient;
 import com.microsoft.graph.extensions.IUserCollectionPage;
 import com.microsoft.graph.extensions.User;
 import com.microsoft.graph.extensions.UserCollectionPage;
+
+import org.joda.time.DateTime;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class GraphServiceController {
 
     private final IGraphServiceClient mGraphServiceClient;
     private Room room;
-    private User user;
+    private fhict.mylibrary.User user;
     private ArrayList<Room> roomList;
 
 
@@ -45,22 +48,13 @@ public class GraphServiceController {
         return room;
     }
 
-    public User getUser() { return user;}
+    public fhict.mylibrary.User getUser() { return user;}
 
 
-    public void setStateUser(State state){
-        switch (state)
-        {
-            case Vrij:
-                user.surname = "0";
-                break;
-            case Gesloten:
-                user.surname = "1";
-                break;
-            case Bezet:
-                user.surname = "2";
-                break;
-        }
+
+    public void removeMeeting(String id)
+    {
+        mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents(id).buildRequest().delete();
     }
 
     public ArrayList<Room> getRooms(){
@@ -218,13 +212,36 @@ public class GraphServiceController {
      */
     public void apiScheduleMeeting(Appointment appointment)
     {
-//        try {
-//            Event e = createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees());
-//            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
-//        }
-//        catch (Exception ex){
-//            Log.d("GraphServiceController", ex.getMessage());
-//        }
+        try {
+            Event e = createEvent(appointment.getName(), timeZoneConvert(appointment.getReserveringsTijd()), timeZoneConvert(appointment.getReserveringsTijd()), userToAttendees(appointment.getAttendees()));
+            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
+        }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
+    }
+
+    public ArrayList<Attendee> userToAttendees(List<fhict.mylibrary.User> users)
+    {
+        ArrayList<Attendee> attendeeList = new ArrayList<>();
+        for(fhict.mylibrary.User user : users)
+        {
+            Attendee att = new Attendee();
+            EmailAddress email = new EmailAddress();
+            email.name = user.getName();
+            email.address = user.getEmail();
+            att.emailAddress = email;
+            attendeeList.add(att);
+        }
+        return attendeeList;
+    }
+
+    public DateTimeTimeZone timeZoneConvert(DateTime dt)
+    {
+        DateTimeTimeZone dtz = new DateTimeTimeZone();
+        dtz.dateTime = dt.toString();
+        dtz.timeZone = "GMT";
+        return dtz;
     }
 
 
