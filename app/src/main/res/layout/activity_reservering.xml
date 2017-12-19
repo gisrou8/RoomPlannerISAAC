@@ -39,7 +39,7 @@
         android:background="#FFCCCCCC"
         android:fontFamily="@font/rockwen"
         android:gravity="center"
-        android:text="Genodigden:"
+        android:text="@string/Attendees"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -64,7 +64,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/rockwen"
-        android:text="Reserve"
+        android:text="@string/reserveRoom"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#FF535353"
         android:textSize="48sp"
@@ -144,7 +144,7 @@
         android:background="@drawable/reservebutton"
         android:fontFamily="@font/rockwen"
         android:onClick="btn1hour"
-        android:text="1 HOUR"
+        android:text="@string/hour"
         android:textColor="#FF535353"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/btn45min"
@@ -159,7 +159,7 @@
         android:background="@drawable/reservebutton"
         android:fontFamily="@font/rockwen"
         android:onClick="btnCancel"
-        android:text="Cancel"
+        android:text="@string/back"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btBack" />
@@ -173,7 +173,7 @@
         android:background="@drawable/startmeetingbutton"
         android:fontFamily="@font/rockwen"
         android:onClick="btnReserveer"
-        android:text="START MEETING"
+        android:text="@string/startmeeting"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -230,7 +230,7 @@
         android:background="#FFCCCCCC"
         android:fontFamily="@font/rockwen"
         android:gravity="center"
-        android:text="Geplande vergaderingen:"
+        android:text="@string/plannedMeetings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

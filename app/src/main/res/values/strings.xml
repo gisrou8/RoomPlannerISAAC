@@ -26,4 +26,11 @@
     <!-- Reservation messages -->
     <string name="meetingTime_duration">How long is the meeting going to be?</string>
     <string name="meeting_whoAreYou">Who are you?</string>
+    <string name="Attendees">Attendees:</string>
+    <string name="plannedMeetings">Planned meetings:</string>
+    <string name="hour">1 HOUR</string>
+    <string name="startmeeting">START MEETING</string>
+    <string name="back">CANCEL</string>
+    <string name="reserveRoom">Reserve </string>
+    <string name="findaRoom">FIND A ROOM</string>
 </resources>
