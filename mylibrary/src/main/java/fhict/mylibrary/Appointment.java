@@ -23,18 +23,20 @@ import java.util.TimeZone;
 
 public class Appointment implements Comparable<Appointment>, Serializable{
 
+    private String id;
     private String Name;
     private DateTime reserveringsTijd;
     private DateTime reserveringEind;
     private State state;
     private List<User> attendees;
 
-    public Appointment(String Name, DateTime reserveringsTijd) {
+    public Appointment(String Name, DateTime reserveringsTijd, DateTime reserveringEind) {
         this.Name = Name;
         this.reserveringsTijd = reserveringsTijd;
+        this.reserveringEind = reserveringEind;
         DateTimeTimeZone dt = new DateTimeTimeZone();
         dt.dateTime = reserveringsTijd.toString();
-        this.state = State.Gesloten;
+        this.state = State.Vrij;
         this.attendees = new ArrayList<>();
     }
 
@@ -44,12 +46,12 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         date = date.replace("T", " ");
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dt = formatter.parseDateTime(date);
-        this.reserveringsTijd = dt.plusHours(2);
-        this.state = State.Gesloten;
+        this.reserveringsTijd = dt.plusHours(1);
+        this.state = State.Vrij;
         this.attendees = attendees;
     }
 
-    public Appointment(String Name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringEinde, List<User> attendees) throws ParseException {
+    public Appointment(String Name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringEinde, List<User> attendees, String id) throws ParseException {
         this.Name = Name;
         String date = reserveringsTijd.dateTime.substring(0, reserveringsTijd.dateTime.length() - 8);
         date = date.replace("T", " ");
@@ -61,10 +63,16 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         DateTimeFormatter formatterEnd = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dtEnd = formatterEnd.parseDateTime(dateEnd);
         this.reserveringEind = dtEnd.plusHours(1);
-        this.state = State.Gesloten;
+        this.state = State.Vrij;
         this.attendees = attendees;
+        this.id = id;
     }
 
+
+    public String getId()
+    {
+        return id;
+    }
     public State getState() {
         return state;
     }
@@ -107,7 +115,7 @@ public class Appointment implements Comparable<Appointment>, Serializable{
 
     @Override
     public String toString() {
-        return Name + " , " + reserveringsTijd.toString("HH:mm");
+        return Name + " , " + reserveringsTijd.toString("HH:mm") + " - " + reserveringEind.toString("HH:mm");
     }
 
     @Override

@@ -2,6 +2,8 @@ package fhict.mylibrary;
 
 import com.microsoft.graph.extensions.Attendee;
 
+import org.joda.time.DateTime;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -16,6 +18,7 @@ public class Room implements Serializable{
     private int persons;
     private int floor;
     private ArrayList<Appointment> appointments;
+
     public Room(String name, String id, int state, int persons, int floor)
     {
         this.Name = name;
@@ -29,10 +32,10 @@ public class Room implements Serializable{
                 this.state = State.Vrij;
                 break;
             case 1:
-                this.state = State.Gesloten;
+                this.state = State.Bezet;
                 break;
             case 2:
-                this.state = State.Bezet;
+                this.state = State.Gereserveerd;
                 break;
         }
     }
@@ -53,13 +56,21 @@ public class Room implements Serializable{
         return state;
     }
 
-    public void updateState() {
-        for (Appointment a : new ArrayList<Appointment>() /*vervang door opgehaalde lijst Appointments voor deze kamer*/) {
-            /*if (a.getState() == State.Vrij){
-                this.state = State.Bezet;
-            }*/
-        }
-        this.state = State.Vrij;
+    public Appointment updateState() {
+       for(Appointment appointment: appointments)
+       {
+           if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow())
+           {
+               if(this.state == State.Vrij) {
+                   this.state = State.Gereserveerd;
+                   return appointment;
+               }
+               if(this.state == State.Bezet){
+                   return appointment;
+               }
+           }
+       }
+       return null;
     }
 
     @Override
@@ -73,6 +84,21 @@ public class Room implements Serializable{
 
     public void setAppointments(ArrayList<Appointment> appointments) {
         this.appointments = appointments;
+    }
+
+    public DateTime getTimeUntilNext()
+    {
+        DateTime minDate = null;
+        if(appointments.size() != 0 && appointments != null) {
+            minDate = appointments.get(0).getReserveringsTijd();
+            for (Appointment appointment : appointments) {
+                if (appointment.getReserveringsTijd().isBefore(minDate) && appointment.getReserveringsTijd().isAfterNow()) {
+                    minDate = appointment.getReserveringsTijd();
+                }
+            }
+            return null;
+        }
+        return null;
     }
 
     public String getId() {

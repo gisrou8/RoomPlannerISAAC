@@ -21,7 +21,7 @@ public class RoomTestContext implements IRoomContext {
         this.rooms = new ArrayList<>();
         this.appointments = new ArrayList<>();
         rooms.add(new Room("Room 1", "1", 0, 4, 4));
-        appointments.add(new Appointment("Standup", DateTime.now()));
+        appointments.add(new Appointment("Standup", DateTime.now(), DateTime.now()));
         rooms.get(0).setAppointments(appointments);
         rooms.add(new Room("Room 2", "2", 1,4 ,4 ));
         rooms.add(new Room("Room 3", "3", 2,4 ,4 ));
