@@ -28,13 +28,14 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
     private int checkCount = 2000;
     final List<Room> rooms = new ArrayList<>();
     ArrayAdapter<Room> arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruimte_selectie);
         //Demo data
         lv = (ListView) findViewById(R.id.listView);
-        mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
+        mProgressbar = (ProgressBar) findViewById(R.id.RoomprogressBar);
         mProgressbar.setVisibility(View.VISIBLE);
         arrayAdapter = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, rooms);
         lv.setAdapter(arrayAdapter);
@@ -42,7 +43,7 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(RuimteSelectie.this, MainActivity.class);
-                intent.putExtra("Room", rooms.get(i));
+                intent.putExtra(getString(R.string.room), rooms.get(i));
                 startActivity(intent);
             }
         });
@@ -51,12 +52,9 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         roomController.getAllRooms();
 
 
-
-
     }
 
-    public void setList(ArrayList<Room> roomList)
-    {
+    public void setList(ArrayList<Room> roomList) {
 
     }
 
@@ -66,8 +64,7 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                for(Room r : (ArrayList<Room>)data)
-                {
+                for (Room r : (ArrayList<Room>) data) {
                     rooms.add(r);
                 }
                 arrayAdapter.notifyDataSetChanged();

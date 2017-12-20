@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">ISAAC Room planner</string>
-    <string name="meeting_whoAreYou">Wie ben jij?</string>
-    <string name="meetingTime_duration">Hoe lang gaat de vergadering duren?</string>
-</resources>
