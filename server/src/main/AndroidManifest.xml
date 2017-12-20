@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="fhict.server">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fhict.server">
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".GraphAPI.Connect"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".GraphAPI.Connect">
+        android:theme="@style/NoActionBar">
         <activity android:name=".GraphAPI.ConnectActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,24 +19,32 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity
-            android:name="com.microsoft.identity.client.BrowserTabActivity">
+            android:name=".Reservering"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden|adjustNothing" />
+        <activity android:name="com.microsoft.identity.client.BrowserTabActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="@string/msalPrefix"
-                    android:host="auth" />
+
+                <data
+                    android:host="auth"
+                    android:scheme="@string/msalPrefix" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="https://login.microsoftonline.com/common"
-            android:value="authority string"/>
+            android:value="authority string" />
         <meta-data
             android:name="com.microsoft.identity.client.ClientId"
-            android:value="@string/client_Id"/>
+            android:value="@string/client_Id" />
+
+        <activity android:name=".FreeRooms"></activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
 </manifest>

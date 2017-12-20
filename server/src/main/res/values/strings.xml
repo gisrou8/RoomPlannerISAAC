@@ -1,6 +1,4 @@
-<!DOCTYPE resources [
-    <!ENTITY clientId "57170be3-ef53-41fb-a19f-97f5ee4b5b29">
-    ]>
+<!DOCTYPE resources [<!ENTITY clientId "57170be3-ef53-41fb-a19f-97f5ee4b5b29">]>
 <resources>
     <string name="app_name">ISAAC Room planner Server</string>
     <string name="connect_button_text">Connect to Microsoft Graph</string>

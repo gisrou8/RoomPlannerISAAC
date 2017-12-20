@@ -9,6 +9,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.extensions.IUserCollectionPage;
+import com.microsoft.graph.extensions.User;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -19,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import fhict.mylibrary.Room;
 import fhict.server.GraphAPI.GraphServiceController;
 import fhict.server.Sockets.SocketServerReplyThread;
 import fhict.server.Sockets.StartSocketAsync;
@@ -46,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         infoip.setText(getIpAddress());
         new StartSocketAsync().execute();
-        Thread socketServerThread = new Thread(new SocketServerThread());
-        socketServerThread.start();
+
 
         lv = (ListView) findViewById(R.id.listview);
         lvMeetings = (ListView) findViewById(R.id.listview1);
@@ -111,31 +117,63 @@ public class MainActivity extends AppCompatActivity {
     public void getRooms()
     {
         // Init roomlist from API
-        mGraphServiceController.apiRooms();
-        // Wait for the graph api to get the data, when data has arrived do something with this data
-        final android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
+        mGraphServiceController.apiRooms(new ICallback<IUserCollectionPage>() {
             @Override
-            public void run() {
-                checkCount -= 1000;
-                if(checkCount > 0){
-                    handler.postDelayed(this, 1000);
-                }
-                else {
-                    if (mGraphServiceController.getRooms() != null) {
-                        for (Room r : mGraphServiceController.getRooms()) {
-                            //Check if appointment is today
-                            rooms.add(r.toString());
-                        }
-                        // Order the appointments on time
+            public void success(IUserCollectionPage iUserCollectionPage) {
+                List<User> theirUsers = iUserCollectionPage.getCurrentPage();
+                List<Room> roomss = setRooms(theirUsers);
+                for (Room r : roomss) {
 
-                        arrayAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("MainActivity", "userlist is null");
-                    }
+                    rooms.add(r.toString());
                 }
+
+                arrayAdapter.notifyDataSetChanged();
             }
-        }, 2000);
+
+            @Override
+            public void failure(ClientException ex) {
+
+            }
+           });
+//        // Wait for the graph api to get the data, when data has arrived do something with this data
+//        final android.os.Handler handler = new android.os.Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                checkCount -= 1000;
+//                if(checkCount > 0){
+//                    handler.postDelayed(this, 1000);
+//                }
+//                else {
+//                    if (mGraphServiceController.getRooms() != null) {
+//                        for (Room r : mGraphServiceController.getRooms()) {
+//                            //Check if appointment is today
+//                            rooms.add(r.toString());
+//                        }
+//                        // Order the appointments on time
+//
+//                        arrayAdapter.notifyDataSetChanged();
+//                    } else {
+//                        Log.d("MainActivity", "userlist is null");
+//                    }
+//                }
+//            }
+//        }, 2000);
+    }
+
+
+
+    private ArrayList<Room> setRooms(List<User> users){
+        Log.d("GraphServiceController", "Adding rooms to roomlist");
+        ArrayList<Room> roomList = new ArrayList<>();
+        for(User user : users)
+        {
+            // Only add the user if it is a room
+            if(user.displayName.contains("Room")){
+                roomList.add(new Room(user.displayName, user.id, Integer.parseInt(user.surname)));
+            }
+        }
+        return roomList;
     }
 
 

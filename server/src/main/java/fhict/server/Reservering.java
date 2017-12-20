@@ -76,28 +76,28 @@ public class Reservering extends AppCompatActivity {
         selectedUserslv.setOnItemClickListener(null);
 
         // Init userlist from API
-        mGraphServiceController.apiUsers();
-        // Wait for the graph api to get the data, when data has arrived do something with this data
-        final android.os.Handler handler = new android.os.Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mProgressbar.setVisibility(View.VISIBLE);
-
-                    mProgressbar.setVisibility(View.INVISIBLE);
-                    if (mGraphServiceController.getUsers() != null) {
-                        for (fhict.mylibrary.User user : mGraphServiceController.getUsers()) {
-                            users.add(new fhict.mylibrary.User(user.getName(), user.getEmail()));
-                        }
-
-
-                        arrayAdapter.notifyDataSetChanged();
-                    } else {
-                        Log.d("MainActivity", "userlist is null");
-                    }
-
-            }
-        }, 2000);
+//        mGraphServiceController.apiUsers();
+//        // Wait for the graph api to get the data, when data has arrived do something with this data
+//        final android.os.Handler handler = new android.os.Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                mProgressbar.setVisibility(View.VISIBLE);
+//
+//                    mProgressbar.setVisibility(View.INVISIBLE);
+//                    if (mGraphServiceController.getUsers() != null) {
+//                        for (fhict.mylibrary.User user : mGraphServiceController.getUsers()) {
+//                            users.add(new fhict.mylibrary.User(user.getName(), user.getEmail()));
+//                        }
+//
+//
+//                        arrayAdapter.notifyDataSetChanged();
+//                    } else {
+//                        Log.d("MainActivity", "userlist is null");
+//                    }
+//
+//            }
+//        }, 2000);
 
     }
 
