@@ -37,7 +37,7 @@ import fhict.mylibrary.Room;
 import fhict.mylibrary.State;
 import fhict.mylibrary.User;
 
-public class MainActivity extends AppCompatActivity implements ActivityData{
+public class MainActivity extends AppCompatActivity implements ActivityData {
 
     public static final String ARG_GIVEN_NAME = "givenName";
     private static final int WAIT_TIME = 7000;
@@ -69,32 +69,33 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
     ArrayAdapter<Appointment> arrayAdapter = null;
     ArrayAdapter<String> arrayAdapterAttendees = null;
     List<String> attendees = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnOpenClose = (Button)findViewById(R.id.btnVergadering);
-        tvDate = (TextView)findViewById(R.id.appointmentTitle);
-        tvTime = (TextView)findViewById(R.id.tvTime);
-        tvFloor = (TextView)findViewById(R.id.tvMeetingTime);
-        tvPersons = (TextView)findViewById(R.id.tvPersons);
+        btnOpenClose = (Button) findViewById(R.id.btnVergadering);
+        tvDate = (TextView) findViewById(R.id.appointmentTitle);
+        tvTime = (TextView) findViewById(R.id.tvTime);
+        tvFloor = (TextView) findViewById(R.id.tvMeetingTime);
+        tvPersons = (TextView) findViewById(R.id.tvPersons);
         tvRoom = (TextView) findViewById(R.id.textViewRoom);
         tvStatus = (TextView) findViewById(R.id.tvStatus);
-        tvOpenUntil = (TextView)findViewById(R.id.tvOpenUntil);
-        tvPerson = (TextView)findViewById(R.id.tvReservedBy);
+        tvOpenUntil = (TextView) findViewById(R.id.tvOpenUntil);
+        tvPerson = (TextView) findViewById(R.id.tvReservedBy);
         btnEnd = (Button) findViewById(R.id.btEnd);
-        btnExtend = (Button)findViewById(R.id.btExtend);
-        btnAlternateRoom = (Button)findViewById(R.id.btBack);
-        imgPerson = (ImageView)findViewById(R.id.imgPerson);
-        layout = (ConstraintLayout)findViewById(R.id.layoutMain);
+        btnExtend = (Button) findViewById(R.id.btExtend);
+        btnAlternateRoom = (Button) findViewById(R.id.btBack);
+        imgPerson = (ImageView) findViewById(R.id.imgPerson);
+        layout = (ConstraintLayout) findViewById(R.id.layoutMain);
         updateClock();
         //Setting this room
-        thisRoom = (Room)getIntent().getSerializableExtra("Room");
+        thisRoom = (Room) getIntent().getSerializableExtra("Room");
         tvRoom.setText(thisRoom.getName());
-        tvPersons.setText(thisRoom.getPersons() + "Persons");
-        tvFloor.setText("Floor " + thisRoom.getFloor());
+        tvPersons.setText(thisRoom.getPersons() + " " + getString(R.string.persons));
+        tvFloor.setText(getString(R.string.room) + " " + thisRoom.getFloor());
         //Progressbar
-        mProgressbar = (ProgressBar)findViewById(R.id.appointmentProgressbar);
+        mProgressbar = (ProgressBar) findViewById(R.id.appointmentProgressbar);
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
@@ -118,10 +119,9 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 arrayAdapterAttendees.clear();
                 arrayAdapterAttendees.notifyDataSetChanged();
-                Appointment app = (Appointment)adapterView.getAdapter().getItem(i);
-                for(User att : app.getAttendees())
-                {
-                    if(!att.getName().toUpperCase().contains("ROOM") && !att.getName().toUpperCase().contains("MOD")) {
+                Appointment app = (Appointment) adapterView.getAdapter().getItem(i);
+                for (User att : app.getAttendees()) {
+                    if (!att.getName().toUpperCase().contains("ROOM") && !att.getName().toUpperCase().contains("MOD")) {
                         attendees.add(att.getName());
                     }
                 }
@@ -129,55 +129,51 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
         });
     }
 
-    public void updateList(final ArrayList<Appointment> apps)
-    {
+    public void updateList(final ArrayList<Appointment> apps) {
 
     }
 
-    public void btnLogout(View v){
+    public void btnLogout(View v) {
 //        AuthenticationManager.getInstance().disconnect();
 //        Intent i = new Intent(this, ConnectActivity.class);
 //        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        startActivity(i);
     }
 
-    public void btnReserveer(View v){
+    public void btnReserveer(View v) {
         Intent i = new Intent(this, Reservering.class);
         startActivity(i);
     }
 
-    public void btnVergaderingOnClick(View v){
-        if(thisRoom.getState() == State.Gereserveerd){
+    public void btnVergaderingOnClick(View v) {
+        if (thisRoom.getState() == State.Gereserveerd) {
             thisRoom.setState(State.Bezet);
             roomController.updateRoom(thisRoom);
             btnOpenClose.setText(getString(R.string.findaRoom));
-            tvStatus.setText("OCCUPIED");
+            tvStatus.setText(getString(R.string.occupied));
             layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
             btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
             btnExtend.setVisibility(View.VISIBLE);
             btnEnd.setVisibility(View.VISIBLE);
             btnAlternateRoom.setVisibility(View.INVISIBLE);
-        }
-        else if(thisRoom.getState() == State.Bezet){
+        } else if (thisRoom.getState() == State.Bezet) {
             Intent i = new Intent(this, RuimteSelectie.class);
             i.putExtra("Room", thisRoom);
             startActivity(i);
 
-        }
-        else if(thisRoom.getState() == State.Vrij)
-        {
+        } else if (thisRoom.getState() == State.Vrij) {
             Intent i = new Intent(this, Reservering.class);
             i.putExtra("Room", thisRoom);
             startActivity(i);
         }
     }
 
-    public void btnEnd(View v){
+    public void btnEnd(View v) {
         appointmentController.removeAppointment(thisRoom.updateState());
         thisRoom.setState(State.Vrij);
         roomController.updateRoom(thisRoom);
-        tvStatus.setText("FREE");
-        btnOpenClose.setText("USE MEETING ROOM");
+        tvStatus.setText(getString(R.string.freewilly));
+        btnOpenClose.setText(R.string.usemeetingroom);
         layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
         btnEnd.setVisibility(View.INVISIBLE);
@@ -187,12 +183,12 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
         btnAlternateRoom.setVisibility(View.VISIBLE);
     }
 
-    public void btnAltRoomOnClick(View v){
+    public void btnAltRoomOnClick(View v) {
         Intent i = new Intent(this, RuimteSelectie.class);
         startActivity(i);
     }
 
-    public void getSelectAppointment(View v){
+    public void getSelectAppointment(View v) {
         String s = (String) lv.getSelectedItem();
         Log.d("getSelectedItem", s);
     }
@@ -203,15 +199,14 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
             @Override
             public void run() {
                 appointments.clear();
-                for(Appointment appointment : (ArrayList<Appointment>)data)
-                {
+                for (Appointment appointment : (ArrayList<Appointment>) data) {
                     Log.d("Date", LocalDate.now().toString());
                     Calendar calnow = Calendar.getInstance();
                     Calendar calappointment = Calendar.getInstance();
                     calnow.setTime(LocalDate.now().toDate());
                     calappointment.setTime(appointment.getReserveringsTijd().toDate());
                     if (calnow.get(Calendar.YEAR) == calappointment.get(Calendar.YEAR) &&
-                        calnow.get(Calendar.DAY_OF_YEAR) == calappointment.get(Calendar.DAY_OF_YEAR)) {
+                            calnow.get(Calendar.DAY_OF_YEAR) == calappointment.get(Calendar.DAY_OF_YEAR)) {
                         appointments.add(appointment);
                     }
                 }
@@ -219,46 +214,43 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
                 //Check for reservations
                 thisRoom.setAppointments(appointments);
                 Appointment currentReservation = thisRoom.updateState();
-                if(currentReservation != null && thisRoom.getState() == State.Bezet)
-                {
-                    btnOpenClose.setText("FIND A FREE ROOM");
-                    tvStatus.setText("OCCUPIED");
+                if (currentReservation != null && thisRoom.getState() == State.Bezet) {
+                    btnOpenClose.setText(getString(R.string.findafreeroom));
+                    tvStatus.setText(getString(R.string.occupied));
                     layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
                     btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
                     tvOpenUntil.setTextSize(20);
-                    tvOpenUntil.setText("until " + currentReservation.getReserveringEind().toString("HH:mm"));
+                    tvOpenUntil.setText(getString(R.string.untill) + currentReservation.getReserveringEind().toString("HH:mm"));
                     imgPerson.setVisibility(View.VISIBLE);
-                    tvPerson.setText("by " + currentReservation.getAttendees().get(0).toString());
+                    tvPerson.setText(getString(R.string.by) + currentReservation.getAttendees().get(0).toString());
                     btnExtend.setVisibility(View.VISIBLE);
                     btnEnd.setVisibility(View.VISIBLE);
                     btnAlternateRoom.setVisibility(View.INVISIBLE);
                 }
 
-                if(currentReservation != null && thisRoom.getState() == State.Gereserveerd)
-                {
+                if (currentReservation != null && thisRoom.getState() == State.Gereserveerd) {
                     layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundReserved));
                     btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundReserved));
-                    btnOpenClose.setText("Start meeting");
-                    tvStatus.setText("RESERVED");
+                    btnOpenClose.setText(getString(R.string.startmeeting));
+                    tvStatus.setText(getString(R.string.reserved));
                     // Total time reservation has left
                     Minutes minutes = Minutes.minutesBetween(new DateTime(), currentReservation.getReserveringEind());
                     tvOpenUntil.setTextSize(20);
-                    tvOpenUntil.setText("for " + minutes.getMinutes() + " more minutes");
+                    tvOpenUntil.setText(getString(R.string.for_) + minutes.getMinutes() + getString(R.string.moreminutes));
                     imgPerson.setVisibility(View.VISIBLE);
 
                     tvPerson.setText("by " + currentReservation.getAttendees().get(0).toString());
                 }
                 //Check time till next appointment
-                if(thisRoom.getTimeUntilNext() != null) {
-                    if(thisRoom.getState() != State.Gereserveerd) {
-                        tvOpenUntil.setText("until " + thisRoom.getTimeUntilNext().toString("HH:mm"));
+                if (thisRoom.getTimeUntilNext() != null) {
+                    if (thisRoom.getState() != State.Gereserveerd) {
+                        tvOpenUntil.setText(getString(R.string.untill) + thisRoom.getTimeUntilNext().toString("HH:mm"));
                     }
                 }
                 //when no appointments available set it to n/a
-                else{
-                    if(thisRoom.getState() != State.Gereserveerd && currentReservation == null)
-                    {
-                        tvOpenUntil.setText("N/A");
+                else {
+                    if (thisRoom.getState() != State.Gereserveerd && currentReservation == null) {
+                        tvOpenUntil.setText(getString(R.string.na));
                     }
                 }
                 //update listviews
@@ -270,10 +262,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
     }
 
 
-
-
-
-    public void updateClock(){
+    public void updateClock() {
         Thread t = new Thread() {
 
             @Override
@@ -300,9 +289,8 @@ public class MainActivity extends AppCompatActivity implements ActivityData{
 
     }
 
-    public void refreshUI(){
-        if(exec != null)
-        {
+    public void refreshUI() {
+        if (exec != null) {
             exec.shutdown();
         }
         exec = Executors.newSingleThreadScheduledExecutor();

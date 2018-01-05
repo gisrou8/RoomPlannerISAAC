@@ -122,7 +122,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
     public void btnReserveer(View v){
           if(selectedUser != null && reserveTime != 0) {
               User user = selectedUser;
-              Appointment newApp = new Appointment("Meeting door: " + user.getName(), DateTime.now(), DateTime.now().plusMinutes(reserveTime));
+              Appointment newApp = new Appointment("Meeting by: " + user.getName(), DateTime.now(), DateTime.now().plusMinutes(reserveTime));
               newApp.addAttendee(new User(selectedUser.getName(), selectedUser.getEmail()));
               newApp.addAttendee(new User(thisRoom.getName(), "Room@M365B679737.onmicrosoft.com"));
               scheduleMeeting(newApp);
