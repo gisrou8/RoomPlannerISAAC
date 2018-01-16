@@ -80,7 +80,7 @@ public class ClientReceive extends Thread {
                     ois.close();
                     break;
                 case "PostAppointment":
-                    oos.writeObject(new Appointment("blabla", DateTime.now()));
+                    oos.writeObject(new Appointment("blabla", DateTime.now(), DateTime.now()));
                     oos.close();
                     ois.close();
                     break;

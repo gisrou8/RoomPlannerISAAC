@@ -23,7 +23,7 @@ public class RoomExContext implements IRoomContext {
     public RoomExContext(ActivityData activity)
     {
         this.activity = activity;
-        client = new Client("192.168.178.118", 8080, new Task("Room", null), activity);
+        client = new Client(new Task("Room", null), activity);
     }
 
     @Override
@@ -33,7 +33,14 @@ public class RoomExContext implements IRoomContext {
 
     @Override
     public void updateRoom(Room room) {
-
+        client = new Client(new Task("openMeeting", room), activity);
+        client.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        client.end();
     }
 
     @Override

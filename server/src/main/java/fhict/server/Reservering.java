@@ -103,18 +103,18 @@ public class Reservering extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void btnReserveer(View v){
-        Appointment newApp = new Appointment(appointmentNameText.getText().toString(), new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute()));
-        for(fhict.mylibrary.User user: selUsers)
-        {
-
-            Attendee att = new Attendee();
-            EmailAddress email = new EmailAddress();
-            email.name = user.getName();
-            email.address = user.getEmail();
-            att.emailAddress = email;
-            newApp.addAttendee(new fhict.mylibrary.User(att.emailAddress.name, att.emailAddress.address));
-        }
-        scheduleMeeting(newApp);
+//        Appointment newApp = new Appointment(appointmentNameText.getText().toString(), new DateTime(datePicker.getYear(), datePicker.getMonth() + 1, datePicker.getDayOfMonth(), timePicker.getHour(), timePicker.getMinute()));
+//        for(fhict.mylibrary.User user: selUsers)
+//        {
+//
+//            Attendee att = new Attendee();
+//            EmailAddress email = new EmailAddress();
+//            email.name = user.getName();
+//            email.address = user.getEmail();
+//            att.emailAddress = email;
+//            newApp.addAttendee(new fhict.mylibrary.User(att.emailAddress.name, att.emailAddress.address));
+//        }
+//        scheduleMeeting(newApp);
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }

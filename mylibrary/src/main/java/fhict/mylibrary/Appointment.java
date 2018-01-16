@@ -10,8 +10,12 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by gisro on 20-9-2017.
@@ -19,17 +23,20 @@ import java.util.List;
 
 public class Appointment implements Comparable<Appointment>, Serializable{
 
+    private String id;
     private String Name;
     private DateTime reserveringsTijd;
+    private DateTime reserveringEind;
     private State state;
     private List<fhict.mylibrary.User> attendees;
 
-    public Appointment(String Name, DateTime reserveringsTijd) {
+    public Appointment(String Name, DateTime reserveringsTijd, DateTime reserveringEind) {
         this.Name = Name;
         this.reserveringsTijd = reserveringsTijd;
+        this.reserveringEind = reserveringEind;
         DateTimeTimeZone dt = new DateTimeTimeZone();
         dt.dateTime = reserveringsTijd.toString();
-        this.state = State.Gesloten;
+        this.state = State.Vrij;
         this.attendees = new ArrayList<>();
     }
 
@@ -39,11 +46,33 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         date = date.replace("T", " ");
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
         DateTime dt = formatter.parseDateTime(date);
-        this.reserveringsTijd = dt.plusHours(2);
-        this.state = State.Gesloten;
+        this.reserveringsTijd = dt.plusHours(1);
+        this.state = State.Vrij;
         this.attendees = attendees;
     }
 
+    public Appointment(String Name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringEinde, List<User> attendees, String id) throws ParseException {
+        this.Name = Name;
+        String date = reserveringsTijd.dateTime.substring(0, reserveringsTijd.dateTime.length() - 8);
+        date = date.replace("T", " ");
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        DateTime dt = formatter.parseDateTime(date);
+        this.reserveringsTijd = dt.plusHours(1);
+        String dateEnd = reserveringEinde.dateTime.substring(0, reserveringEinde.dateTime.length() - 8);
+        dateEnd = dateEnd.replace("T", " ");
+        DateTimeFormatter formatterEnd = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        DateTime dtEnd = formatterEnd.parseDateTime(dateEnd);
+        this.reserveringEind = dtEnd.plusHours(1);
+        this.state = State.Vrij;
+        this.attendees = attendees;
+        this.id = id;
+    }
+
+
+    public String getId()
+    {
+        return id;
+    }
     public State getState() {
         return state;
     }
@@ -80,9 +109,13 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         return reserveringsTijd;
     }
 
+    public DateTime getReserveringEind(){
+        return reserveringEind;
+    }
+
     @Override
     public String toString() {
-        return Name + " , " + reserveringsTijd.toString("HH:mm");
+        return Name + " , " + reserveringsTijd.toString("HH:mm") + " - " + reserveringEind.toString("HH:mm");
     }
 
     @Override

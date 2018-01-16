@@ -44,7 +44,8 @@
             android:name="com.microsoft.identity.client.ClientId"
             android:value="@string/client_Id" />
 
-        <activity android:name=".FreeRooms"></activity>
+        <activity android:name=".FreeRooms" />
+        <activity android:name=".ReservedRooms"></activity>
     </application>
 
 </manifest>

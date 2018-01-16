@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    tools:context=".Reservering">
+
+    <ListView
+        android:id="@+id/lvPersons"
+        android:layout_width="481dp"
+        android:layout_height="200dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/reservebutton"
+        android:focusableInTouchMode="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sVPersons"
+        android:choiceMode="singleChoice"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="89dp"
+        android:layout_height="68dp"
+        android:layout_marginTop="608dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.744"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/isaac_logo" />
+
+    <TextView
+        android:id="@+id/attendeeTitle"
+        android:layout_width="228dp"
+        android:layout_height="41dp"
+        android:background="#FFCCCCCC"
+        android:fontFamily="@font/rockwen"
+        android:gravity="center"
+        android:text=""
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/appointmentProgressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="452dp"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progress"
+        app:layout_constraintHorizontal_bias="0.897"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewRoom"
+        android:layout_width="464dp"
+        android:layout_height="74dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/rockwen"
+        android:text="Reserve"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#FF535353"
+        android:textSize="48sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="341dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="252dp"
+        android:layout_marginTop="16dp"
+        android:width="92.03dp"
+        android:height="47dp"
+        android:fontFamily="sans-serif"
+        android:gravity="right"
+        android:lineSpacingMultiplier="1.34"
+        android:text="N/A"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <Button
+        android:id="@+id/btn15min"
+        android:layout_width="114dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/reservebutton"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btn15min"
+        android:text="15 MIN"
+        android:textColor="#FF535353"
+        android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMeetingTime" />
+
+    <Button
+        android:id="@+id/btn30min"
+        android:layout_width="114dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/reservebutton"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btn30min"
+        android:text="30 MIN"
+        android:textColor="#FF535353"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/btn15min"
+        app:layout_constraintTop_toBottomOf="@+id/tvMeetingTime" />
+
+    <Button
+        android:id="@+id/btn45min"
+        android:layout_width="114dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/reservebutton"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btn45min"
+        android:text="45 MIN"
+        android:textColor="#FF535353"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/btn30min"
+        app:layout_constraintTop_toBottomOf="@+id/tvMeetingTime" />
+
+    <Button
+        android:id="@+id/btn1hour"
+        android:layout_width="114dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/reservebutton"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btn1hour"
+        android:text="1 HOUR"
+        android:textColor="#FF535353"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/btn45min"
+        app:layout_constraintTop_toBottomOf="@+id/tvMeetingTime" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="115dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/reservebutton"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btnCancel"
+        android:text="Cancel"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btBack" />
+
+    <Button
+        android:id="@+id/btBack"
+        android:layout_width="188dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="30dp"
+        android:background="@drawable/startmeetingbutton"
+        android:fontFamily="@font/rockwen"
+        android:onClick="btnReserveer"
+        android:text="Start Meeting"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ListView
+        android:id="@+id/listView2"
+        android:layout_width="228dp"
+        android:layout_height="279dp"
+        android:background="@drawable/reservebutton"
+        android:focusableInTouchMode="false"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/attendeeTitle" />
+
+    <TextView
+        android:id="@+id/tvMeetingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="104dp"
+        android:text=""
+        android:textColor="#FF535353"
+        android:textSize="16sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textViewRoom" />
+
+    <TextView
+        android:id="@+id/tvPersons"
+        android:layout_width="260dp"
+        android:layout_height="19dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="84dp"
+        android:text=""
+        android:textColor="#FF535353"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn15min" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="228dp"
+        android:layout_height="376dp"
+        android:background="@drawable/reservebutton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appointmentTitle" />
+
+    <TextView
+        android:id="@+id/appointmentTitle"
+        android:layout_width="228dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="320dp"
+        android:background="#FFCCCCCC"
+        android:fontFamily="@font/rockwen"
+        android:gravity="center"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <SearchView
+        android:id="@+id/sVPersons"
+        android:layout_width="481dp"
+        android:layout_height="33dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="292dp"
+        android:background="@drawable/reservebutton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

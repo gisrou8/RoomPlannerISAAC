@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF009DDC">
+    android:background="#FF009DDC"
+    tools:context=".ReservedRooms">
 
     <TextView
         android:id="@+id/textView"
@@ -16,9 +17,9 @@
         android:layout_marginTop="36dp"
         android:width="519dp"
         android:height="47dp"
-        android:fontFamily="Rockwell Std"
+        android:fontFamily="@font/rockwen"
         android:lineSpacingMultiplier="1.21"
-        android:text="Free meeting rooms"
+        android:text="Reserved Rooms"
         android:textColor="#FFFFFFFF"
         android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView"

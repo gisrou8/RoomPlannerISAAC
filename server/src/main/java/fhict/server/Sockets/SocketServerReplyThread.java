@@ -11,9 +11,12 @@ import java.net.Socket;
 
 import fhict.server.GraphAPI.GraphServiceController;
 import fhict.server.Sockets.CommandList.AppointmentCommandI;
+import fhict.server.Sockets.CommandList.DeleteMeetingCommandI;
 import fhict.server.Sockets.CommandList.IClientCommand;
 import fhict.server.Sockets.CommandList.Commands;
 import fhict.server.Sockets.CommandList.DisconnectCommandI;
+import fhict.server.Sockets.CommandList.NewAppointmentCommandI;
+import fhict.server.Sockets.CommandList.OpenMeetingCommandI;
 import fhict.server.Sockets.CommandList.RoomCommandI;
 import fhict.server.Sockets.CommandList.ScheduleCommandI;
 import fhict.server.Sockets.CommandList.UserCommandI;
@@ -42,6 +45,9 @@ public class SocketServerReplyThread extends Thread {
         cmds.addCommand(new UserCommandI(), "Users");
         cmds.addCommand(new AppointmentCommandI(), "Appointment");
         cmds.addCommand(new ScheduleCommandI(), "schedule");
+        cmds.addCommand(new OpenMeetingCommandI(), "openMeeting");
+        cmds.addCommand(new DeleteMeetingCommandI(), "closeMeeting");
+        cmds.addCommand(new NewAppointmentCommandI(), "newAppointment");
         Commands server = new Commands();
         cmds.addCommand(server, "server");
         this.controller = controller;

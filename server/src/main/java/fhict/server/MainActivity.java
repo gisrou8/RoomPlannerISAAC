@@ -47,38 +47,40 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        info = (TextView) findViewById(R.id.info);
-        infoip = (TextView) findViewById(R.id.infoip);
-
-        infoip.setText(getIpAddress());
-        new StartSocketAsync().execute();
-
-
-        lv = (ListView) findViewById(R.id.listview);
-        lvMeetings = (ListView) findViewById(R.id.listview1);
-        rooms = new ArrayList<String>();
-        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
-        lv.setAdapter(arrayAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String s = (String) lv.getItemAtPosition(i);
-                String splitArray[] = s.split(" , ");
-            }
-        });
-        getRooms();
+        setContentView(R.layout.activity_main1);
+//        info = (TextView) findViewById(R.id.info);
+//        infoip = (TextView) findViewById(R.id.infoip);
+//
+//        infoip.setText(getIpAddress());
+//        new StartSocketAsync().execute();
+//
+//
+//        lv = (ListView) findViewById(R.id.listview);
+//        lvMeetings = (ListView) findViewById(R.id.listview1);
+//        rooms = new ArrayList<String>();
+//        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
+//        lv.setAdapter(arrayAdapter);
+//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                String s = (String) lv.getItemAtPosition(i);
+//                String splitArray[] = s.split(" , ");
+//            }
+//        });
+//        getRooms();
 
     }
 
-    public void btnBlokkeer(View v){
-        mGraphServiceController.removeMeeting("Hier komt de id");
+    public void btnReservedRooms(View v){
+        //mGraphServiceController.removeMeeting("Hier komt de id");
+        Intent i = new Intent(this, FreeRooms.class);
+        startActivity(i);
     }
 
 
 
-    public void btnReserveer(View v){
-        Intent i = new Intent(this, Reservering.class);
+    public void btnAllRooms(View v){
+        Intent i = new Intent(this, FreeRooms.class);
         startActivity(i);
     }
 
@@ -170,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         {
             // Only add the user if it is a room
             if(user.displayName.contains("Room")){
-                roomList.add(new Room(user.displayName, user.id, Integer.parseInt(user.surname)));
+                //roomList.add(new Room(user.displayName, user.id, Integer.parseInt(user.surname)));
             }
         }
         return roomList;

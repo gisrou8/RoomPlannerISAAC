@@ -23,4 +23,14 @@
     <string name="send_mail_toast_text_error">Error sending email\nCheck logcat for details</string>
     <string name="warning_client_id_redirect_uri_incorrect">The client ID or redirect URI is not valid. Enter a valid client ID and redirect URI in the Constants.java file and run again</string>
 
+    <!-- Reservation messages -->
+    <string name="meetingTime_duration">How long is the meeting going to be?</string>
+    <string name="meeting_whoAreYou">Who are you?</string>
+    <string name="Attendees">Attendees:</string>
+    <string name="plannedMeetings">Planned meetings:</string>
+    <string name="hour">1 HOUR</string>
+    <string name="startmeeting">START MEETING</string>
+    <string name="back">CANCEL</string>
+    <string name="reserveRoom">Reserve </string>
+    <string name="findaRoom">FIND A ROOM</string>
 </resources>
