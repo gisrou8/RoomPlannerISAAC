@@ -94,8 +94,8 @@
 
     <TextView
         android:id="@+id/tvStatus"
-        android:layout_width="821dp"
-        android:layout_height="wrap_content"
+        android:layout_width="840dp"
+        android:layout_height="126dp"
         android:layout_marginEnd="128dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="204dp"
@@ -167,8 +167,8 @@
         android:fontFamily="@font/rockwen"
         android:onClick="btnEnd"
         android:text="@string/end"
-        android:visibility="invisible"
         android:textColor="#FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -182,8 +182,8 @@
         android:fontFamily="@font/rockwen"
         android:onClick="btnExtend"
         android:text="@string/extend"
-        android:visibility="invisible"
         android:textColor="#FFFFFF"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
@@ -233,7 +233,7 @@
         android:id="@+id/imageView7"
         android:layout_width="28dp"
         android:layout_height="19dp"
-        android:layout_marginEnd="60dp"
+        android:layout_marginEnd="64dp"
         android:src="@drawable/persons"
         app:layout_constraintEnd_toEndOf="@+id/tvPersons"
         app:layout_constraintTop_toTopOf="@+id/tvPersons" />

@@ -11,7 +11,7 @@
     <string name="reserveRoom">"Reserveer "</string>
     <string name="findaRoom">VIND EEN RUIMTE</string>
     <string name="na">N.V.T</string>
-    <string name="freewilly">VRIJ</string>
+    <string name="freewilly">Vrij</string>
     <string name="usemeetingroom">GEBRUIK RUIMTE</string>
     <string name="findafreeroom">ZOEK EEN LEGE RUIMTE</string>
     <string name="end">BEËINDIG</string>
@@ -36,12 +36,13 @@
     <string name="warning_client_id_redirect_uri_incorrect">Het client ID en het doorzend URI is niet geldig. Voer een geldig cliend ID en doorzend URI in in Constants.jave en probeer opnieuw</string>
     <string name="fourthfloor">4DE ETAGE</string>
     <string name="people">MENSEN</string>
-    <string name="floor">ETAGE</string>
-    <string name="persons"> Personen </string>
+    <string name="floor">Etage </string>
+    <string name="persons"> Personen</string>
     <string name="occupied">BEZET</string>
-    <string name="untill">TOT</string>
-    <string name="by">DOOR</string>
+    <string name="untill">TOT </string>
+    <string name="by">door </string>
     <string name="reserved">GERESERVEERD</string>
-    <string name="for_">VOOR</string>
-    <string name="moreminutes">MINUTEN</string>
+    <string name="for_">voor </string>
+    <string name="moreminutes"> minuten</string>
+    <string name="selectedroom">Selecteer een ruimte:</string>
 </resources>

@@ -7,17 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.gisro.roomplannerisaac.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fhict.mylibrary.Room;
-
-import static android.support.v4.content.ContextCompat.startActivity;
 
 /**
  * Created by BePul on 20-12-2017.
@@ -66,8 +62,8 @@ public class CustomGrid extends BaseAdapter {
             TextView tvRoom = (TextView)grid.findViewById(R.id.tvRoom);
             TextView tvTime = (TextView)grid.findViewById(R.id.tvTime);
             Button btRoom = (Button) grid.findViewById(R.id.btnRoom);
-            tvfloor.setText("Floor: " + rooms.get(position).getFloor());
-            tvPersons.setText("Persons: " + rooms.get(position).getPersons());
+            tvfloor.setText(mContext.getString(R.string.floor) + " " + rooms.get(position).getFloor());
+            tvPersons.setText(rooms.get(position).getPersons() + " " + mContext.getString(R.string.persons));
             tvTime.setText(rooms.get(position).getState().toString());
             tvRoom.setText(rooms.get(position).getName());
             btRoom.setOnClickListener(new View.OnClickListener() {

@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         thisRoom = (Room) getIntent().getSerializableExtra("Room");
         tvRoom.setText(thisRoom.getName());
         tvPersons.setText(thisRoom.getPersons() + " " + getString(R.string.persons));
-        tvFloor.setText(getString(R.string.room) + " " + thisRoom.getFloor());
+        tvFloor.setText(getString(R.string.floor) + " " + thisRoom.getFloor());
         //Progressbar
         mProgressbar = (ProgressBar) findViewById(R.id.appointmentProgressbar);
         View decorView = getWindow().getDecorView();
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
             roomController.updateRoom(thisRoom);
             btnOpenClose.setText(getString(R.string.findaRoom));
             tvStatus.setText(getString(R.string.occupied));
+            tvStatus.setTextSize(100);
             layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
             btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
             btnExtend.setVisibility(View.VISIBLE);
@@ -177,6 +179,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
         btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
         btnEnd.setVisibility(View.INVISIBLE);
+        tvStatus.setTextSize(100);
         btnExtend.setVisibility(View.INVISIBLE);
         imgPerson.setVisibility(View.INVISIBLE);
         tvPerson.setText("");
@@ -220,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                     layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
                     btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
                     tvOpenUntil.setTextSize(20);
-                    tvOpenUntil.setText(getString(R.string.untill) + currentReservation.getReserveringEind().toString("HH:mm"));
+                    tvOpenUntil.setText(getString(R.string.untill) + " " + currentReservation.getReserveringEind().toString("HH:mm"));
                     imgPerson.setVisibility(View.VISIBLE);
                     tvPerson.setText(getString(R.string.by) + currentReservation.getAttendees().get(0).toString());
                     btnExtend.setVisibility(View.VISIBLE);
@@ -232,14 +235,19 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                     layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundReserved));
                     btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundReserved));
                     btnOpenClose.setText(getString(R.string.startmeeting));
+                    tvStatus.setTextSize(100);
+                    if(Locale.getDefault().getLanguage() == "nl")
+                    {
+                        tvStatus.setTextSize(60);
+                    }
                     tvStatus.setText(getString(R.string.reserved));
                     // Total time reservation has left
                     Minutes minutes = Minutes.minutesBetween(new DateTime(), currentReservation.getReserveringEind());
                     tvOpenUntil.setTextSize(20);
-                    tvOpenUntil.setText(getString(R.string.for_) + minutes.getMinutes() + getString(R.string.moreminutes));
+                    tvOpenUntil.setText(getString(R.string.for_) + " " + minutes.getMinutes() + " " + getString(R.string.moreminutes));
                     imgPerson.setVisibility(View.VISIBLE);
 
-                    tvPerson.setText("by " + currentReservation.getAttendees().get(0).toString());
+                    tvPerson.setText(getString(R.string.by) + " " + currentReservation.getAttendees().get(0).toString());
                 }
                 //Check time till next appointment
                 if (thisRoom.getTimeUntilNext() != null) {

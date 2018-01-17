@@ -110,7 +110,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
         for(int i = 0; i < btn.length; i++)
         {
             btn[i] = (Button) findViewById(btn_id[i]);
-            btn[i].setBackground(getDrawable(R.drawable.reservebutton));
+            btn[i].setBackground(getResources().getDrawable(R.drawable.reservebutton));
             btn[i].setTextColor(Color.parseColor("#FF535353"));
         }
         btn_unfocus = btn[0];
@@ -172,9 +172,9 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
 
     private void setFocus(Button btn_unfocus, Button btn_focus){
         btn_unfocus.setTextColor(Color.parseColor("#FF535353"));
-        btn_unfocus.setBackground(getDrawable(R.drawable.reservebutton));
+        btn_unfocus.setBackground(getResources().getDrawable(R.drawable.reservebutton));
         btn_focus.setTextColor(Color.parseColor("#FF118AD3"));
-        btn_focus.setBackground(getDrawable(R.drawable.reservebuttonselected));
+        btn_focus.setBackground(getResources().getDrawable(R.drawable.reservebuttonselected));
         this.btn_unfocus = btn_focus;
     }
 
