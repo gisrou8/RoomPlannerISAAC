@@ -1,5 +1,6 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -267,6 +268,11 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                 mProgressbar.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 
 

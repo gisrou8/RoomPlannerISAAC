@@ -7,6 +7,17 @@
     android:background="@color/colorBackground"
     tools:context=".Classes.Acitivities.RuimteSelectie">
 
+    <ImageView
+        android:id="@+id/imgButton"
+        android:layout_width="40dp"
+        android:onClick="btnSettings"
+        android:layout_height="40dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:srcCompat="@drawable/ic_settings" />
+
     <TextView
         android:id="@+id/overviewTitle"
         android:layout_width="wrap_content"

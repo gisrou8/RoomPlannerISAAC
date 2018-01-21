@@ -1,5 +1,7 @@
 package com.example.gisro.roomplannerisaac.Classes.Client;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 
@@ -33,7 +35,14 @@ public class Client extends Thread {
     private ActivityData activity;
 
     public Client(Task task, ActivityData activity) {
-        dstAddress = "10.25.1.48";
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity.getContext());
+        String ip = preferences.getString("connectionSettings", null);
+
+        if(ip == null)
+        {
+            ip = "10.25.1.56";
+        }
+        dstAddress = ip;
         dstPort = 8080;
         this.task = task;
         isConnected = true;
@@ -114,14 +123,18 @@ public class Client extends Thread {
             e.printStackTrace();
         } finally {
             try {
-                oos.close();
-                ois.close();
-                socket.close();
+                if(oos != null && ois != null && socket != null) {
+                    oos.close();
+                    ois.close();
+                    socket.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d("client", "Closing error; Sockits/Object streams failed to close");
             }
         }
+
+
 
     }
 

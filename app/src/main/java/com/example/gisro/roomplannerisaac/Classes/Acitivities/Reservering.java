@@ -1,5 +1,6 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -218,6 +219,11 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
             }
         });
 
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 
     @Override

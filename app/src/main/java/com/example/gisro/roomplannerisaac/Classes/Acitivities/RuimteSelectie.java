@@ -1,5 +1,6 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import fhict.mylibrary.Room;
 public class RuimteSelectie extends AppCompatActivity implements ActivityData {
 
     public static final String ARG_GIVEN_NAME = "givenName";
-    RoomRepo roomController = new RoomRepo(new RoomExContext(this));
+    RoomRepo roomController;
     private GridView gv;
     private ProgressBar mProgressbar;
     private int checkCount = 2000;
@@ -33,6 +34,13 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruimte_selectie);
+        try {
+            roomController = new RoomRepo(new RoomExContext(this));
+        }
+        catch (Exception ex)
+        {
+
+        }
         //Demo data
         gv = (GridView) findViewById(R.id.roomList);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
@@ -56,6 +64,12 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
 
     }
 
+    public void btnSettings(View v)
+    {
+        Intent i = new Intent(RuimteSelectie.this, SettingsActivity.class);
+        startActivity(i);
+    }
+
     public void setList(ArrayList<Room> roomList)
     {
 
@@ -76,5 +90,10 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
             }
         });
 
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
     }
 }
