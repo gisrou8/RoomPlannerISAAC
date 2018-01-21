@@ -21,17 +21,6 @@
         app:layout_constraintTop_toBottomOf="@+id/sVPersons"
         android:choiceMode="singleChoice"/>
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="89dp"
-        android:layout_height="68dp"
-        android:layout_marginTop="608dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.744"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/isaac_logo" />
-
     <TextView
         android:id="@+id/attendeeTitle"
         android:layout_width="228dp"

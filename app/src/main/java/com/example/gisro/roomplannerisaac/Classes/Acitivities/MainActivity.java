@@ -2,6 +2,9 @@ package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
 
     public static final String ARG_GIVEN_NAME = "givenName";
     private static final int WAIT_TIME = 7000;
-    RoomRepo roomController = new RoomRepo(new RoomExContext(null));
+    RoomRepo roomController = null;
     AppointmentRepo appointmentController;
     ScheduledExecutorService exec;
     private ListView lv;
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         //Listview for attendees + adapter
         lvAttendees = (ListView) findViewById(R.id.listView2);
         appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
+        roomController = new RoomRepo(new RoomExContext(this));
         refreshUI();
         Log.d("Main", "Current room:" + thisRoom.toString());
         attendees = new ArrayList<String>();

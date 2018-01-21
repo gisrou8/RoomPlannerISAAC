@@ -2,6 +2,9 @@ package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +21,7 @@ import com.example.gisro.roomplannerisaac.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fhict.mylibrary.Room;
 
@@ -41,6 +45,14 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         {
 
         }
+        //Language settings
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String language = preferences.getString("languageSettings", null);
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         //Demo data
         gv = (GridView) findViewById(R.id.roomList);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);

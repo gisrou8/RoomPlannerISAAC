@@ -45,4 +45,5 @@
     <string name="for_">voor </string>
     <string name="moreminutes"> minuten</string>
     <string name="selectedroom">Selecteer een ruimte:</string>
+    <string name="pref_header_language">Language settings</string>
 </resources>

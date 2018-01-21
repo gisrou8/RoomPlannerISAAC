@@ -62,7 +62,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
     private int reserveTime = 0;
     private User selectedUser;
     final List<User> users = new ArrayList<>();
-    UserRepo userController = new UserRepo(new UserExContext(this));
+    UserRepo userController = null;
     AppointmentRepo appointmentController;
     private Room thisRoom;
     @Override
@@ -71,6 +71,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
         setContentView(R.layout.activity_reservering);
         thisRoom = (Room)getIntent().getSerializableExtra("Room");
         appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
+        userController = new UserRepo(new UserExContext(this));
         appointmentController.getAllAppointments();
         svPersons = (SearchView)findViewById(R.id.sVPersons);
         lvPersons = (ListView)findViewById(R.id.lvPersons);

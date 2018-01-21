@@ -14,6 +14,7 @@ import com.example.gisro.roomplannerisaac.R;
 import java.util.List;
 
 import fhict.mylibrary.Room;
+import fhict.mylibrary.State;
 
 /**
  * Created by BePul on 20-12-2017.
@@ -64,7 +65,19 @@ public class CustomGrid extends BaseAdapter {
             Button btRoom = (Button) grid.findViewById(R.id.btnRoom);
             tvfloor.setText(mContext.getString(R.string.floor) + " " + rooms.get(position).getFloor());
             tvPersons.setText(rooms.get(position).getPersons() + " " + mContext.getString(R.string.persons));
-            tvTime.setText(rooms.get(position).getState().toString());
+            if(rooms.get(position).getState() == State.Vrij)
+            {
+                tvTime.setText(mContext.getString(R.string.freewilly));
+            }
+            if(rooms.get(position).getState() == State.Gereserveerd)
+            {
+                tvTime.setText(mContext.getString(R.string.reserved));
+            }
+            if(rooms.get(position).getState() == State.Bezet)
+            {
+                tvTime.setText(mContext.getString(R.string.occupied));
+            }
+
             tvRoom.setText(rooms.get(position).getName());
             btRoom.setOnClickListener(new View.OnClickListener() {
                 @Override

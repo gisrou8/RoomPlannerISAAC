@@ -1,6 +1,8 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,8 +19,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.Toast;
 
 import com.example.gisro.roomplannerisaac.R;
 
@@ -36,6 +40,17 @@ import java.util.List;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent mStartActivity = new Intent(getApplicationContext(), RuimteSelectie.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(getApplicationContext(), mPendingIntentId,    mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 10, mPendingIntent);
+        System.exit(0);
+    }
 
     /**
      * A preference value change listener that updates the preference's summary
@@ -191,6 +206,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // updated to reflect the new value, per the Android Design
             // guidelines.
             bindPreferenceSummaryToValue(findPreference("connectionSettings"));
+            bindPreferenceSummaryToValue(findPreference("languageSettings"));
         }
 
         @Override
@@ -203,8 +219,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-
-
 
 
 }
