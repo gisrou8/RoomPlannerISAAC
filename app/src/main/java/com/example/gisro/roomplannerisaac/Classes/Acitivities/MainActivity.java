@@ -179,16 +179,6 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         appointmentController.removeAppointment(thisRoom.updateState());
         thisRoom.setState(State.Vrij);
         roomController.updateRoom(thisRoom);
-//        tvStatus.setText(getString(R.string.freewilly));
-//        btnOpenClose.setText(R.string.usemeetingroom);
-//        layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-//        btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
-//        btnEnd.setVisibility(View.INVISIBLE);
-//        tvStatus.setTextSize(100);
-//        btnExtend.setVisibility(View.INVISIBLE);
-//        imgPerson.setVisibility(View.INVISIBLE);
-//        tvPerson.setText("");
-//        btnAlternateRoom.setVisibility(View.VISIBLE);
     }
 
     public void btnExtend(View v)
@@ -264,13 +254,22 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                     if (thisRoom.getState() != State.Gereserveerd) {
                         tvOpenUntil.setText(getString(R.string.untill) + thisRoom.getTimeUntilNext().toString("HH:mm"));
                     }
+                }             //when no appointments available set it to n/a
+
+                if (thisRoom.getState() != State.Gereserveerd && currentReservation == null) {
+                    tvOpenUntil.setText(getString(R.string.na));
+                    tvStatus.setText(getString(R.string.freewilly));
+                    btnOpenClose.setText(R.string.usemeetingroom);
+                    layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+                    btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
+                    btnEnd.setVisibility(View.INVISIBLE);
+                    tvStatus.setTextSize(100);
+                    btnExtend.setVisibility(View.INVISIBLE);
+                    imgPerson.setVisibility(View.INVISIBLE);
+                    tvPerson.setText("");
+                    btnAlternateRoom.setVisibility(View.VISIBLE);
                 }
-                //when no appointments available set it to n/a
-                else {
-                    if (thisRoom.getState() != State.Gereserveerd && currentReservation == null) {
-                        tvOpenUntil.setText(getString(R.string.na));
-                    }
-                }
+
                 //update listviews
                 arrayAdapter.notifyDataSetChanged();
                 arrayAdapterAttendees.notifyDataSetChanged();

@@ -68,8 +68,16 @@ public class Room implements Serializable{
                if(this.state == State.Bezet){
                    return appointment;
                }
+               if(this.state == State.Gereserveerd)
+               {
+                   return appointment;
+               }
+           }
+           else{
+               this.state = State.Vrij;
            }
        }
+       this.state = State.Vrij;
        return null;
     }
 
