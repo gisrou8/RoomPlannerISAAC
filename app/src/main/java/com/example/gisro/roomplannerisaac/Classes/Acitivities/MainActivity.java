@@ -155,14 +155,14 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         if (thisRoom.getState() == State.Gereserveerd) {
             thisRoom.setState(State.Bezet);
             roomController.updateRoom(thisRoom);
-            btnOpenClose.setText(getString(R.string.findaRoom));
-            tvStatus.setText(getString(R.string.occupied));
-            tvStatus.setTextSize(100);
-            layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
-            btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
-            btnExtend.setVisibility(View.VISIBLE);
-            btnEnd.setVisibility(View.VISIBLE);
-            btnAlternateRoom.setVisibility(View.INVISIBLE);
+//            btnOpenClose.setText(getString(R.string.findaRoom));
+//            tvStatus.setText(getString(R.string.occupied));
+//            tvStatus.setTextSize(100);
+//            layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
+//            btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
+//            btnExtend.setVisibility(View.VISIBLE);
+//            btnEnd.setVisibility(View.VISIBLE);
+//            btnAlternateRoom.setVisibility(View.INVISIBLE);
         } else if (thisRoom.getState() == State.Bezet) {
             Intent i = new Intent(this, RuimteSelectie.class);
             i.putExtra("Room", thisRoom);
@@ -179,21 +179,21 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         appointmentController.removeAppointment(thisRoom.updateState());
         thisRoom.setState(State.Vrij);
         roomController.updateRoom(thisRoom);
-        tvStatus.setText(getString(R.string.freewilly));
-        btnOpenClose.setText(R.string.usemeetingroom);
-        layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-        btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
-        btnEnd.setVisibility(View.INVISIBLE);
-        tvStatus.setTextSize(100);
-        btnExtend.setVisibility(View.INVISIBLE);
-        imgPerson.setVisibility(View.INVISIBLE);
-        tvPerson.setText("");
-        btnAlternateRoom.setVisibility(View.VISIBLE);
+//        tvStatus.setText(getString(R.string.freewilly));
+//        btnOpenClose.setText(R.string.usemeetingroom);
+//        layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+//        btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
+//        btnEnd.setVisibility(View.INVISIBLE);
+//        tvStatus.setTextSize(100);
+//        btnExtend.setVisibility(View.INVISIBLE);
+//        imgPerson.setVisibility(View.INVISIBLE);
+//        tvPerson.setText("");
+//        btnAlternateRoom.setVisibility(View.VISIBLE);
     }
 
     public void btnExtend(View v)
     {
-        
+
     }
 
     public void btnAltRoomOnClick(View v) {
@@ -322,7 +322,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
             public void run() {
                 appointmentController.getAllAppointments();
             }
-        }, 0, 10, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
 
     }
 }
