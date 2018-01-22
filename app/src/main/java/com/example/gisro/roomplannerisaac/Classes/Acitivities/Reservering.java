@@ -185,35 +185,33 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(data instanceof ArrayList<?>)
-                {
-                    if(((ArrayList<?>)data).get(0) instanceof User)
-                    {
-                        for (User user : ((ArrayList<User>)
-                                data)) {
-                            users.add(user);
-                        }
-                        adapter = new SearchListAdapter(getApplicationContext(), users);
-                        lvPersons.setAdapter(adapter);
-                        lvPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                selectedUser = (User)adapter.getItem(i);
-                                svPersons.setQuery(selectedUser.getName(), false);
+                if(data instanceof ArrayList<?>) {
+                    if (((ArrayList) data).size() > 0) {
+                        if (((ArrayList<?>) data).get(0) instanceof User) {
+                            for (User user : ((ArrayList<User>)
+                                    data)) {
+                                users.add(user);
                             }
-                        });
-                        adapter.notifyDataSetChanged();
-                    }
-                    else{
-                        appointments.clear();
-                        for(Appointment appointment : (ArrayList<Appointment>)data)
-                        {
-                            if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
-                                appointments.add(appointment);
+                            adapter = new SearchListAdapter(getApplicationContext(), users);
+                            lvPersons.setAdapter(adapter);
+                            lvPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    selectedUser = (User) adapter.getItem(i);
+                                    svPersons.setQuery(selectedUser.getName(), false);
+                                }
+                            });
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            appointments.clear();
+                            for (Appointment appointment : (ArrayList<Appointment>) data) {
+                                if (LocalDate.now().compareTo(new LocalDate(appointment.getReserveringsTijd())) == 0) {
+                                    appointments.add(appointment);
+                                }
                             }
+                            arrayAdapter.notifyDataSetChanged();
+                            arrayAdapterAttendees.notifyDataSetChanged();
                         }
-                        arrayAdapter.notifyDataSetChanged();
-                        arrayAdapterAttendees.notifyDataSetChanged();
                     }
                 }
 

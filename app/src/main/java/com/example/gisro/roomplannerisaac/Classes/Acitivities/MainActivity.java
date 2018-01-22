@@ -191,6 +191,11 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         btnAlternateRoom.setVisibility(View.VISIBLE);
     }
 
+    public void btnExtend(View v)
+    {
+        
+    }
+
     public void btnAltRoomOnClick(View v) {
         Intent i = new Intent(this, RuimteSelectie.class);
         startActivity(i);
