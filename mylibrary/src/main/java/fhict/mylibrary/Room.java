@@ -6,12 +6,13 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by gisro on 20-9-2017.
  */
 
-public class Room implements Serializable{
+public class Room implements Serializable {
     private String Name;
     private String id;
     private State state;
@@ -19,15 +20,13 @@ public class Room implements Serializable{
     private int floor;
     private ArrayList<Appointment> appointments;
 
-    public Room(String name, String id, int state, int persons, int floor)
-    {
+    public Room(String name, String id, int state, int persons, int floor) {
         this.Name = name;
         this.appointments = new ArrayList<>();
         this.id = id;
         this.persons = persons;
         this.floor = floor;
-        switch (state)
-        {
+        switch (state) {
             case 0:
                 this.state = State.Vrij;
                 break;
@@ -40,42 +39,50 @@ public class Room implements Serializable{
         }
     }
 
-    public int getPersons(){
+    public int getPersons() {
         return persons;
     }
 
-    public int getFloor(){
+    public int getFloor() {
         return floor;
     }
 
-    public void setState(State state){
+    public void setState(State state) {
         this.state = state;
     }
 
-    public State getState(){
+    public State getState() {
         return state;
     }
 
     public Appointment updateState() {
-       for(Appointment appointment: appointments)
-       {
-           if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow())
-           {
-               if(this.state == State.Vrij) {
-                   this.state = State.Gereserveerd;
-                   return appointment;
-               }
-               if(this.state == State.Bezet){
-                   return appointment;
-               }
-           }
-           else{
-               this.state = State.Vrij;
-           }
-       }
-       this.state = State.Vrij;
-       return null;
+        ArrayList<DateTime> dates = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            dates.add(appointment.getReserveringsTijd());
+        }
+        if (dates.size() > 0) {
+            DateTime minDate = Collections.min(dates);
+            for(Appointment appointment : appointments) {
+                if(appointment.getReserveringsTijd().equals(minDate)) {
+                    if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow()) {
+                        if (this.state == State.Vrij) {
+                            this.state = State.Gereserveerd;
+                            return appointment;
+                        }
+                        if (this.state == State.Bezet) {
+                            return appointment;
+                        }
+                    } else {
+                        this.state = State.Vrij;
+                    }
+                }
+            }
+        }
+        this.state = State.Vrij;
+        return null;
     }
+
+
 
     @Override
     public String toString(){

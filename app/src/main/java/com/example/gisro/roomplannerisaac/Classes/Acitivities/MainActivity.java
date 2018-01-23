@@ -318,21 +318,22 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
 
             @Override
             public void run() {
-                try {
-                    while (!isInterrupted()) {
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //Current time
-                                Calendar c = Calendar.getInstance();
-                                c.add(Calendar.HOUR_OF_DAY, 1);
-                                SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-                                tvTime.setText(df.format(c.getTime()));
+                while (!isInterrupted()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //Current time
+                            Calendar c = Calendar.getInstance();
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
                             }
-                        });
-                    }
-                } catch (InterruptedException e) {
+                            c.add(Calendar.HOUR_OF_DAY, 1);
+                            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                            tvTime.setText(df.format(c.getTime()));
+                        }
+                    });
                 }
             }
         };
