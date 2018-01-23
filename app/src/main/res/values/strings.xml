@@ -133,4 +133,5 @@
     <string name="language_settings">Select the language u want to use:</string>
     <string name="reserveNotAvailableTime">There already is a meeting planned!</string>
     <string name="notallValuesFilled">Select user and time!</string>
+    <string name="selectRoom">Select</string>
 </resources>

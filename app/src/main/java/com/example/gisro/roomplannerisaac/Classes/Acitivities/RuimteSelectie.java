@@ -36,12 +36,14 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
     private ProgressBar mProgressbar;
     private int checkCount = 2000;
     private List<Room> rooms = null;
+    private Room thisRoom;
     CustomGrid arrayAdapter = null;
     ScheduledExecutorService exec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruimte_selectie);
+        thisRoom = (Room)getIntent().getSerializableExtra("Room");
         try {
             roomController = new RoomRepo(new RoomExContext(this));
         }
@@ -63,20 +65,8 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
         mProgressbar.setVisibility(View.VISIBLE);
         rooms = new ArrayList<>();
-        arrayAdapter = new CustomGrid(this, rooms);
+        arrayAdapter = new CustomGrid(this, rooms, thisRoom);
         gv.setAdapter(arrayAdapter);
-        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(RuimteSelectie.this, MainActivity.class);
-                intent.putExtra("Room", rooms.get(i));
-                startActivity(intent);
-            }
-        });
-
-
-
-
     }
 
     public void btnSettings(View v)

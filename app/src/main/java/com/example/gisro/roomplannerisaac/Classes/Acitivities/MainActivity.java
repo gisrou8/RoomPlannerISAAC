@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
 
     public void btnAltRoomOnClick(View v) {
         Intent i = new Intent(this, RuimteSelectie.class);
+        i.putExtra("Room", thisRoom);
         startActivity(i);
     }
 
@@ -297,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         tvOpenUntil.setTextSize(20);
         tvOpenUntil.setText(getString(R.string.untill) + " " + currentReservation.getReserveringEind().toString("HH:mm"));
         imgPerson.setVisibility(View.VISIBLE);
-        tvPerson.setText(getString(R.string.by) + currentReservation.getAttendees().get(0).toString());
+        tvPerson.setText(getString(R.string.by) + " " +  currentReservation.getAttendees().get(0).toString());
         btnExtend.setVisibility(View.VISIBLE);
         btnEnd.setVisibility(View.VISIBLE);
         btnAlternateRoom.setVisibility(View.INVISIBLE);

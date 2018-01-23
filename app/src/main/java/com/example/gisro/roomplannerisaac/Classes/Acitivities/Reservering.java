@@ -66,11 +66,13 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
     UserRepo userController = null;
     AppointmentRepo appointmentController;
     private Room thisRoom;
+    private Room orgRoom;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservering);
         thisRoom = (Room)getIntent().getSerializableExtra("Room");
+        orgRoom = (Room) getIntent().getSerializableExtra("orgRoom");
         appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
         userController = new UserRepo(new UserExContext(this));
         appointmentController.getAllAppointments();
@@ -130,9 +132,16 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
                   newApp.addAttendee(new User(selectedUser.getName(), selectedUser.getEmail()));
                   newApp.addAttendee(new User(thisRoom.getName(), "Room@M365B679737.onmicrosoft.com"));
                   scheduleMeeting(newApp);
-                  Intent i = new Intent(this, MainActivity.class);
-                  i.putExtra("Room", thisRoom);
-                  startActivity(i);
+                  if(orgRoom == null) {
+                      Intent i = new Intent(this, MainActivity.class);
+                      i.putExtra("Room", thisRoom);
+                      startActivity(i);
+                  }
+                  else{
+                      Intent i = new Intent(this, MainActivity.class);
+                      i.putExtra("Room", orgRoom);
+                      startActivity(i);
+                  }
               }
               else{
                   Toast.makeText(this, R.string.reserveNotAvailableTime, Toast.LENGTH_SHORT).show();
