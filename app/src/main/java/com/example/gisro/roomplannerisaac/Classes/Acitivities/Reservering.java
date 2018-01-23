@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 
 import com.example.gisro.roomplannerisaac.Classes.Repository.AppointmentRepo;
@@ -123,16 +124,36 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void btnReserveer(View v){
           if(selectedUser != null && reserveTime != 0) {
-              User user = selectedUser;
-              Appointment newApp = new Appointment("Meeting by: " + user.getName(), DateTime.now(), DateTime.now().plusMinutes(reserveTime));
-              newApp.addAttendee(new User(selectedUser.getName(), selectedUser.getEmail()));
-              newApp.addAttendee(new User(thisRoom.getName(), "Room@M365B679737.onmicrosoft.com"));
-              scheduleMeeting(newApp);
-              Intent i = new Intent(this, MainActivity.class);
-              i.putExtra("Room", thisRoom);
-              startActivity(i);
+              if(checkForCurrentApointment()) {
+                  User user = selectedUser;
+                  Appointment newApp = new Appointment("Meeting by: " + user.getName(), DateTime.now(), DateTime.now().plusMinutes(reserveTime));
+                  newApp.addAttendee(new User(selectedUser.getName(), selectedUser.getEmail()));
+                  newApp.addAttendee(new User(thisRoom.getName(), "Room@M365B679737.onmicrosoft.com"));
+                  scheduleMeeting(newApp);
+                  Intent i = new Intent(this, MainActivity.class);
+                  i.putExtra("Room", thisRoom);
+                  startActivity(i);
+              }
+              else{
+                  Toast.makeText(this, R.string.reserveNotAvailableTime, Toast.LENGTH_SHORT).show();
+              }
+          }
+          else{
+              Toast.makeText(this, R.string.notallValuesFilled, Toast.LENGTH_SHORT).show();
           }
 
+    }
+
+    public boolean checkForCurrentApointment()
+    {
+        boolean validAppointmentTime = true;
+        for(Appointment appointment: appointments) {
+            if(DateTime.now().plusMinutes(reserveTime).isAfter(appointment.getReserveringsTijd()))
+            {
+                validAppointmentTime = false;
+            }
+        }
+        return validAppointmentTime;
     }
 
     public void btnCancel(View v){

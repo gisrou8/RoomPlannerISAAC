@@ -131,4 +131,6 @@
     <string name="ip_settings">IP where the application connects to:</string>
     <string name="pref_header_language">Language settings</string>
     <string name="language_settings">Select the language u want to use:</string>
+    <string name="reserveNotAvailableTime">There already is a meeting planned!</string>
+    <string name="notallValuesFilled">Select user and time!</string>
 </resources>
