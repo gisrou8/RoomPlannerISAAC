@@ -74,86 +74,6 @@ public class GraphServiceController {
 //        }
     }
 
-    /**
-     * Updates the Event with the same name as given Appointment (by deleting the Event and creating a new one with the same name..)
-     */
-    public void updateAppointment(Appointment appointment){
-        try {
-        }
-        catch (Exception ex){
-            Log.d("GraphServiceController", ex.getMessage());
-        }
-    }
-
-    /**
-     * Removes the event corresponding with the name of the given Appointment
-     */
-    public void removeAppointment(Appointment appointment){
-
-    }
-
-    /**
-     * Retrieves all Appointments
-     */
-    public List<Appointment> getAllAppointment(){
-        return null;
-    }
-
-    /**
-     * Add's a new User
-     */
-    public void addUser(fhict.mylibrary.User user){
-
-    }
-
-    /**
-     * Updates User with the same name to User object specified
-     */
-    public void updateUser(fhict.mylibrary.User user){
-
-    }
-
-    /**
-     * Removes a User
-     */
-    public void removeUser(fhict.mylibrary.User user){
-
-    }
-
-    /**
-     * Retrieves all Users
-     */
-    public List<User> getAllUsers(){
-        return null;
-    }
-
-    /**
-     * Add's a new User
-     */
-    public void addRoom(Room room){
-
-    }
-
-    /**
-     * Updates room
-     */
-    public void updateRoom(Room room){
-
-    }
-
-    /**
-     * Removes a Room
-     */
-    public void removeRoom(Room room){
-
-    }
-
-    /**
-     * Retrieves all Rooms
-     */
-    public List<Room> getAllRooms(){
-        return null;
-    }
 
     /**
      * Deze methode haalt alle gebruikers op die zich in de organisatie bevinden en slaat ze op in de userlist.
@@ -184,7 +104,7 @@ public class GraphServiceController {
         });
     }
 
-    public void apiAppointments(final Room room, ICallback<IEventCollectionPage> callback){
+    public void apiAppointments(ICallback<IEventCollectionPage> callback){
         mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().get(callback);
     }
 

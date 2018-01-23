@@ -1,26 +1,51 @@
 package fhict.server;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
+
+import com.microsoft.graph.concurrency.ICallback;
+import com.microsoft.graph.core.ClientException;
+import com.microsoft.graph.extensions.IEventCollectionPage;
+import com.microsoft.graph.extensions.IUserCollectionPage;
+
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import fhict.mylibrary.Appointment;
+import fhict.mylibrary.Room;
+import fhict.mylibrary.State;
+import fhict.server.GraphAPI.CloseTask;
 import fhict.server.GraphAPI.GraphServiceController;
+import fhict.server.Sockets.CommandList.AppointmentCommandI;
 import fhict.server.Sockets.SocketServerReplyThread;
 import fhict.server.Sockets.StartSocketAsync;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ActivityData{
 
     TextView info, infoip;
-
-
+    GraphServiceController controller = new GraphServiceController();
+    ArrayList<Appointment> appointments = new ArrayList<>();
+    ScheduledExecutorService exec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         infoip.setText(getIpAddress());
         new StartSocketAsync().execute();
+        update();
     }
 
 
@@ -65,8 +91,57 @@ public class MainActivity extends AppCompatActivity {
         return ip;
     }
 
+    public void update()
+    {
+        if (exec != null) {
+            exec.shutdown();
+        }
+        exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    new AppointmentCommandI().execute(controller, MainActivity.this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, 0, 10, TimeUnit.SECONDS);
+    }
 
 
+    @Override
+    public void setData(Object data) throws ClassNotFoundException {
+        if (data instanceof ArrayList<?>) {
+            if (((ArrayList) data).size() > 0) {
+                    appointments.clear();
+                    for (Appointment appointment : (ArrayList<Appointment>) data) {
+                        Log.d("Date", LocalDate.now().toString());
+                        Calendar calnow = Calendar.getInstance();
+                        Calendar calappointment = Calendar.getInstance();
+                        calnow.setTime(LocalDate.now().toDate());
+                        calappointment.setTime(appointment.getReserveringsTijd().toDate());
+                        if (calnow.get(Calendar.YEAR) == calappointment.get(Calendar.YEAR) &&
+                                calnow.get(Calendar.DAY_OF_YEAR) == calappointment.get(Calendar.DAY_OF_YEAR)) {
+                            appointments.add(appointment);
+                        }
+                    }
+            }
+        }
+        for(Appointment appointment: appointments)
+        {
+            if(DateTime.now().isAfter(appointment.getReserveringEind()))
+            {
+                new CloseTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, appointment);
+            }
+        }
+    }
 
-
+    @Override
+    public Context getContext() {
+        return null;
+    }
 }

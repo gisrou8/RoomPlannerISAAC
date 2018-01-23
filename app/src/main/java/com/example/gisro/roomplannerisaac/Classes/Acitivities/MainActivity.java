@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                             //Check for reservations
                             thisRoom.setAppointments(appointments);
                             //Check for appointments to cancel
-                            appointmentCancelCheck(appointments);
                             Appointment currentReservation = thisRoom.updateState();
                             if (currentReservation != null && thisRoom.getState() == State.Bezet) {
                                 setGuiOccupied(currentReservation);
@@ -256,17 +255,6 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                 }
             }
         });
-    }
-
-    public void appointmentCancelCheck(ArrayList<Appointment> appointments)
-    {
-        for(Appointment appointment: appointments)
-        {
-            if(DateTime.now().isAfter(appointment.getReserveringEind()))
-            {
-                appointmentController.removeAppointment(appointment);
-            }
-        }
     }
 
     public void setGuiFree()
