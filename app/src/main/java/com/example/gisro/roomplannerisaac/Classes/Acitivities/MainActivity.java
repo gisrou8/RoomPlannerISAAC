@@ -236,7 +236,9 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                                 }
                             }             //when no appointments available set it to n/a
 
-                            if (thisRoom.getState() != State.Gereserveerd && currentReservation == null) {
+                            if (currentReservation == null) {
+                                thisRoom.setState(State.Vrij);
+                                roomController.updateRoom(thisRoom);
                                 setGuiFree();
                             }
 
