@@ -201,81 +201,106 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                appointments.clear();
-                for (Appointment appointment : (ArrayList<Appointment>) data) {
-                    Log.d("Date", LocalDate.now().toString());
-                    Calendar calnow = Calendar.getInstance();
-                    Calendar calappointment = Calendar.getInstance();
-                    calnow.setTime(LocalDate.now().toDate());
-                    calappointment.setTime(appointment.getReserveringsTijd().toDate());
-                    if (calnow.get(Calendar.YEAR) == calappointment.get(Calendar.YEAR) &&
-                            calnow.get(Calendar.DAY_OF_YEAR) == calappointment.get(Calendar.DAY_OF_YEAR)) {
-                        appointments.add(appointment);
+                if (data instanceof ArrayList<?>) {
+                    if (((ArrayList) data).size() > 0) {
+                        if (((ArrayList<?>) data).get(0) instanceof Appointment) {
+                            appointments.clear();
+                            for (Appointment appointment : (ArrayList<Appointment>) data) {
+                                Log.d("Date", LocalDate.now().toString());
+                                Calendar calnow = Calendar.getInstance();
+                                Calendar calappointment = Calendar.getInstance();
+                                calnow.setTime(LocalDate.now().toDate());
+                                calappointment.setTime(appointment.getReserveringsTijd().toDate());
+                                if (calnow.get(Calendar.YEAR) == calappointment.get(Calendar.YEAR) &&
+                                        calnow.get(Calendar.DAY_OF_YEAR) == calappointment.get(Calendar.DAY_OF_YEAR)) {
+                                    appointments.add(appointment);
+                                }
+                            }
+                            //Add today's appointments to this room
+                            //Check for reservations
+                            thisRoom.setAppointments(appointments);
+                            Appointment currentReservation = thisRoom.updateState();
+                            if (currentReservation != null && thisRoom.getState() == State.Bezet) {
+                                setGuiOccupied(currentReservation);
+                            }
+
+                            if (currentReservation != null && thisRoom.getState() == State.Gereserveerd) {
+                                setGuiReserved(currentReservation);
+                            }
+                            //Check time till next appointment
+                            if (thisRoom.getTimeUntilNext() != null) {
+                                if (thisRoom.getState() != State.Gereserveerd) {
+                                    tvOpenUntil.setText(getString(R.string.untill) + thisRoom.getTimeUntilNext().toString("HH:mm"));
+                                }
+                            }             //when no appointments available set it to n/a
+
+                            if (thisRoom.getState() != State.Gereserveerd && currentReservation == null) {
+                                setGuiFree();
+                            }
+
+                            //update listviews
+                            arrayAdapter.notifyDataSetChanged();
+                            arrayAdapterAttendees.notifyDataSetChanged();
+                            mProgressbar.setVisibility(View.INVISIBLE);
+                        } else {
+                            for (Room room : (ArrayList<Room>) data) {
+                                if (room.getName().equals(thisRoom.getName())) {
+                                        thisRoom = room;
+                                }
+                            }
+                        }
                     }
                 }
-                //Add today's appointments to this room
-                //Check for reservations
-                thisRoom.setAppointments(appointments);
-                Appointment currentReservation = thisRoom.updateState();
-                if (currentReservation != null && thisRoom.getState() == State.Bezet) {
-                    btnOpenClose.setText(getString(R.string.findafreeroom));
-                    tvStatus.setText(getString(R.string.occupied));
-                    layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
-                    btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
-                    tvOpenUntil.setTextSize(20);
-                    tvOpenUntil.setText(getString(R.string.untill) + " " + currentReservation.getReserveringEind().toString("HH:mm"));
-                    imgPerson.setVisibility(View.VISIBLE);
-                    tvPerson.setText(getString(R.string.by) + currentReservation.getAttendees().get(0).toString());
-                    btnExtend.setVisibility(View.VISIBLE);
-                    btnEnd.setVisibility(View.VISIBLE);
-                    btnAlternateRoom.setVisibility(View.INVISIBLE);
-                }
-
-                if (currentReservation != null && thisRoom.getState() == State.Gereserveerd) {
-                    layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundReserved));
-                    btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundReserved));
-                    btnOpenClose.setText(getString(R.string.startmeeting));
-                    tvStatus.setTextSize(100);
-                    if(Locale.getDefault().getLanguage() == "nl")
-                    {
-                        tvStatus.setTextSize(60);
-                    }
-                    tvStatus.setText(getString(R.string.reserved));
-                    // Total time reservation has left
-                    Minutes minutes = Minutes.minutesBetween(new DateTime(), currentReservation.getReserveringEind());
-                    tvOpenUntil.setTextSize(20);
-                    tvOpenUntil.setText(getString(R.string.for_) + " " + minutes.getMinutes() + " " + getString(R.string.moreminutes));
-                    imgPerson.setVisibility(View.VISIBLE);
-
-                    tvPerson.setText(getString(R.string.by) + " " + currentReservation.getAttendees().get(0).toString());
-                }
-                //Check time till next appointment
-                if (thisRoom.getTimeUntilNext() != null) {
-                    if (thisRoom.getState() != State.Gereserveerd) {
-                        tvOpenUntil.setText(getString(R.string.untill) + thisRoom.getTimeUntilNext().toString("HH:mm"));
-                    }
-                }             //when no appointments available set it to n/a
-
-                if (thisRoom.getState() != State.Gereserveerd && currentReservation == null) {
-                    tvOpenUntil.setText(getString(R.string.na));
-                    tvStatus.setText(getString(R.string.freewilly));
-                    btnOpenClose.setText(R.string.usemeetingroom);
-                    layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
-                    btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
-                    btnEnd.setVisibility(View.INVISIBLE);
-                    tvStatus.setTextSize(100);
-                    btnExtend.setVisibility(View.INVISIBLE);
-                    imgPerson.setVisibility(View.INVISIBLE);
-                    tvPerson.setText("");
-                    btnAlternateRoom.setVisibility(View.VISIBLE);
-                }
-
-                //update listviews
-                arrayAdapter.notifyDataSetChanged();
-                arrayAdapterAttendees.notifyDataSetChanged();
-                mProgressbar.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    public void setGuiFree()
+    {
+        tvOpenUntil.setText(getString(R.string.na));
+        tvStatus.setText(getString(R.string.freewilly));
+        btnOpenClose.setText(R.string.usemeetingroom);
+        layout.setBackgroundColor(getResources().getColor(R.color.colorBackground));
+        btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackground));
+        btnEnd.setVisibility(View.INVISIBLE);
+        tvStatus.setTextSize(100);
+        btnExtend.setVisibility(View.INVISIBLE);
+        imgPerson.setVisibility(View.INVISIBLE);
+        tvPerson.setText("");
+        btnAlternateRoom.setVisibility(View.VISIBLE);
+    }
+
+    public void setGuiReserved(Appointment currentReservation)
+    {
+        layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundReserved));
+        btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundReserved));
+        btnOpenClose.setText(getString(R.string.startmeeting));
+        tvStatus.setTextSize(100);
+        if (Locale.getDefault().getLanguage() == "nl") {
+            tvStatus.setTextSize(60);
+        }
+        tvStatus.setText(getString(R.string.reserved));
+        // Total time reservation has left
+        Minutes minutes = Minutes.minutesBetween(new DateTime(), currentReservation.getReserveringEind());
+        tvOpenUntil.setTextSize(20);
+        tvOpenUntil.setText(getString(R.string.for_) + " " + minutes.getMinutes() + " " + getString(R.string.moreminutes));
+        imgPerson.setVisibility(View.VISIBLE);
+        tvPerson.setText(getString(R.string.by) + " " + currentReservation.getAttendees().get(0).toString());
+    }
+
+    public void setGuiOccupied(Appointment currentReservation)
+    {
+        btnOpenClose.setText(getString(R.string.findafreeroom));
+        tvStatus.setText(getString(R.string.occupied));
+        layout.setBackgroundColor(getResources().getColor(R.color.colorBackgroundOccupied));
+        btnOpenClose.setTextColor(getResources().getColor(R.color.colorBackgroundOccupied));
+        tvOpenUntil.setTextSize(20);
+        tvOpenUntil.setText(getString(R.string.untill) + " " + currentReservation.getReserveringEind().toString("HH:mm"));
+        imgPerson.setVisibility(View.VISIBLE);
+        tvPerson.setText(getString(R.string.by) + currentReservation.getAttendees().get(0).toString());
+        btnExtend.setVisibility(View.VISIBLE);
+        btnEnd.setVisibility(View.VISIBLE);
+        btnAlternateRoom.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -319,9 +344,10 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                roomController.getAllRooms();
                 appointmentController.getAllAppointments();
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 5, TimeUnit.SECONDS);
 
     }
 }

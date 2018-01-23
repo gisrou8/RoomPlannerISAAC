@@ -23,7 +23,6 @@ public class RoomExContext implements IRoomContext {
     public RoomExContext(ActivityData activity)
     {
         this.activity = activity;
-        client = new Client(new Task("Room", null), activity);
     }
 
     @Override
@@ -50,12 +49,8 @@ public class RoomExContext implements IRoomContext {
 
     @Override
     public ArrayList<Room> getAllRooms() {
+        client = new Client(new Task("Room", null), activity);
         client.start();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         client.end();
         return client.getAllRooms();
     }

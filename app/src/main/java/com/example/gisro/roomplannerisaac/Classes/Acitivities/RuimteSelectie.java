@@ -22,6 +22,9 @@ import com.example.gisro.roomplannerisaac.R;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import fhict.mylibrary.Room;
 
@@ -32,8 +35,9 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
     private GridView gv;
     private ProgressBar mProgressbar;
     private int checkCount = 2000;
-    final List<Room> rooms = new ArrayList<>();
-    CustomGrid arrayAdapter;
+    private List<Room> rooms = null;
+    CustomGrid arrayAdapter = null;
+    ScheduledExecutorService exec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,7 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         {
 
         }
+        refreshUI();
         //Language settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String language = preferences.getString("languageSettings", null);
@@ -57,6 +62,7 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         gv = (GridView) findViewById(R.id.roomList);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
         mProgressbar.setVisibility(View.VISIBLE);
+        rooms = new ArrayList<>();
         arrayAdapter = new CustomGrid(this, rooms);
         gv.setAdapter(arrayAdapter);
         gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -67,9 +73,6 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
                 startActivity(intent);
             }
         });
-
-        // Init roomlist from API
-        roomController.getAllRooms();
 
 
 
@@ -82,17 +85,13 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         startActivity(i);
     }
 
-    public void setList(ArrayList<Room> roomList)
-    {
-
-    }
-
 
     @Override
     public void setData(final Object data) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                rooms.clear();
                 for(Room r : (ArrayList<Room>)data)
                 {
                     rooms.add(r);
@@ -107,5 +106,19 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
     @Override
     public Context getContext() {
         return getApplicationContext();
+    }
+
+    public void refreshUI() {
+        if (exec != null) {
+            exec.shutdown();
+        }
+        exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                roomController.getAllRooms();
+            }
+        }, 0, 5, TimeUnit.SECONDS);
+
     }
 }
