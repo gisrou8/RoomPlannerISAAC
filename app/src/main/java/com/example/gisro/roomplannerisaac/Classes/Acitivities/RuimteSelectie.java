@@ -55,7 +55,13 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         //Language settings
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String language = preferences.getString("languageSettings", null);
-        Locale locale = new Locale(language);
+        Locale locale = null;
+        if(language != null) {
+            locale = new Locale(language);
+        }
+        else{
+            locale = new Locale("En");
+        }
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;

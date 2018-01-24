@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,11 +29,17 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.example.gisro.roomplannerisaac.Classes.ClientModels.DayViewDecoration;
+import com.example.gisro.roomplannerisaac.Classes.ClientModels.Event;
+import com.example.gisro.roomplannerisaac.Classes.ClientModels.Popup;
 import com.example.gisro.roomplannerisaac.Classes.Repository.AppointmentRepo;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.AppointmentExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.RoomExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.RoomRepo;
 import com.example.gisro.roomplannerisaac.R;
+import com.framgia.library.calendardayview.CalendarDayView;
+import com.framgia.library.calendardayview.data.IEvent;
+import com.framgia.library.calendardayview.data.IPopup;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -49,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
     RoomRepo roomController = null;
     AppointmentRepo appointmentController;
     ScheduledExecutorService exec;
-    private ListView lv;
-    private ListView lvAttendees;
     private Button btnOpenClose;
     private Button btnAlternateRoom;
     private Button btnLogout;
@@ -70,9 +76,10 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
     private ConstraintLayout layout;
     private int checkCount = 2000;
     private Room thisRoom;
+    private CalendarDayView dayView;
+    ArrayList<IEvent> events;
+    ArrayList<IPopup> popups;
     ArrayList<Appointment> appointments = null;
-    ArrayAdapter<Appointment> arrayAdapter = null;
-    ArrayAdapter<String> arrayAdapterAttendees = null;
     List<String> attendees = null;
 
     @Override
@@ -80,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnOpenClose = (Button) findViewById(R.id.btnVergadering);
-        tvDate = (TextView) findViewById(R.id.appointmentTitle);
+        tvDate = (TextView) findViewById(R.id.tvDate);
         tvTime = (TextView) findViewById(R.id.tvTime);
         tvFloor = (TextView) findViewById(R.id.tvMeetingTime);
         tvPersons = (TextView) findViewById(R.id.tvPersons);
@@ -93,6 +100,12 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         btnAlternateRoom = (Button) findViewById(R.id.btBack);
         imgPerson = (ImageView) findViewById(R.id.imgPerson);
         layout = (ConstraintLayout) findViewById(R.id.layoutMain);
+        dayView = (CalendarDayView)findViewById(R.id.dayViewC);
+        dayView.setLimitTime(7, 19);
+        DayViewDecoration dec = new DayViewDecoration(this);
+        dayView.setDecorator(dec);
+        dayView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        dayView.setForegroundGravity(20);
         updateClock();
         //Setting this room
         thisRoom = (Room) getIntent().getSerializableExtra("Room");
@@ -105,34 +118,39 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
         //Listview for attendees + adapter
-        lvAttendees = (ListView) findViewById(R.id.listView2);
         appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
         roomController = new RoomRepo(new RoomExContext(this));
         refreshUI();
         Log.d("Main", "Current room:" + thisRoom.toString());
         attendees = new ArrayList<String>();
-        arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
-        lvAttendees.setAdapter(arrayAdapterAttendees);
-        lvAttendees.setEnabled(false);
-        lvAttendees.setOnItemClickListener(null);
+        events = new ArrayList<>();
+        popups = new ArrayList<>();
         //Listview for appointments + adapter
-        lv = (ListView) findViewById(R.id.listView);
         appointments = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointments);
-        lv.setAdapter(arrayAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                arrayAdapterAttendees.clear();
-                arrayAdapterAttendees.notifyDataSetChanged();
-                Appointment app = (Appointment) adapterView.getAdapter().getItem(i);
-                for (User att : app.getAttendees()) {
-                    if (!att.getName().toUpperCase().contains("ROOM") && !att.getName().toUpperCase().contains("MOD")) {
-                        attendees.add(att.getName());
-                    }
-                }
-            }
-        });
+//        Calendar timeStart = Calendar.getInstance();
+//        timeStart.set(Calendar.HOUR_OF_DAY, 18);
+//        timeStart.set(Calendar.MINUTE, 0);
+//        Calendar timeEnd = (Calendar) timeStart.clone();
+//        timeEnd.set(Calendar.HOUR_OF_DAY, 20);
+//        timeEnd.set(Calendar.MINUTE, 30);
+//        Event event = new Event(1, timeStart, timeEnd, "Another event", "Hockaido", Color.parseColor("#FFFFFF"));
+//        events.add(event);
+//        Calendar timeStar = Calendar.getInstance();
+//        timeStar.set(Calendar.HOUR_OF_DAY, 12);
+//        timeStar.set(Calendar.MINUTE, 0);
+//        Calendar timeEn = (Calendar) timeStar.clone();
+//        timeEn.set(Calendar.HOUR_OF_DAY, 13);
+//        timeEn.set(Calendar.MINUTE, 30);
+//
+//        Popup popup = new Popup();
+//        popup.setStartTime(timeStar);
+//        popup.setEndTime(timeEn);
+//        popup.setImageStart("http://sample.com/image.png");
+//        popup.setTitle("event 1 with title");
+//        popup.setDescription("Yuong alsdf");
+//        popups.add(popup);
+//        dayView.setEvents(events);
+//        dayView.setPopups(popups);
     }
 
     public void updateList(final ArrayList<Appointment> apps) {
@@ -192,10 +210,6 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
         startActivity(i);
     }
 
-    public void getSelectAppointment(View v) {
-        String s = (String) lv.getSelectedItem();
-        Log.d("getSelectedItem", s);
-    }
 
     @Override
     public void setData(final Object data) throws ClassNotFoundException {
@@ -218,6 +232,13 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                                 }
                             }
                             //Add today's appointments to this room
+                            for(Appointment appointment: appointments)
+                            {
+                                int eventColor = Color.parseColor("#FFCCCCCC");
+                                Event event = new Event(1, appointment.getReserveringsTijd(), appointment.getReserveringEind().minusMinutes(1), appointment.getName(), "", eventColor);
+                                events.add(event);
+                            }
+                            dayView.setEvents(events);
                             //Check for reservations
                             thisRoom.setAppointments(appointments);
                             //Check for appointments to cancel
@@ -241,10 +262,6 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
                                 roomController.updateRoom(thisRoom);
                                 setGuiFree();
                             }
-
-                            //update listviews
-                            arrayAdapter.notifyDataSetChanged();
-                            arrayAdapterAttendees.notifyDataSetChanged();
                             mProgressbar.setVisibility(View.INVISIBLE);
                         } else {
                             for (Room room : (ArrayList<Room>) data) {
@@ -318,22 +335,28 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
 
             @Override
             public void run() {
-                while (!isInterrupted()) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //Current time
-                            Calendar c = Calendar.getInstance();
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Current time
+                                Calendar c = Calendar.getInstance();
+                                c.add(Calendar.HOUR_OF_DAY, 1);
+                                SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                                tvTime.setText(df.format(c.getTime()));
+                                SimpleDateFormat dfdate = new SimpleDateFormat("dd-MMM-yyyy");
+                                tvDate.setText(dfdate.format(c.getTime()));
+                                events.clear();
+//                                //Current time
+//                                int eventColorc = Color.parseColor("#FF009DDC");
+//                                Event eventc = new Event(1, DateTime.now(), DateTime.now().plusSeconds(45), "", "", eventColorc);
+//                                events.add(eventc);
                             }
-                            c.add(Calendar.HOUR_OF_DAY, 1);
-                            SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-                            tvTime.setText(df.format(c.getTime()));
-                        }
-                    });
+                        });
+                    }
+                } catch (InterruptedException e) {
                 }
             }
         };

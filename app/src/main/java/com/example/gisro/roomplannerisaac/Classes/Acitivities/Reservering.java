@@ -24,19 +24,26 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import com.example.gisro.roomplannerisaac.Classes.ClientModels.DayViewDecoration;
+import com.example.gisro.roomplannerisaac.Classes.ClientModels.Event;
 import com.example.gisro.roomplannerisaac.Classes.Repository.AppointmentRepo;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.AppointmentExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Ex.UserExContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Contexts.Test.UserTestContext;
 import com.example.gisro.roomplannerisaac.Classes.Repository.UserRepo;
 import com.example.gisro.roomplannerisaac.R;
+import com.framgia.library.calendardayview.CalendarDayView;
+import com.framgia.library.calendardayview.data.IEvent;
+import com.framgia.library.calendardayview.data.IPopup;
 import com.microsoft.graph.extensions.Attendee;
 import com.microsoft.graph.extensions.EmailAddress;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import fhict.mylibrary.Appointment;
@@ -47,12 +54,9 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
 
     SearchView svPersons;
     private ListView lvPersons;
-    private ListView lv;
-    private ListView lvAttendees;
+    private TextView tvDate;
+    private TextView tvTime;
     ArrayList<Appointment> appointments = null;
-    ArrayAdapter<Appointment> arrayAdapter = null;
-    ArrayAdapter<String> arrayAdapterAttendees = null;
-    List<String> attendees = null;
     SearchListAdapter adapter;
     private TextView tvThisRoom;
     // Init button group
@@ -67,6 +71,9 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
     AppointmentRepo appointmentController;
     private Room thisRoom;
     private Room orgRoom;
+    private CalendarDayView dayView;
+    ArrayList<IEvent> events;
+    ArrayList<IPopup> popups;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,32 +83,20 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
         appointmentController = new AppointmentRepo(new AppointmentExContext(thisRoom, this));
         userController = new UserRepo(new UserExContext(this));
         appointmentController.getAllAppointments();
+        tvDate = (TextView) findViewById(R.id.tvDate);
+        tvTime = (TextView) findViewById(R.id.tvTime);
+        dayView = (CalendarDayView)findViewById(R.id.dayViewC);
+        dayView.setLimitTime(7, 19);
+        DayViewDecoration dec = new DayViewDecoration(this);
+        dayView.setDecorator(dec);
+        dayView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+        dayView.setForegroundGravity(20);
+        events = new ArrayList<>();
+        popups = new ArrayList<>();
+        updateClock();
         svPersons = (SearchView)findViewById(R.id.sVPersons);
         lvPersons = (ListView)findViewById(R.id.lvPersons);
-        lv = (ListView)findViewById(R.id.listView);
-        lvAttendees = (ListView)findViewById(R.id.listView2);
-        attendees = new ArrayList<String>();
-        arrayAdapterAttendees = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, attendees);
-        lvAttendees.setAdapter(arrayAdapterAttendees);
-        lvAttendees.setEnabled(false);
-        lvAttendees.setOnItemClickListener(null);
         appointments = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, appointments);
-        lv.setAdapter(arrayAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                arrayAdapterAttendees.clear();
-                arrayAdapterAttendees.notifyDataSetChanged();
-                Appointment app = (Appointment)adapterView.getAdapter().getItem(i);
-                for(User att : app.getAttendees())
-                {
-                    if(!att.getName().toUpperCase().contains("ROOM") && !att.getName().toUpperCase().contains("MOD")) {
-                        attendees.add(att.getName());
-                    }
-                }
-            }
-        });
         lvPersons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -210,6 +205,40 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
         this.btn_unfocus = btn_focus;
     }
 
+    public void updateClock() {
+        Thread t = new Thread() {
+
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //Current time
+                                Calendar c = Calendar.getInstance();
+                                c.add(Calendar.HOUR_OF_DAY, 1);
+                                SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+                                tvTime.setText(df.format(c.getTime()));
+                                SimpleDateFormat dfdate = new SimpleDateFormat("dd-MMM-yyyy");
+                                tvDate.setText(dfdate.format(c.getTime()));
+                                events.clear();
+//                                //Current time
+//                                int eventColorc = Color.parseColor("#FF009DDC");
+//                                Event eventc = new Event(1, DateTime.now(), DateTime.now().plusSeconds(45), "", "", eventColorc);
+//                                events.add(eventc);
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
+        t.start();
+
+    }
+
     @Override
     public void setData(final Object data) throws ClassNotFoundException {
         runOnUiThread(new Runnable() {
@@ -239,8 +268,14 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
                                     appointments.add(appointment);
                                 }
                             }
-                            arrayAdapter.notifyDataSetChanged();
-                            arrayAdapterAttendees.notifyDataSetChanged();
+                            //Add today's appointments to this room
+                            for(Appointment appointment: appointments)
+                            {
+                                int eventColor = Color.parseColor("#FFCCCCCC");
+                                Event event = new Event(1, appointment.getReserveringsTijd(), appointment.getReserveringEind().minusMinutes(1), appointment.getName(), "", eventColor);
+                                events.add(event);
+                            }
+                            dayView.setEvents(events);
                         }
                     }
                 }
