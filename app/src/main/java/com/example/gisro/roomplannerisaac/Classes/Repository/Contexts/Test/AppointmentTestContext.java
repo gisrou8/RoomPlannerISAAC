@@ -34,7 +34,7 @@ public class AppointmentTestContext implements IAppointmentContext {
     }
 
     @Override
-    public void updateAppointment(Appointment item) {
+    public boolean updateAppointment(Appointment item) {
         if (appointments.contains(item)) {
             appointments.set(appointments.indexOf(item), (Appointment)item);
         }else{

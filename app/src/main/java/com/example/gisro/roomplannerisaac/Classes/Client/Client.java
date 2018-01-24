@@ -114,6 +114,10 @@ public class Client extends Thread {
                     Object[] og = {"newAppointment", newApp};
                     oos.writeObject(og);
                     break;
+                case "extendAppointment":
+                    Appointment appointment = (Appointment)task.data;
+                    Object[] oex = {"extendMeeting", appointment};
+                    oos.writeObject(oex);
             }
         } catch (UnknownHostException e) {
             e.printStackTrace();

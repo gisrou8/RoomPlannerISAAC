@@ -15,18 +15,18 @@ public class AppointmentRepo implements IAppointmentContext {
 
     private IAppointmentContext appointment;
 
-    public AppointmentRepo(IAppointmentContext appointment)
-    {
+    public AppointmentRepo(IAppointmentContext appointment) {
         this.appointment = appointment;
     }
+
     @Override
     public void addAppointment(Appointment item) {
         appointment.addAppointment(item);
     }
 
     @Override
-    public void updateAppointment(Appointment item) {
-        appointment.updateAppointment(item);
+    public boolean updateAppointment(Appointment item) {
+        return appointment.updateAppointment(item);
     }
 
     @Override

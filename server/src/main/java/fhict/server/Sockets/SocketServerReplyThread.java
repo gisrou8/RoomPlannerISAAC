@@ -2,9 +2,7 @@ package fhict.server.Sockets;
 
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -12,7 +10,7 @@ import java.net.Socket;
 import fhict.server.GraphAPI.GraphServiceController;
 import fhict.server.Sockets.CommandList.AppointmentCommandI;
 import fhict.server.Sockets.CommandList.DeleteMeetingCommandI;
-import fhict.server.Sockets.CommandList.IClientCommand;
+import fhict.server.Sockets.CommandList.ExtendMeetingCommandI;
 import fhict.server.Sockets.CommandList.Commands;
 import fhict.server.Sockets.CommandList.DisconnectCommandI;
 import fhict.server.Sockets.CommandList.NewAppointmentCommandI;
@@ -48,14 +46,11 @@ public class SocketServerReplyThread extends Thread {
         cmds.addCommand(new OpenMeetingCommandI(), "openMeeting");
         cmds.addCommand(new DeleteMeetingCommandI(), "closeMeeting");
         cmds.addCommand(new NewAppointmentCommandI(), "newAppointment");
+        cmds.addCommand(new ExtendMeetingCommandI(), "extendAppointment");
         Commands server = new Commands();
         cmds.addCommand(server, "server");
         this.controller = controller;
         isConnected = true;
-    }
-
-    public void addCommand(IClientCommand cmd, String name){
-        cmds.addCommand(cmd, name);
     }
 
     public void close(){

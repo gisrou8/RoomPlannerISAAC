@@ -4,30 +4,15 @@
  */
 package fhict.server.GraphAPI;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.util.Log;
+
 import com.microsoft.graph.concurrency.ICallback;
-import com.microsoft.graph.core.ClientException;
-import com.microsoft.graph.extensions.Attendee;
-import com.microsoft.graph.extensions.DateTimeTimeZone;
-import com.microsoft.graph.extensions.EmailAddress;
-import com.microsoft.graph.extensions.Event;
-import com.microsoft.graph.extensions.GraphServiceClient;
-import com.microsoft.graph.extensions.IEventCollectionPage;
-import com.microsoft.graph.extensions.IGraphServiceClient;
-import com.microsoft.graph.extensions.IUserCollectionPage;
-import com.microsoft.graph.extensions.User;
-import com.microsoft.graph.extensions.UserCollectionPage;
+import com.microsoft.graph.extensions.*;
 
 import org.joda.time.DateTime;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
@@ -36,201 +21,78 @@ import fhict.mylibrary.State;
 public class GraphServiceController {
 
     private final IGraphServiceClient mGraphServiceClient;
-    private Room room;
-    private User user;
-    private ArrayList<Room> roomList;
 
-
-
-
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public User getUser() { return user;}
-
-    public ArrayList<Room> getRooms(){
-        return roomList;
-    }
-
-    /** Voordat er een methode wordt aangeroepen altijd eerst de constructor aan hebben gemaakt.
-    Deze zorgt ervoor dat de authenticatie wordt meegestuurd met de API request. Zorg er ook voor dat er gebruikt wordt gemaakt van een handler, dit zodat de
-     api genoeg tijd heeft om data terug te sturen*/
+    /**
+     * Voordat er een methode wordt aangeroepen altijd eerst de constructor aan hebben gemaakt.
+     * Deze zorgt ervoor dat de authenticatie wordt meegestuurd met de API request. Zorg er ook voor dat er gebruikt wordt gemaakt van een handler, dit zodat de
+     * api genoeg tijd heeft om data terug te sturen
+     */
     public GraphServiceController() {
         mGraphServiceClient = GraphServiceClientManager.getInstance().getGraphServiceClient();
-        roomList = new ArrayList<>();
     }
 
     /**
-     * Create a new Graph Event based on given Appointment
-     */
-    public void addAppointment(Appointment appointment){
-//        try {
-////            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
-////        }
-//        catch (Exception ex){
-//            Log.d("GraphServiceController", ex.getMessage());
-//        }
-    }
-
-    /**
-     * Updates the Event with the same name as given Appointment (by deleting the Event and creating a new one with the same name..)
-     */
-    public void updateAppointment(Appointment appointment){
-        try {
-        }
-        catch (Exception ex){
-            Log.d("GraphServiceController", ex.getMessage());
-        }
-    }
-
-    /**
-     * Removes the event corresponding with the name of the given Appointment
-     */
-    public void removeAppointment(Appointment appointment){
-
-    }
-
-    /**
-     * Retrieves all Appointments
-     */
-    public List<Appointment> getAllAppointment(){
-        return null;
-    }
-
-    /**
-     * Add's a new User
-     */
-    public void addUser(fhict.mylibrary.User user){
-
-    }
-
-    /**
-     * Updates User with the same name to User object specified
-     */
-    public void updateUser(fhict.mylibrary.User user){
-
-    }
-
-    /**
-     * Removes a User
-     */
-    public void removeUser(fhict.mylibrary.User user){
-
-    }
-
-    /**
-     * Retrieves all Users
-     */
-    public List<User> getAllUsers(){
-        return null;
-    }
-
-    /**
-     * Add's a new User
-     */
-    public void addRoom(Room room){
-
-    }
-
-    /**
-     * Updates room
-     */
-    public void updateRoom(Room room){
-
-    }
-
-    /**
-     * Removes a Room
-     */
-    public void removeRoom(Room room){
-
-    }
-
-    /**
-     * Retrieves all Rooms
-     */
-    public List<Room> getAllRooms(){
-        return null;
-    }
-
-    /**
+     * @param callback - Response received from server
      * Deze methode haalt alle gebruikers op die zich in de organisatie bevinden en slaat ze op in de userlist.
      */
-    public void apiUsers(ICallback<IUserCollectionPage> callback){
+    public void apiUsers(ICallback<IUserCollectionPage> callback) {
         Log.d(this.getClass().toString(), "Starting user get");
         mGraphServiceClient.getUsers().buildRequest().get(callback);
     }
 
 
     /**
-     * This method gets the current room that the tablet is in. This is based on the logged in User since we use the login to identify the room.
+     * @param room - Room to retrieve Appointments for
+     * @param callback -  Response received from server
      */
-    public void apiThisRoom(){
-        Log.d(this.getClass().toString(), "Starting user get");
-
-        mGraphServiceClient.getMe().buildRequest().get(new ICallback<User>() {
-            @Override
-            public void success(User user) {
-//                setThisRoom(user);
-//                apiAppointmentsforRoom();
-            }
-
-            @Override
-            public void failure(ClientException ex) {
-
-            }
-        });
-    }
-
-    public void apiAppointments(final Room room, ICallback<IEventCollectionPage> callback){
+    public void apiAppointments(final Room room, ICallback<IEventCollectionPage> callback) {
         mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().get(callback);
     }
 
-
     /**
+     * @param callback -  Response received from server
      * This method gets all the rooms in the organisation from the api. Puts them in the roomlist.
      */
-    public void apiRooms(ICallback<IUserCollectionPage> callback){
+    public void apiRooms(ICallback<IUserCollectionPage> callback) {
         Log.d(this.getClass().toString(), "Starting room get");
         mGraphServiceClient.getUsers().buildRequest().get(callback);
     }
 
-    public void apiOpenMeeting(Room room)
-    {
+    /**
+     * @param room -  Room to open
+     * This method attempts to open the current meeting of the given Room
+     */
+    public void apiOpenMeeting(Room room) {
         User user = new User();
-        if(room.getState() == State.Bezet) {
+        if (room.getState() == State.Bezet) {
             user.surname = "1";
-        }
-        else if(room.getState() == State.Vrij){
+        } else if (room.getState() == State.Vrij) {
             user.surname = "0";
         }
         mGraphServiceClient.getUsers(room.getId()).buildRequest().patch(user);
     }
 
-    public void closeMeeting(Appointment appointment)
-    {
+
+    /**
+     * @param appointment - Appointment to close
+     * This method deletes given Appointment
+     */
+    public void closeMeeting(Appointment appointment) {
         mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents(appointment.getId()).buildRequest().delete();
     }
 
-
-
     /**
-     * @param appointment the appointment and its information, will get converted to an event before posting to API
-     * @param
+     * @param appointment -  The Appointment and its information, will get converted to an event before posting to API
+     * Add's a new Appointment to the Graph server
      */
-    public void apiScheduleMeeting(Appointment appointment)
-    {
+    public void apiScheduleMeeting(Appointment appointment) {
         try {
             Event e = createEvent(appointment.getName(), appointment.getReserveringsTijd(), appointment.getReserveringEind(), appointment.getAttendees());
             mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().post(e);
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             Log.d("GraphServiceController", ex.getMessage());
         }
     }
-
 
     /**
      * @param name
@@ -251,54 +113,32 @@ public class GraphServiceController {
         event.start = timeTimeZoneStart;
         event.end = timeTimeZoneEnd;
         List<Attendee> attendees = new ArrayList<>();
-        for(fhict.mylibrary.User user: libattendees)
-        {
+        for (fhict.mylibrary.User user : libattendees) {
             Attendee att = new Attendee();
             EmailAddress email = new EmailAddress();
             email.name = user.getName();
-            if(user.getEmail() != null) {
+            if (user.getEmail() != null) {
                 email.address = user.getEmail();
-            }
-            else{
+            } else {
                 email.address = "N/A";
             }
             att.emailAddress = email;
             attendees.add(att);
         }
-        //enzzz je maakt all attendees aan
-        // gooit ze daarna in een list<attentee>
-        // en voegt ze toe aan het te pushen event
         event.attendees = attendees;
         return event;
     }
 
-//    public void setThisRoom(User user)
-//    {
-//
-//        if(user.surname != null) {
-//            room = new Room(user.givenName, user.id, Integer.parseInt(user.surname));
-//        }
-//        else{
-//            room = new Room(user.givenName, user.id, 0);
-//        }
-//    }
-
-
-
-    /*
-    * Opens a user dialog that shows the failure result of an exception and writes a log entry
-    * */
-    private void showException(Exception ex, String exceptionAction, String exceptionTitle, String exceptionMessage){
-        Log.e("GraphServiceController", exceptionAction + ex.getLocalizedMessage());
-        AlertDialog.Builder alertDialogBuidler = new AlertDialog.Builder(Connect.getContext());
-        alertDialogBuidler.setTitle(exceptionTitle);
-        alertDialogBuidler.setMessage(exceptionMessage);
-        alertDialogBuidler.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        alertDialogBuidler.show();
-
+    /**
+     * @param appointment - Appointment to extend
+     * Extends a given Appointment by a set ammount.
+     */
+    public void extendMeeting(Appointment appointment) {
+        try {
+            Event e = createEvent(appointment.getName(), appointment.getReserveringsTijd(), appointment.getReserveringEind(), appointment.getAttendees());
+            mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents(appointment.getId()).buildRequest().patch(e);
+        } catch (Exception ex) {
+            Log.d("GraphServiceController", ex.getMessage());
+        }
     }
 }

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -183,7 +184,9 @@ public class MainActivity extends AppCompatActivity implements ActivityData {
 
     public void btnExtend(View v)
     {
-
+         if(!appointmentController.updateAppointment(thisRoom.updateState())){
+             Toast.makeText(this, R.string.reserveNotAvailableTime, Toast.LENGTH_SHORT).show();
+         }
     }
 
     public void btnAltRoomOnClick(View v) {

@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Created by gisro on 20-9-2017.
  */
 
-public class Room implements Serializable{
+public class Room implements Serializable {
     private String Name;
     private String id;
     private State state;
@@ -19,15 +19,20 @@ public class Room implements Serializable{
     private int floor;
     private ArrayList<Appointment> appointments;
 
-    public Room(String name, String id, int state, int persons, int floor)
-    {
+    /**
+     * @param name    - Name for the Room
+     * @param id      - Unique identifier
+     * @param state   - Determines whether a room is available or not
+     * @param persons - Number of people currently present in the Room
+     * @param floor   - Floor number corresponding with the level at ISAAC
+     */
+    public Room(String name, String id, int state, int persons, int floor) {
         this.Name = name;
         this.appointments = new ArrayList<>();
         this.id = id;
         this.persons = persons;
         this.floor = floor;
-        switch (state)
-        {
+        switch (state) {
             case 0:
                 this.state = State.Vrij;
                 break;
@@ -40,46 +45,28 @@ public class Room implements Serializable{
         }
     }
 
-    public int getPersons(){
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public int getPersons() {
         return persons;
     }
 
-    public int getFloor(){
+    public int getFloor() {
         return floor;
     }
 
-    public void setState(State state){
+    public void setState(State state) {
         this.state = state;
     }
 
-    public State getState(){
+    public State getState() {
         return state;
-    }
-
-    public Appointment updateState() {
-       for(Appointment appointment: appointments)
-       {
-           if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow())
-           {
-               if(this.state == State.Vrij) {
-                   this.state = State.Gereserveerd;
-                   return appointment;
-               }
-               if(this.state == State.Bezet){
-                   return appointment;
-               }
-           }
-           else{
-               this.state = State.Vrij;
-           }
-       }
-       this.state = State.Vrij;
-       return null;
-    }
-
-    @Override
-    public String toString(){
-        return Name + "\t" + state;
     }
 
     public ArrayList<Appointment> getAppointments() {
@@ -90,10 +77,33 @@ public class Room implements Serializable{
         this.appointments = appointments;
     }
 
-    public DateTime getTimeUntilNext()
-    {
+    /**
+     * Checks if the room state has changed, returns Appointment object that caused the change of state
+     */
+    public Appointment updateState() {
+        for (Appointment appointment : appointments) {
+            if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow()) {
+                if (this.state == State.Vrij) {
+                    this.state = State.Gereserveerd;
+                    return appointment;
+                }
+                if (this.state == State.Bezet) {
+                    return appointment;
+                }
+            } else {
+                this.state = State.Vrij;
+            }
+        }
+        this.state = State.Vrij;
+        return null;
+    }
+
+    /**
+     * @return Returns DateTime object containing the time left untill the next Appointment in this room
+     */
+    public DateTime getTimeUntilNext() {
         DateTime minDate = null;
-        if(appointments.size() != 0 && appointments != null) {
+        if (appointments.size() != 0 && appointments != null) {
             minDate = appointments.get(0).getReserveringsTijd();
             for (Appointment appointment : appointments) {
                 if (appointment.getReserveringsTijd().isBefore(minDate) && appointment.getReserveringsTijd().isAfterNow()) {
@@ -105,12 +115,9 @@ public class Room implements Serializable{
         return null;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public String getName(){
-        return Name;
+    @Override
+    public String toString() {
+        return Name + "\t" + state;
     }
 
 }

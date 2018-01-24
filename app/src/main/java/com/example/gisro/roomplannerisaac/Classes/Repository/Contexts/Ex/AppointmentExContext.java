@@ -8,6 +8,8 @@ import com.example.gisro.roomplannerisaac.Classes.Client.Client;
 import com.example.gisro.roomplannerisaac.Classes.Client.Task;
 import com.example.gisro.roomplannerisaac.Classes.Repository.Interface.IAppointmentContext;
 
+import org.joda.time.DateTime;
+
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
 
@@ -37,8 +39,30 @@ public class AppointmentExContext implements IAppointmentContext {
         client.end();
     }
     @Override
-    public void updateAppointment(Appointment item) {
-        throw new UnsupportedOperationException();
+    public boolean updateAppointment(Appointment item) {
+        ArrayList<Appointment> appointments = getAllAppointments();
+        boolean validAppointmentTime = true;
+        for(Appointment appointment: appointments) {
+            if(DateTime.now().plusMinutes(15).isAfter(appointment.getReserveringsTijd()))
+            {
+                validAppointmentTime = false;
+            }
+        }
+
+        if(validAppointmentTime){
+            item.setReserveringEind(item.getReserveringEind().plusMinutes(15));
+            client = new Client(new Task("extendMeeting", item), activity);
+            client.start();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            client.end();
+            return true;
+        } else{
+            return false;
+        }
     }
 
     @Override

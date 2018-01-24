@@ -10,16 +10,14 @@ public class User implements Serializable{
     private String Name;
     private String Email;
 
-
+    /**
+     * @param Name - Name given to the User
+     * @param Email - Email corresponding with the User
+     */
     public User(String Name, String Email)
     {
         this.Name = Name;
         this.Email = Email;
-    }
-
-    @Override
-    public String toString() {
-        return Name;
     }
 
     public String getEmail() {
@@ -27,6 +25,11 @@ public class User implements Serializable{
     }
 
     public String getName(){
+        return Name;
+    }
+
+    @Override
+    public String toString() {
         return Name;
     }
 }

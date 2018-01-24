@@ -21,7 +21,7 @@ import java.util.TimeZone;
  * Created by gisro on 20-9-2017.
  */
 
-public class Appointment implements Comparable<Appointment>, Serializable{
+public class Appointment implements Comparable<Appointment>, Serializable {
 
     private String id;
     private String Name;
@@ -30,6 +30,11 @@ public class Appointment implements Comparable<Appointment>, Serializable{
     private State state;
     private List<User> attendees;
 
+    /**
+     * @param Name             - Name for the appointment
+     * @param reserveringsTijd - Starting time for the appointment
+     * @param reserveringEind  - End time for the appointment
+     */
     public Appointment(String Name, DateTime reserveringsTijd, DateTime reserveringEind) {
         this.Name = Name;
         this.reserveringsTijd = reserveringsTijd;
@@ -40,6 +45,11 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         this.attendees = new ArrayList<>();
     }
 
+    /**
+     * @param Name             - Name for the appointment
+     * @param reserveringsTijd - Starting time for the appointment
+     * @param attendees        - People invited to the appointment
+     */
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd, List<User> attendees) {
         this.Name = Name;
         String date = reserveringsTijd.dateTime.substring(0, reserveringsTijd.dateTime.length() - 8);
@@ -51,6 +61,14 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         this.attendees = attendees;
     }
 
+    /**
+     * @param Name             - Name for the appointment
+     * @param reserveringsTijd - Starting time for the appointment
+     * @param reserveringEinde - End time for the appointment
+     * @param attendees        - People invited to the appointment
+     * @param id               - Unique identifier
+     * @throws ParseException
+     */
     public Appointment(String Name, DateTimeTimeZone reserveringsTijd, DateTimeTimeZone reserveringEinde, List<User> attendees, String id) throws ParseException {
         this.Name = Name;
         String date = reserveringsTijd.dateTime.substring(0, reserveringsTijd.dateTime.length() - 8);
@@ -68,49 +86,32 @@ public class Appointment implements Comparable<Appointment>, Serializable{
         this.id = id;
     }
 
-
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
-    public State getState() {
-        return state;
-    }
 
-    public boolean open(){
-        if(reserveringsTijd.isAfterNow() && reserveringsTijd.isBefore(new DateTime(System.currentTimeMillis()+10*60*1000))){
-//            GraphServiceClientManager gcm = new GraphServiceClientManager();
-//            gcm.updateStateRoom(State.Bezet);
-            return true;
-        }
-        return false;
-    }
-
-//    public boolean open(){
-//      if(reserveringsTijd.after(new Date()) && reserveringsTijd.before(new Date(System.currentTimeMillis()+5*60*1000))){
-//          this.state = State.Open;
-//          return true;
-//      }
-//      return false;
-//    }
-
-    public void close(){
-//        GraphServiceClientManager gcm = new GraphServiceClientManager();
-//        gcm.updateStateRoom(State.Vrij);
-    }
-
-    public String getName()
-    {
+    public String getName() {
         return Name;
     }
 
-    public DateTime getReserveringsTijd()
-    {
+    public DateTime getReserveringsTijd() {
         return reserveringsTijd;
     }
 
-    public DateTime getReserveringEind(){
+    public DateTime getReserveringEind() {
         return reserveringEind;
+    }
+
+    public void setReserveringEind(DateTime end) {
+        this.reserveringEind = end;
+    }
+
+    public List<User> getAttendees() {
+        return attendees;
+    }
+
+    public void addAttendee(User attendee) {
+        attendees.add(attendee);
     }
 
     @Override
@@ -121,14 +122,5 @@ public class Appointment implements Comparable<Appointment>, Serializable{
     @Override
     public int compareTo(@NonNull Appointment appointment) {
         return reserveringsTijd.compareTo(appointment.getReserveringsTijd());
-    }
-
-    public List<User> getAttendees() {
-        return attendees;
-    }
-
-
-    public void addAttendee(User attendee) {
-        attendees.add(attendee);
     }
 }
