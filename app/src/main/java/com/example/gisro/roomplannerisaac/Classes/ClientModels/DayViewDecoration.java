@@ -38,7 +38,8 @@ public class DayViewDecoration extends CdvDecorationDefault {
         // hide event header
         TextView textHeader1 = (TextView) eventView.findViewById(com.framgia.library.calendardayview.R.id.item_event_header_text1);
         TextView textHeader2 = (TextView) eventView.findViewById(com.framgia.library.calendardayview.R.id.item_event_header_text2);
-
+        textHeader1.setVisibility(View.INVISIBLE);
+        textHeader2.setVisibility(View.INVISIBLE);
 
         return eventView;
     }

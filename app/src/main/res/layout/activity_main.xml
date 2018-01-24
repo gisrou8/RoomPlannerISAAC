@@ -118,7 +118,7 @@
         android:background="#FFEEEEEE"
         android:fontFamily="Open Sans"
         android:gravity="center"
-        android:elevation="1dp"
+        android:elevation="5dp"
         android:lineSpacingMultiplier="1.34"
         android:text="@string/na"
         android:textColor="#FF262626"
@@ -128,8 +128,8 @@
 
     <Button
         android:id="@+id/btnVergadering"
-        android:layout_width="231dp"
-        android:layout_height="33dp"
+        android:layout_width="215dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="88dp"
@@ -260,15 +260,13 @@
     <ScrollView
         android:id="@+id/dayView"
         android:layout_width="261dp"
-        android:layout_height="694dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="0dp"
         android:background="#FFF"
         android:clipToPadding="false"
         android:paddingTop="@dimen/dayHeight"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvDate"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintTop_toBottomOf="@+id/tvDate">
 
         <com.framgia.library.calendardayview.CalendarDayView
 
