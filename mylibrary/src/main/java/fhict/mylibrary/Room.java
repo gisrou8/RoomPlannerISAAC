@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by gisro on 20-9-2017.
@@ -63,20 +64,30 @@ public class Room implements Serializable{
     }
 
     public Appointment updateState() {
-       for(Appointment appointment: appointments)
-       {
-           if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow())
-           {
-               if(this.state == State.Vrij) {
-                   this.state = State.Gereserveerd;
-                   return appointment;
-               }
-               if(this.state == State.Bezet){
-                   return appointment;
-               }
-           }
-       }
-       return null;
+        ArrayList<DateTime> dates = new ArrayList<>();
+        for (Appointment appointment : appointments) {
+            dates.add(appointment.getReserveringsTijd());
+        }
+        if (dates.size() > 0) {
+            DateTime minDate = Collections.min(dates);
+            for(Appointment appointment : appointments) {
+                if(appointment.getReserveringsTijd().equals(minDate)) {
+                    if (appointment.getReserveringEind().isAfterNow() && appointment.getReserveringsTijd().isBeforeNow()) {
+                        if (this.state == State.Vrij) {
+                            this.state = State.Gereserveerd;
+                            return appointment;
+                        }
+                        if (this.state == State.Bezet) {
+                            return appointment;
+                        }
+                    } else {
+                        this.state = State.Vrij;
+                    }
+                }
+            }
+        }
+        this.state = State.Vrij;
+        return null;
     }
 
     @Override

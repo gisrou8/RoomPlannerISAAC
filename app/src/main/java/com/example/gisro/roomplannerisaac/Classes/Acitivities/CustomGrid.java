@@ -14,6 +14,7 @@ import com.example.gisro.roomplannerisaac.R;
 import java.util.List;
 
 import fhict.mylibrary.Room;
+import fhict.mylibrary.State;
 
 /**
  * Created by BePul on 20-12-2017.
@@ -23,11 +24,19 @@ public class CustomGrid extends BaseAdapter {
 
     private Context mContext;
     private List<Room> rooms;
+    private Room thisRoom = null;
 
     public CustomGrid(Context c, List<Room> rooms)
     {
         this.mContext = c;
         this.rooms = rooms;
+    }
+
+    public CustomGrid(Context c, List<Room> rooms, Room thisRoom)
+    {
+        this.mContext = c;
+        this.rooms = rooms;
+        this.thisRoom = thisRoom;
     }
 
 
@@ -64,14 +73,37 @@ public class CustomGrid extends BaseAdapter {
             Button btRoom = (Button) grid.findViewById(R.id.btnRoom);
             tvfloor.setText(mContext.getString(R.string.floor) + " " + rooms.get(position).getFloor());
             tvPersons.setText(rooms.get(position).getPersons() + " " + mContext.getString(R.string.persons));
-            tvTime.setText(rooms.get(position).getState().toString());
+            if(rooms.get(position).getState() == State.Vrij)
+            {
+                tvTime.setText(mContext.getString(R.string.freewilly));
+            }
+            if(rooms.get(position).getState() == State.Gereserveerd)
+            {
+                tvTime.setText(mContext.getString(R.string.reserved));
+            }
+            if(rooms.get(position).getState() == State.Bezet)
+            {
+                tvTime.setText(mContext.getString(R.string.occupied));
+            }
+            if(thisRoom == null)
+            {
+                btRoom.setText(R.string.selectRoom);
+            }
             tvRoom.setText(rooms.get(position).getName());
             btRoom.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(mContext, MainActivity.class);
-                    i.putExtra("Room", rooms.get(position));
-                    mContext.startActivity(i);
+                    if(thisRoom == null) {
+                        Intent i = new Intent(mContext, MainActivity.class);
+                        i.putExtra("Room", rooms.get(position));
+                        mContext.startActivity(i);
+                    }
+                    else{
+                        Intent i = new Intent(mContext, Reservering.class);
+                        i.putExtra("Room", rooms.get(position));
+                        i.putExtra("orgRoom", thisRoom);
+                        mContext.startActivity(i);
+                    }
                 }
             });
 
@@ -81,6 +113,7 @@ public class CustomGrid extends BaseAdapter {
 
         return grid;
     }
+
 }
 
 

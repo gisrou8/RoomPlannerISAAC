@@ -1,6 +1,10 @@
 package com.example.gisro.roomplannerisaac.Classes.Acitivities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,48 +21,64 @@ import com.example.gisro.roomplannerisaac.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import fhict.mylibrary.Room;
 
 public class RuimteSelectie extends AppCompatActivity implements ActivityData {
 
     public static final String ARG_GIVEN_NAME = "givenName";
-    RoomRepo roomController = new RoomRepo(new RoomExContext(this));
+    RoomRepo roomController;
     private GridView gv;
     private ProgressBar mProgressbar;
     private int checkCount = 2000;
-    final List<Room> rooms = new ArrayList<>();
-    CustomGrid arrayAdapter;
+    private List<Room> rooms = null;
+    private Room thisRoom;
+    CustomGrid arrayAdapter = null;
+    ScheduledExecutorService exec;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruimte_selectie);
+        thisRoom = (Room)getIntent().getSerializableExtra("Room");
+        try {
+            roomController = new RoomRepo(new RoomExContext(this));
+        }
+        catch (Exception ex)
+        {
+
+        }
+        refreshUI();
+        //Language settings
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String language = preferences.getString("languageSettings", null);
+        Locale locale = null;
+        if(language != null) {
+            locale = new Locale(language);
+        }
+        else{
+            locale = new Locale("En");
+        }
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
         //Demo data
         gv = (GridView) findViewById(R.id.roomList);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
         mProgressbar.setVisibility(View.VISIBLE);
-        arrayAdapter = new CustomGrid(this, rooms);
+        rooms = new ArrayList<>();
+        arrayAdapter = new CustomGrid(this, rooms, thisRoom);
         gv.setAdapter(arrayAdapter);
-        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(RuimteSelectie.this, MainActivity.class);
-                intent.putExtra("Room", rooms.get(i));
-                startActivity(intent);
-            }
-        });
-
-        // Init roomlist from API
-        roomController.getAllRooms();
-
-
-
-
     }
 
-    public void setList(ArrayList<Room> roomList)
+    public void btnSettings(View v)
     {
-
+        Intent i = new Intent(RuimteSelectie.this, SettingsActivity.class);
+        startActivity(i);
     }
 
 
@@ -67,6 +87,7 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                rooms.clear();
                 for(Room r : (ArrayList<Room>)data)
                 {
                     rooms.add(r);
@@ -75,6 +96,25 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
                 mProgressbar.setVisibility(View.INVISIBLE);
             }
         });
+
+    }
+
+    @Override
+    public Context getContext() {
+        return getApplicationContext();
+    }
+
+    public void refreshUI() {
+        if (exec != null) {
+            exec.shutdown();
+        }
+        exec = Executors.newSingleThreadScheduledExecutor();
+        exec.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                roomController.getAllRooms();
+            }
+        }, 0, 5, TimeUnit.SECONDS);
 
     }
 }

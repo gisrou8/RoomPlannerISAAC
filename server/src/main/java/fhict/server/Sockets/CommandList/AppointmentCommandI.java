@@ -1,5 +1,6 @@
 package fhict.server.Sockets.CommandList;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.microsoft.graph.concurrency.ICallback;
@@ -18,6 +19,7 @@ import java.util.Map;
 import fhict.mylibrary.Appointment;
 import fhict.mylibrary.Room;
 import fhict.mylibrary.User;
+import fhict.server.ActivityData;
 import fhict.server.GraphAPI.GraphServiceController;
 import fhict.server.Sockets.SocketServerReplyThread;
 
@@ -25,7 +27,7 @@ import fhict.server.Sockets.SocketServerReplyThread;
  * Created by BePulverized on 28-11-2017.
  */
 
-public class AppointmentCommandI implements IClientCommand {
+public class AppointmentCommandI implements IClientCommand, IServerCommand {
 
     @Override
     public void execute(final SocketServerReplyThread server, final Object[] params, GraphServiceController controller) throws IOException, InterruptedException {
@@ -49,16 +51,37 @@ public class AppointmentCommandI implements IClientCommand {
             }
         });
     }
+    @Override
+    public void execute(GraphServiceController controller, final ActivityData data) throws IOException, InterruptedException {
+        controller.apiAppointments(new ICallback<IEventCollectionPage>() {
+            @Override
+            public void success(IEventCollectionPage iEventCollectionPage) {
+                List<Event> events = iEventCollectionPage.getCurrentPage();
+                try {
+                    Log.d("API", "Starting appointment call");
+                    data.setData(eventsToAppointments(events));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
 
-    private ArrayList<Appointment> setEvents(Room room, List<Event> events) throws ParseException {
-        ArrayList<Event> eventforRoom = new ArrayList<>();
+            @Override
+            public void failure(ClientException ex) {
+
+            }
+        });
+    }
+
+    public ArrayList<Appointment> setEvents(Room room, List<Event> events) throws ParseException {
+        List<Event> eventforRoom = new ArrayList<>();
         for(Event event: events)
         {
-            for(Attendee attendee:event.attendees)
-            {
-                if(room.getName().equals(attendee.emailAddress.name)){
-                eventforRoom.add(event);
-            }
+            for(Attendee attendee:event.attendees) {
+                if (room.getName().equals(attendee.emailAddress.name)) {
+                    eventforRoom.add(event);
+                }
             }
 
 
@@ -66,7 +89,7 @@ public class AppointmentCommandI implements IClientCommand {
        return eventsToAppointments(eventforRoom);
     }
 
-    private ArrayList<Appointment> eventsToAppointments(ArrayList<Event> events) throws ParseException {
+    public ArrayList<Appointment> eventsToAppointments(List<Event> events) throws ParseException {
         ArrayList<Appointment> appointments = new ArrayList<>();
         for(Event event: events)
         {

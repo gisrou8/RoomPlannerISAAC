@@ -12,6 +12,9 @@
         <item name="android:windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    <style name="MyListViewStyle" parent="@android:style/Widget.Holo.Light.ListView">
+        <item name="android:listSelector">@color/colorPrimary</item>
+    </style>
 
 
 </resources>

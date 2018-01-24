@@ -1,5 +1,7 @@
 package fhict.server.Sockets.CommandList;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -29,7 +31,13 @@ public class Commands implements IClientCommand {
         IClientCommand cmd = cmds.get(params[0]);
         if(cmd != null)
         {
-            cmd.execute(server, Arrays.copyOfRange(params, 1, params.length), controller);
+            try {
+                cmd.execute(server, Arrays.copyOfRange(params, 1, params.length), controller);
+            }
+            catch (Exception ex)
+            {
+                Log.d("Error API", ex.getMessage());
+            }
         }
     }
 }

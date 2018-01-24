@@ -45,4 +45,8 @@
     <string name="for_">voor </string>
     <string name="moreminutes"> minuten</string>
     <string name="selectedroom">Selecteer een ruimte:</string>
+    <string name="pref_header_language">Language settings</string>
+    <string name="reserveNotAvailableTime">Er zijn al vergaderingen geplanned in dit tijdvak!</string>
+    <string name="notallValuesFilled">Selecteer een gebruiker en tijd!</string>
+    <string name="selectRoom">Selecteer</string>
 </resources>
