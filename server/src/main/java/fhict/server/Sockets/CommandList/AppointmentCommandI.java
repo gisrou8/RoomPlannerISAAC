@@ -29,7 +29,7 @@ public class AppointmentCommandI implements IClientCommand {
 
     @Override
     public void execute(final SocketServerReplyThread server, final Object[] params, GraphServiceController controller) throws IOException, InterruptedException {
-        controller.apiAppointments((Room)params[0], new ICallback<IEventCollectionPage>() {
+        controller.apiAppointments(new ICallback<IEventCollectionPage>() {
             @Override
             public void success(IEventCollectionPage iEventCollectionPage) {
                 List<Event> events = iEventCollectionPage.getCurrentPage();

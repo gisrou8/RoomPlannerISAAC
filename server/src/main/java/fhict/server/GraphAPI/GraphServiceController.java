@@ -66,12 +66,12 @@ public class GraphServiceController {
      * Create a new Graph Event based on given Appointment
      */
     public void addAppointment(Appointment appointment){
-//        try {
-////            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijdTZ(), appointment.getReserveringsTijdTZ(), appointment.getAttendees()));
-////        }
-//        catch (Exception ex){
-//            Log.d("GraphServiceController", ex.getMessage());
-//        }
+        try {
+            mGraphServiceClient.getMe().getEvents().buildRequest().post(createEvent(appointment.getName(), appointment.getReserveringsTijd(), appointment.getReserveringEind(), appointment.getAttendees()));
+       }
+        catch (Exception ex){
+            Log.d("GraphServiceController", ex.getMessage());
+        }
     }
 
     /**
@@ -184,7 +184,7 @@ public class GraphServiceController {
         });
     }
 
-    public void apiAppointments(final Room room, ICallback<IEventCollectionPage> callback){
+    public void apiAppointments(ICallback<IEventCollectionPage> callback){
         mGraphServiceClient.getGroups("ced4d46f-5fc8-450f-9fa0-c1149c7a5238").getEvents().buildRequest().get(callback);
     }
 

@@ -1,14 +1,11 @@
-package com.example.gisro.roomplannerisaac.Classes.Acitivities;
+package fhict.server;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-import com.example.gisro.roomplannerisaac.R;
 
 import java.util.ArrayList;
 import java.util.List;

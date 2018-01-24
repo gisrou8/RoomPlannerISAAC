@@ -48,32 +48,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main1);
-//        info = (TextView) findViewById(R.id.info);
-//        infoip = (TextView) findViewById(R.id.infoip);
-//
-//        infoip.setText(getIpAddress());
-//        new StartSocketAsync().execute();
-//
-//
-//        lv = (ListView) findViewById(R.id.listview);
-//        lvMeetings = (ListView) findViewById(R.id.listview1);
-//        rooms = new ArrayList<String>();
-//        arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, rooms);
-//        lv.setAdapter(arrayAdapter);
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                String s = (String) lv.getItemAtPosition(i);
-//                String splitArray[] = s.split(" , ");
-//            }
-//        });
-//        getRooms();
 
     }
 
     public void btnReservedRooms(View v){
-        //mGraphServiceController.removeMeeting("Hier komt de id");
-        Intent i = new Intent(this, FreeRooms.class);
+        Intent i = new Intent(this, ReservedRooms.class);
         startActivity(i);
     }
 
@@ -137,30 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
            });
-//        // Wait for the graph api to get the data, when data has arrived do something with this data
-//        final android.os.Handler handler = new android.os.Handler();
-//        handler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                checkCount -= 1000;
-//                if(checkCount > 0){
-//                    handler.postDelayed(this, 1000);
-//                }
-//                else {
-//                    if (mGraphServiceController.getRooms() != null) {
-//                        for (Room r : mGraphServiceController.getRooms()) {
-//                            //Check if appointment is today
-//                            rooms.add(r.toString());
-//                        }
-//                        // Order the appointments on time
-//
-//                        arrayAdapter.notifyDataSetChanged();
-//                    } else {
-//                        Log.d("MainActivity", "userlist is null");
-//                    }
-//                }
-//            }
-//        }, 2000);
+
     }
 
 

@@ -31,9 +31,30 @@
     <GridLayout
         android:layout_width="1008dp"
         android:layout_height="567dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="120dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.158">
 
+        <GridView
+            android:id="@+id/reservedroomlist"
+            android:layout_width="1008dp"
+            android:layout_height="573dp"
+            android:columnWidth="180dp"
+            android:gravity="center"
+            android:horizontalSpacing="20dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </GridLayout>
 
 
