@@ -110,7 +110,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
         for(int i = 0; i < btn.length; i++)
         {
             btn[i] = (Button) findViewById(btn_id[i]);
-            btn[i].setBackground(getDrawable(R.drawable.reservebutton));
+            btn[i].setBackground(getResources().getDrawable(R.drawable.reservebutton));
             btn[i].setTextColor(Color.parseColor("#FF535353"));
         }
         btn_unfocus = btn[0];
@@ -122,7 +122,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
     public void btnReserveer(View v){
           if(selectedUser != null && reserveTime != 0) {
               User user = selectedUser;
-              Appointment newApp = new Appointment("Meeting door: " + user.getName(), DateTime.now(), DateTime.now().plusMinutes(reserveTime));
+              Appointment newApp = new Appointment("Meeting by: " + user.getName(), DateTime.now(), DateTime.now().plusMinutes(reserveTime));
               newApp.addAttendee(new User(selectedUser.getName(), selectedUser.getEmail()));
               newApp.addAttendee(new User(thisRoom.getName(), "Room@M365B679737.onmicrosoft.com"));
               scheduleMeeting(newApp);
@@ -172,9 +172,9 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
 
     private void setFocus(Button btn_unfocus, Button btn_focus){
         btn_unfocus.setTextColor(Color.parseColor("#FF535353"));
-        btn_unfocus.setBackground(getDrawable(R.drawable.reservebutton));
+        btn_unfocus.setBackground(getResources().getDrawable(R.drawable.reservebutton));
         btn_focus.setTextColor(Color.parseColor("#FF118AD3"));
-        btn_focus.setBackground(getDrawable(R.drawable.reservebuttonselected));
+        btn_focus.setBackground(getResources().getDrawable(R.drawable.reservebuttonselected));
         this.btn_unfocus = btn_focus;
     }
 
@@ -212,7 +212,7 @@ public class Reservering extends AppCompatActivity implements ActivityData, Sear
                         }
                         arrayAdapter.notifyDataSetChanged();
                         arrayAdapterAttendees.notifyDataSetChanged();
-                    }
+                }
                 }
 
             }

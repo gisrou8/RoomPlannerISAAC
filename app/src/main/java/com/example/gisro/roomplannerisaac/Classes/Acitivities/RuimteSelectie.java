@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -23,22 +24,22 @@ public class RuimteSelectie extends AppCompatActivity implements ActivityData {
 
     public static final String ARG_GIVEN_NAME = "givenName";
     RoomRepo roomController = new RoomRepo(new RoomExContext(this));
-    private ListView lv;
+    private GridView gv;
     private ProgressBar mProgressbar;
     private int checkCount = 2000;
     final List<Room> rooms = new ArrayList<>();
-    ArrayAdapter<Room> arrayAdapter;
+    CustomGrid arrayAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ruimte_selectie);
         //Demo data
-        lv = (ListView) findViewById(R.id.listView);
+        gv = (GridView) findViewById(R.id.roomList);
         mProgressbar = (ProgressBar)findViewById(R.id.RoomprogressBar);
         mProgressbar.setVisibility(View.VISIBLE);
-        arrayAdapter = new ArrayAdapter<Room>(this, android.R.layout.simple_list_item_1, rooms);
-        lv.setAdapter(arrayAdapter);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        arrayAdapter = new CustomGrid(this, rooms);
+        gv.setAdapter(arrayAdapter);
+        gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(RuimteSelectie.this, MainActivity.class);

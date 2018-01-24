@@ -40,6 +40,12 @@ public class Room implements Serializable{
         }
     }
 
+    public Room(String name, ArrayList<Appointment> appointments)
+    {
+        this.Name = name;
+        this.appointments = appointments;
+    }
+
     public int getPersons(){
         return persons;
     }
